@@ -24,30 +24,12 @@
 ## SOFTWARE.
 
 ## This code should be run in the directory above ./R
+source("R/functions.R")
 
-canonical <- function(A) {
+get_irfs <- function(A, v, N = 100, M = 12, xstart = 0) {
     k <- nrow(A)
     p <- ncol(A) / k
-    if (p > 1) {
-        A <- rbind(A, matrix(0, (p-1)*k, p*k))
-        diag(A[(k + 1):(p*k), 1:((p-1)*k)]) <- 1
-    }
-    A
-}
-
-geteigen <- function(B, trunc = FALSE,...) {
-    e <- eigen(B,...)
-    if (trunc) {
-        toobig <- which(abs(e$values) > .98)
-        e$values[toobig] <- .98 * e$values[toobig] / abs(e$values[toobig])
-    }
-    e
-}
-
-get_irfs <- function(A, v, N = 100, M = 12, xstart = 0, trunc = FALSE) {
-    k <- nrow(A)
-    p <- ncol(A) / k
-    e <- geteigen(canonical(A), trunc, symmetric = FALSE)
+    e <- eigen(canonical(A), symmetric = FALSE)
     V <- e$vectors
     Vi <- solve(V)
     xout <- seq(xstart, M, by = 1/N)
