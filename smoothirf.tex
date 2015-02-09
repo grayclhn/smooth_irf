@@ -1,0 +1,208 @@
+\documentclass[12pt,fleqn]{article}
+\usepackage{
+    amsfonts,
+    amsmath,
+    amssymb,
+    amsthm,
+    booktabs,
+    enumerate,
+    flexisym,
+    graphicx,
+    setspace,
+    slantsc,
+    tabularx,
+    url,
+}
+
+\title{Smooth interpolation for Impulse Response Functions of SVARs}
+\author{Gray Calhoun}
+\input{VERSION}
+\input{latex_misc/abbrevs}
+
+\urlstyle{same}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+\usepackage[small]{caption}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1.25in]{geometry}
+\usepackage[charter]{mathdesign}
+\usepackage[letterspace=35]{microtype}
+\usepackage[sort,round,comma]{natbib}
+\bibliographystyle{abbrvnat}
+\newcommand\citepos[2][]{\citeauthor{#2}'s \citeyearpar[#1]{#2}}
+\newcommand\poscw{\citeauthor{ClW:06}'s \citeyearpar{ClW:06,ClW:07}}
+\newcommand\citen[1]{\citeauthor{#1}, \citeyear{#1}}
+
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+
+\newcommand{\vep}{\varepsilon}
+
+\begin{document}
+\maketitle
+
+Impulse Response Functions (\IRF s) are widedly used graphs in time
+series analysis in general and in Macroeconomics in particular. The
+basic idea is to trace out the effect on the variables of interest
+$(y_{1t},\dots,y_{kt})$ of an exogenous shock, usually one that is
+theoretically motivated such as a technology shock or a monetary
+policy shock. Usually the \IRF s are calculated explicitly for each
+period in the future, $(\hat y_{1,t+j},\dots,\hat y_{k,t+j})$, where
+$j = 1, 2, \dots$ and the shock manifests at period $t$, and the
+function is then linearly interpolated between these points to show
+the joint relationship across time periods. In this note, I show that
+linear interpolation can introduce visual artifacts that distort the
+joint relationship between points. I also show how to use the
+estimated \VAR\ to produce a smooth \IRF\ curve, i.e. to produce
+$(\hat y_{1,t+j},\dots,\hat y_{k,t+j})$ for $j \in (0,+\infty)$ that
+has fewer distortions. Moreover, using the smoothed \IRF\ also allows
+for refinements to partial identification strategies based on sign
+restrictions.
+
+It is well known that any \VAR($p$) has a \VAR(1) ``canonical''
+representation. If
+\[
+y_t = \sum_{i=1}^p A_i y_{t-i} + \vep_t
+\]
+then
+\[
+\begin{pmatrix}
+  y_t \\ y_{t-1} \\ y_{t-2} \\ \vdots \\ y_{t-p+1}
+\end{pmatrix}
+=
+\begin{pmatrix}
+  A_1 & A_2 & \cdots & A_{p-1} & A_p \\
+  I_k & 0   & \cdots & 0 & 0 \\
+  0  & I_k  & \cdots & 0 & 0 \\
+  \vdots & \vdots & & \vdots & \vdots \\
+  0 & 0 & \cdots & I_k & 0 
+\end{pmatrix}
+\begin{pmatrix}
+  y_{t-1} \\ y_{t-2} \\ y_{t-3} \\ \vdots \\ y_{t-p}
+\end{pmatrix}
++
+\begin{pmatrix}
+  \vep_{t} \\ 0 \\ 0 \\ \vdots \\ 0
+\end{pmatrix}
+\]
+or
+\[
+z_t = B z_{t-1} + v_t.
+\]
+This representation is convenient, because we have
+\[
+E_t z_{t+k} = B^k z_{t}
+\]
+for any integer $k$, so it is easy to recursively generate \IRF s.
+
+Our proposal in this paper is to extend this to non-integer values of
+$k$, by using
+\[
+E_t z_{t+k} = \Re(B^k) z_{t} = \Re(V D^k V^{-1}) z_t
+\]
+where $\Re(z)$ returns the real part of the complex number $z$. The
+matrix $V$ is the matrix of eigenvectors of $B$ and the matrix $D$ is
+a diagonal matrix containing the eigenvalues of $B$. When $k$ is an
+integer, this product is guaranteed to be real, but it may be complex
+in general.
+
+Dropping the imaginary part works, because if $a_t$ is any real
+sequence that satisfies $B a_{t-1} = a_t$ for the real matrix $B$,
+then $a_t' = \Re(B^t) a_{0} \equiv \Re(V D^t V^{-1}) a_0$ trivially
+satisfies the same recurrence relationship. Since $B$ is real, $B
+\Re(B^{t-1}) = \Re(B^t)$ and we have
+\begin{align*}
+B a'_{t-1} &= B \Re(B^{t-1}) a_{0} \\
+&= \Re(B^t) a_0 \\
+&= a'_t.
+\end{align*}
+
+\paragraph{Numerical example}
+
+For a numerical example, consider the two-variable \VAR(2)
+\begin{equation}
+  \begin{pmatrix}
+    y_{1t} \\ y_{2t}
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    - 0.5 & 0.01 \\ 0.3 & 0.1
+  \end{pmatrix}
+  \begin{pmatrix}
+    y_{1,t-1} \\ y_{2,t-1}
+  \end{pmatrix}
+  +
+  \begin{pmatrix}
+    -0.2 & 0.1 \\ -0.1 & 0.0
+  \end{pmatrix}
+  \begin{pmatrix}
+    y_{1,t-2} \\ y_{2,t-2}
+  \end{pmatrix}
+  +
+  \begin{pmatrix}
+    \vep_{1t} \\ \vep_{2t}
+  \end{pmatrix}
+\end{equation}
+and assume for the sake of argument that $(\vep_{1t},\vep_{2t}) \sim
+N(0,I)$ represents the shocks of interest.
+
+As described above, we will define the smooth \IRF s for a shock to
+the first element as
+\begin{equation*}
+  \begin{pmatrix}
+    \hat y_{1j} \\ \hat y_{2j}
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0
+  \end{pmatrix}
+  V D^j V^{-1}
+  \begin{pmatrix}
+    1 \\ 0 \\ 0 \\ 0
+  \end{pmatrix}
+\end{equation*}
+with
+\begin{equation}
+V = \begin{pmatrix}
+     0.23 + 0.30 i & 0.23 - 0.30 i  & 0.06 + 0.03 i & 0.06 - 0.03 i \\
+     0.27 + 0.06 i & 0.27 - 0.06 i  & 0.12 + 0.13 i & 0.12 - 0.13 i \\
+     0.71 + 0.00 i & 0.71 + 0.00 i  & 0.31 - 0.12 i & 0.31 + 0.12 i \\
+    -0.23 - 0.47 i & -0.23 + 0.47 i & 0.92 + 0.00 i & 0.92 + 0.00 i
+  \end{pmatrix}
+\end{equation}
+and
+\begin{equation}
+  D = diag(-0.33 + 0.42 i, -0.33 - 0.42 i, 0.13 + 0.14 i, 0.13 - 0.14 i)
+\end{equation}
+the matrices of eigenvectors and eigenvalues of
+\begin{equation*}
+  \begin{pmatrix}
+   -0.5            &  0.01          & -0.2          & 0.1          \\
+    0.3            &  0.1           & -0.1          & 0.0          \\
+    1.0            &  0.0           &  0.0          & 0.0          \\
+    0.0            &  1.0           &  0.0          & 0.0
+  \end{pmatrix}.
+\end{equation*}
+The same equations hold for the \IRF s for a shock to the second
+element of $y_t$, but now the last vector should be $(0, 1, 0, 0)'$.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics{graphs/numeric.pdf}
+  \caption{Impulse Response Functions from example}
+  \label{f1}
+\end{figure}
+
+We plot the \IRF s in Figure~\ref{f1}. The first column plots the
+standard \IRF s and the second plots our proposed smooth
+plots. Although the general impressions from both graphs are similar,
+there are important differences. First, peaks and troughs are often
+underestimated by the standard IRFs and their timing is frequently
+misidentified. This is especially apparent in the first peak in the
+second row. Second, even the sign of the \IRF\ can be misidentified,
+as we see with the immediate response of $y_{1t}$ to a shock in
+$y_{2t}$. Finally, unless turning points in the smooth functions
+happen to coincide with integer values, discretizing the \IRF s
+introduces misleading asymmetries and kinks.
+
+\end{document}
