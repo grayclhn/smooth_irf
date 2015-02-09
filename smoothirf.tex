@@ -117,7 +117,7 @@ B a'_{t-1} &= B \Re(B^{t-1}) a_{0} \\
 &= a'_t.
 \end{align*}
 
-\paragraph{Numerical example}
+\section{Numerical example}
 
 For a numerical example, consider the two-variable \VAR(2)
 \begin{equation}
@@ -205,4 +205,37 @@ $y_{2t}$. Finally, unless turning points in the smooth functions
 happen to coincide with integer values, discretizing the \IRF s
 introduces misleading asymmetries and kinks.
 
+\begin{figure}[t]
+  \centering
+  \includegraphics{graphs/numeric2.pdf}
+  \caption{Impulse Response Functions from example}
+  \label{f2}
+\end{figure}
+
+These distortions are even more apparent when we graph multiple
+perterbations of the \IRF s in the same panel, which is a common way
+of representing uncertainty or set-identified responses. To
+demonstrate this phenomenon, we generated 150 replications of the \IRF
+s by adding independent N(0, 0.15) noise terms to each element of $A$,
+and then plotting the implied \IRF s as before.
+
+These graphs are shown in Figure~\ref{f2}. The same issues apparent in
+Figure~\ref{f1} are present here as well. But there are other problems
+as well. In the first curve, for example, the discrete \IRF\ shows
+that there is substantial negative correlation between the period 2
+and period 3 estimated response and the period 3 and 4 response. But
+the smoothed graph makes it clear that this is driven by the timing
+and size of the first peak. When that peak is near period 2, the curve
+has time to fall noticably before period 2, but when the peak is
+closer to period 3, the curve is still rising for that interval. The
+actual dynamics implied by the different curves are very
+similar. Similar but less dramatic distortions appear in the other
+panels as well. In the third row, for example, the discrete \IRF\
+shows that about half of the parameter values have an initial increase
+in response to a $y_{20}$ shock and half have an initial decrease, but
+the smooth curves show that virtually all of them have an immediate
+decrease, but that many start to increase very soon. The exact
+location of the peak that falls between periods 1 and 2 determines
+most of the initial dynamics, but this is impossible to see in the
+discrete curve.
 \end{document}

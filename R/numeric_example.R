@@ -23,18 +23,34 @@
 ## CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ## SOFTWARE.
 
-get_irfs <- function(A, v, N = 100, M = 12, xstart = 0) {
+## This code should be run in the directory above ./R
+
+canonical <- function(A) {
     k <- nrow(A)
     p <- ncol(A) / k
     if (p > 1) {
         A <- rbind(A, matrix(0, (p-1)*k, p*k))
         diag(A[(k + 1):(p*k), 1:((p-1)*k)]) <- 1
     }
-    e <- eigen(A, symmetric = FALSE)
+    A
+}
+
+geteigen <- function(B, trunc = FALSE,...) {
+    e <- eigen(B,...)
+    if (trunc) {
+        toobig <- which(abs(e$values) > .98)
+        e$values[toobig] <- .98 * e$values[toobig] / abs(e$values[toobig])
+    }
+    e
+}
+
+get_irfs <- function(A, v, N = 100, M = 12, xstart = 0, trunc = FALSE) {
+    k <- nrow(A)
+    p <- ncol(A) / k
+    e <- geteigen(canonical(A), trunc, symmetric = FALSE)
     V <- e$vectors
     Vi <- solve(V)
-    
-    xout <- seq(xstart, M + 1/N, by = 1/N)
+    xout <- seq(xstart, M, by = 1/N)
     yout <- matrix(0, k, length(xout))
     ystart <- which(xout == 0)
     yout[v, ystart] <- 1
@@ -47,33 +63,82 @@ get_irfs <- function(A, v, N = 100, M = 12, xstart = 0) {
     list(x = xout, y = yout)
 }
 
+## Graphs for Figure 1
+
 A <- matrix(c(-0.5, 0.01, -0.2, 0.1, 0.3, 0.1, -0.1, 0.0),
             nrow = 2, byrow = TRUE)
 
 ## shock to y1
-irf1 <- get_irfs(A, 1, 1, 8)
-irf2 <- get_irfs(A, 1, 100, 8)
+icoarse1 <- get_irfs(A, 1, 1, 8)
+ismooth1 <- get_irfs(A, 1, 100, 8)
 ## shock to y2
-irf3 <- get_irfs(A, 2, 1, 8)
-irf4 <- get_irfs(A, 2, 100, 8)
+icoarse2 <- get_irfs(A, 2, 1, 8)
+ismooth2 <- get_irfs(A, 2, 100, 8)
 
-makeplot <- function(irf, yvar,...) {
-    plot(irf$x, irf$y[yvar,], "l", ylim = c(-.6, 1), lwd = 2,
-         bty = "n", xlab = "", ylab = "", ...)
+subplot1 <- function(irf, yvar,...) {
+    plot(irf$x, irf$y[yvar,], "l", ylim = c(-.7, 1.1), lwd = 2,
+         bty = "n", xlab = "", ylab = "", col = "black",...)
     abline(0, 0, col = rgb(0,0,0,.2))
-    for (i in 0:9) {
+    for (i in 0:8) {
         lines(c(i,i), c(-.6, 1), col = rgb(0,0,0,.2))
     }
 }
 
+col <- "dark gray"
 pdf(file = "graphs/numeric.pdf", width = 6, height = 7)
-par(mfcol = c(4, 2), mar = c(2,3,3,1))
-makeplot(irf1, 1, main = "y_1 shock on y_1")
-makeplot(irf1, 2, main = "y_1 shock on y_2")
-makeplot(irf3, 1, main = "y_2 shock on y_1")
-makeplot(irf3, 2, main = "y_2 shock on y_2")
-makeplot(irf2, 1, main = "y_1 shock on y_1 (smoothed)")
-makeplot(irf2, 2, main = "y_1 shock on y_2 (smoothed)")
-makeplot(irf4, 1, main = "y_2 shock on y_1 (smoothed)")
-makeplot(irf4, 2, main = "y_2 shock on y_2 (smoothed)")
+par(mfcol = c(4, 2), mar = c(2,3,3,1), fg = col,
+    col.axis = "black", col.main = "black")
+subplot1(icoarse1, 1, main = "y_1 shock on y_1")
+subplot1(icoarse1, 2, main = "y_1 shock on y_2")
+subplot1(icoarse2, 1, main = "y_2 shock on y_1")
+subplot1(icoarse2, 2, main = "y_2 shock on y_2")
+subplot1(ismooth1, 1, main = "y_1 shock on y_1 (smoothed)")
+subplot1(ismooth1, 2, main = "y_1 shock on y_2 (smoothed)")
+subplot1(ismooth2, 1, main = "y_2 shock on y_1 (smoothed)")
+subplot1(ismooth2, 2, main = "y_2 shock on y_2 (smoothed)")
+dev.off()
+
+## Graphs for Figure 2
+nsim <- 150
+ycoarse1on1 <- ycoarse1on2 <- ycoarse2on1 <- ycoarse2on2 <-
+    ts(matrix(nrow = 9, ncol = nsim), start = 0, frequency = 1)
+ysmooth1on1 <- ysmooth1on2 <- ysmooth2on1 <- ysmooth2on2 <-
+    ts(matrix(nrow = 801, ncol = nsim), start = 0, frequency = 100)
+
+for (i in 1:nsim) {
+    Ai <- A + rnorm(length(A), 0, .15)
+    c1 <- get_irfs(Ai, 1, 1, 8)
+    ycoarse1on1[,i] <- c1$y[1,]
+    ycoarse1on2[,i] <- c1$y[2,]
+    s1 <- get_irfs(Ai, 1, 100, 8)
+    ysmooth1on1[,i] <- s1$y[1,]
+    ysmooth1on2[,i] <- s1$y[2,]
+    c2 <- get_irfs(Ai, 2, 1, 8)
+    ycoarse2on1[,i] <- c2$y[1,]
+    ycoarse2on2[,i] <- c2$y[2,]
+    s2 <- get_irfs(Ai, 2, 100, 8)
+    ysmooth2on1[,i] <- s2$y[1,]
+    ysmooth2on2[,i] <- s2$y[2,]
+}
+
+subplot2 <- function(ys,...) {
+    plot(ys, plot.type = "single", ylim = c(-.7, 1.1),
+         bty = "n", xlab = "", ylab = "",...)
+    abline(0, 0, col = rgb(0,0,0,.2))
+    for (i in 0:8) {
+        lines(c(i,i), c(-.6, 1), col = rgb(0,0,0,.2))
+    }
+}
+
+pdf(file = "graphs/numeric2.pdf", width = 6, height = 7)
+par(mfcol = c(4, 2), mar = c(2,3,3,1), fg = col,
+    col.axis = "black", col.main = "black")
+subplot2(ycoarse1on1, main = "y_1 shock on y_1", col = rgb(0,0,0,.05))
+subplot2(ycoarse1on2, main = "y_1 shock on y_2", col = rgb(0,0,0,.05))
+subplot2(ycoarse2on1, main = "y_2 shock on y_1", col = rgb(0,0,0,.05))
+subplot2(ycoarse2on2, main = "y_2 shock on y_2", col = rgb(0,0,0,.05))
+subplot2(ysmooth1on1, main = "y_1 shock on y_1 (smooth)", col = rgb(0,0,0,.01))
+subplot2(ysmooth1on2, main = "y_1 shock on y_2 (smooth)", col = rgb(0,0,0,.01))
+subplot2(ysmooth2on1, main = "y_2 shock on y_1 (smooth)", col = rgb(0,0,0,.01))
+subplot2(ysmooth2on2, main = "y_2 shock on y_2 (smooth)", col = rgb(0,0,0,.01))
 dev.off()
