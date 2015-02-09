@@ -36,12 +36,35 @@
 \renewcommand{\Re}{\operatorname{Re}}
 \renewcommand{\Im}{\operatorname{Im}}
 
+\DeclareMathOperator{\whitenoise}{\mathit{white\ noise}}
 \newcommand{\vep}{\varepsilon}
 
 \begin{document}
 \maketitle
 
-Impulse Response Functions (\IRF s) are widedly used graphs in time
+Impulse Response Functions (\IRF s) are used in signal processing and
+time-series analysis to represent the effect over time of a short
+impulse or shock on a dynamic system; and they are heavily used in
+Macroeconomics to characterize the effects of a shock of theoretical
+interest --- the effect of a monetary policy shock, for example, or a
+technology shock. Formally, if $y_t$ is a stochastic process with the
+\MA($\infty$) representation
+\begin{equation*}
+  y_t = \sum_{j=0}^{\infty} \psi_j \vep_{t-j}
+\end{equation*}
+and $\vep_t \sim \whitenoise(0,\Sigma)$ where $\Sigma$ is normalized
+to have diagonal elements equal to 1, the \IRF\ is the function
+\begin{equation*}
+  \Psi(j) = \theta_j u
+\end{equation*}
+for $j = 0, 1, 2,\dots$ where the vector $u$ has norm 1 and represents
+a specific theoretical shock of interest.
+
+In Macroeconomics, researchers usually don't work with \MA\
+representations directly, but instead model the processes as a finite
+lag \VAR.
+
+widedly used graphs in time
 series analysis in general and in Macroeconomics in particular. The
 basic idea is to trace out the effect on the variables of interest
 $(y_{1t},\dots,y_{kt})$ of an exogenous shock, usually one that is
