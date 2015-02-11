@@ -1,6 +1,6 @@
-
-
+*.zip
 *~
+
 # History files
 .Rhistory
 .juliahistory
@@ -11,6 +11,10 @@
 # R data files from past sessions
 .Rdata
 .RData
+
+# R output files
+*.Rout
+*.ROut
 
 # RStudio files
 .Rproj.user/
