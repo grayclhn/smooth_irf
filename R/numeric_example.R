@@ -104,7 +104,7 @@ for (i in 1:nsim) {
 }
 
 subplot2 <- function(ys,...) {
-    plot(ys, plot.type = "single", ylim = c(-.7, 1.1),
+    plot(ys, plot.type = "single", ylim = c(-.7, 1.1), lwd = 1.5,
          bty = "n", xlab = "", ylab = "",...)
     abline(0, 0, col = rgb(0,0,0,.2))
     for (i in 0:8) {
@@ -119,8 +119,8 @@ subplot2(ycoarse1on1, main = "y_1 shock on y_1", col = rgb(0,0,0,.05))
 subplot2(ycoarse1on2, main = "y_1 shock on y_2", col = rgb(0,0,0,.05))
 subplot2(ycoarse2on1, main = "y_2 shock on y_1", col = rgb(0,0,0,.05))
 subplot2(ycoarse2on2, main = "y_2 shock on y_2", col = rgb(0,0,0,.05))
-subplot2(ysmooth1on1, main = "y_1 shock on y_1 (smooth)", col = rgb(0,0,0,.01))
-subplot2(ysmooth1on2, main = "y_1 shock on y_2 (smooth)", col = rgb(0,0,0,.01))
-subplot2(ysmooth2on1, main = "y_2 shock on y_1 (smooth)", col = rgb(0,0,0,.01))
-subplot2(ysmooth2on2, main = "y_2 shock on y_2 (smooth)", col = rgb(0,0,0,.01))
+subplot2(ysmooth1on1, main = "y_1 shock on y_1 (smooth)", col = rgb(0,0,0,.05))
+subplot2(ysmooth1on2, main = "y_1 shock on y_2 (smooth)", col = rgb(0,0,0,.05))
+subplot2(ysmooth2on1, main = "y_2 shock on y_1 (smooth)", col = rgb(0,0,0,.05))
+subplot2(ysmooth2on2, main = "y_2 shock on y_2 (smooth)", col = rgb(0,0,0,.05))
 dev.off()
