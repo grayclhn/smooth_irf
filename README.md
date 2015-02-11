@@ -7,11 +7,12 @@ SVARs*.  If you have trouble reproducing the paper's analysis, please
 contact me: <gcalhoun@iastate.edu>. A pdf of the latest version of the
 paper should be available at my homepage
 <http://www.econ.iastate.edu/~gcalhoun> and you can find the latest
-version of this repository at
+version of this directory at
 <https://git.ece.iastate.edu/gcalhoun/smooth_irf>.
 
-The paper is totally preliminary: it's not at its first draft yet and
-is likely to still contain errors.
+I'm still working on a first reasonable draft of this paper and this
+version is likely to contain errors and will be substantially changed
+as I edit it. This directory is for the 2015-02-11 version of the paper.
 
 Main files
 ----------
