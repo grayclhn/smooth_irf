@@ -27,16 +27,30 @@
 source("R/functions.R")
 
 col <- "dark gray"
-pdf(file = "graphs/motivation.pdf", width = 6, height = 2.5)
-par(mfcol = c(1, 2), mar = c(2,3,3,1), fg = col, col.axis = "black",
+pdf(file = "graphs/motivation.pdf", width = 6, height = 1.5)
+par(mfcol = c(1, 3), mar = c(2,3,3,1), fg = col, col.axis = "black",
     col.main = "black", bty = "n")
+plot(0:5, .2^(0:5), type = "p", pch = 19, main = "IRF, no interpolation", col = "black")
+for (i in 0:5) {
+    lines(c(i,i), c(0,.2^i), type = "l", col = "black")
+}
+abline(0, 0, col = rgb(0,0,0,.2))
 plot(0:5, .2^(0:5), type = "l", main = "IRF, linear interpolation", col = "black")
+abline(0, 0, col = rgb(0,0,0,.2))
 curve(.2^x, from = 0, to = 5, main = "IRF, smooth interpolation", col = "black")
+abline(0, 0, col = rgb(0,0,0,.2))
 dev.off()
 
-pdf(file = "graphs/motivation2.pdf", width = 6, height = 2.5)
-par(mfcol = c(1, 2), mar = c(2,3,3,1), fg = col, col.axis = "black",
+pdf(file = "graphs/motivation2.pdf", width = 6, height = 1.5)
+par(mfcol = c(1, 3), mar = c(2,3,3,1), fg = col, col.axis = "black",
     col.main = "black", bty = "n")
+plot(0:5, (-.2)^(0:5), type = "p", pch = 19, main = "IRF, no interpolation", col = "black")
+for (i in 0:5) {
+    lines(c(i,i), c(0,(-.2)^i), type = "l", col = "black")
+}
+abline(0, 0, col = rgb(0,0,0,.2))
 plot(0:5, (-.2)^(0:5), type = "l", main = "IRF, linear interpolation", col = "black")
+abline(0, 0, col = rgb(0,0,0,.2))
 curve(.2^x * cos(pi * x), from = 0, to = 5, main = "IRF, smooth interpolation", col = "black")
+abline(0, 0, col = rgb(0,0,0,.2))
 dev.off()

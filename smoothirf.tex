@@ -103,16 +103,6 @@ restrictions.
   \label{f0}
 \end{figure}
 
-\begin{figure}[t]
-  \centering
-  \includegraphics{graphs/motivation2.pdf}
-  \caption{\IRF\ for simple AR(1) example. Here $y_t = -0.2 y_{t-1} +
-    \vep_t$. The left panel plots the standard \IRF, using linear
-    interpolation between the points (0,1), (1, .1), (1, .01), etc.,
-    while the right panel plots the function $- 0.2^x \cos(\pi x)$ directly.}
-  \label{f0b}
-\end{figure}
-
 Start with the simplest univariate case and suppose that
 \begin{equation}\label{eq:2}
 y_t = a y_{t-1} + \vep_t
@@ -146,6 +136,16 @@ use to represent \IRF s satisfy two conditions,
   lag polynomial of the \VAR, so $\Phi(L)y_t = \vep_t$ for $t = 1, 2,
   \dots$, then $\Phi(L) \Psi^*(t) = 0$ for all $t \in \RR$.
 \end{enumerate}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics{graphs/motivation2.pdf}
+  \caption{\IRF\ for simple AR(1) example. Here $y_t = -0.2 y_{t-1} +
+    \vep_t$. The left panel plots the standard \IRF, using linear
+    interpolation between the points (0,1), (1, .1), (1, .01), etc.,
+    while the right panel plots the function $- 0.2^x \cos(\pi x)$ directly.}
+  \label{f0b}
+\end{figure}
 
 Now suppose that $a \in (-1, 0)$. Again
 \begin{equation}
