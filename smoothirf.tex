@@ -91,63 +91,240 @@ interpolation. Moreover, using the smoothed \IRF\ also allows for
 refinements to partial identification strategies based on sign
 restrictions.
 
-\section{Motivation and results}
+\section{Motivation and theory}
 
-It is well known that any \VAR($p$) has a \VAR(1) ``canonical''
-representation. If
+\begin{figure}[t]
+  \centering
+  \includegraphics{graphs/motivation.pdf}
+  \caption{\IRF\ for simple AR(1) example. Here $y_t = 0.2 y_{t-1} +
+    \vep_t$. The left panel plots the standard \IRF, using linear
+    interpolation between the points (0,1), (1, .1), (1, .01), etc.,
+    while the right panel plots the function $0.2^x$ directly.}
+  \label{f0}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics{graphs/motivation2.pdf}
+  \caption{\IRF\ for simple AR(1) example. Here $y_t = -0.2 y_{t-1} +
+    \vep_t$. The left panel plots the standard \IRF, using linear
+    interpolation between the points (0,1), (1, .1), (1, .01), etc.,
+    while the right panel plots the function $- 0.2^x \cos(\pi x)$ directly.}
+  \label{f0b}
+\end{figure}
+
+Start with the simplest univariate case and suppose that
+\begin{equation}\label{eq:2}
+y_t = a y_{t-1} + \vep_t
+\end{equation}
+where $a \in [0, 1)$, which can be rewritten as
+\begin{equation}
+  \label{eq:3}
+  y_t = y_0 + \sum_{j=0}^{t-1} a^j \vep_{t-j},
+\end{equation}
+giving the \IRF\ $\Psi(j) = a^j u$. This function is obviously
+well-defined for all positive real $j$, and can be used directly to
+interpolate between the integer points. Figure~\ref{f0} plots the
+standard \IRF\ (using linear interpolation) on the left and the
+function $a^j u$ on the right. While one could debate which of the
+functions represents the ``true'' impact at a fractional point in
+time, the right panel more clearly expresses the shock's rate of
+decay.
+
+Also note that $\Psi(j) = a^j u$ satisfies the recurrence relation
+implied by the lag structure of the original \AR\ process for any
+positive real value of $j$:
+\begin{equation*}
+  \Psi(j) = a^j u = a \times a^{j-1} u = a \Psi(j-1).
+\end{equation*}
+It seems natural to require that any smooth function $\Psi^*$ that we
+use to represent \IRF s satisfy two conditions,
+\begin{enumerate}
+\item $\Psi^*(j) = \Psi(j)$ (the true \IRF) for all integers $j$
+\item $\Psi^*(j)$ satisfy the recurrence relation defined by the lag
+  structure of the underlying \VAR\ process; i.e.\ if $\Phi(L)$ is the
+  lag polynomial of the \VAR, so $\Phi(L)y_t = \vep_t$ for $t = 1, 2,
+  \dots$, then $\Phi(L) \Psi^*(t) = 0$ for all $t \in \RR$.
+\end{enumerate}
+
+Now suppose that $a \in (-1, 0)$. Again
+\begin{equation}
+  \label{eq:4}
+    y_t = y_0 + \sum_{j=0}^{t-1} a^j \vep_{t-j},
+\end{equation}
+and the \IRF\ $\Psi(j) = a^j$ is well-defined and has a real value for
+all integer values of $j$, but may not be real for non-integer values
+of $j$. However, for any integer value of $j$ the equality
+\begin{equation}
+  \label{eq:5}
+  a^j = |a|^j \cos(\pi j)
+\end{equation}
+holds, and the function $\Psi(j) = |a|^j \cos(\pi j) u$ satisfies the
+recurrence relation implied by the \AR\ model's lag structure when $a < 0$:
+\begin{equation*}
+  \Psi(j) = |a|^j \cos(\pi j) \cdot u = - |a| \times |a|^{j-1} \cos(\pi (j-1)) \cdot u = a \Psi(j-1).
+\end{equation*}
+So, since it is exactly correct on the integers and satisfies the
+model's dynamics for noninteger values as well, this choice of $\Psi$
+is a sensible choice for interpolating between the
+integers. Figure~\ref{f0b} plots both functions, and again the smooth
+version more accurately reflects the system's dynamics.
+
+This choice of $\Psi(j)$ was not made at random. For any complex
+number $a + bi$, we can write it in polar form:
+\[
+a + bi = R [\cos(\theta) - i \sin(\theta)]
+\]
+where $R = |a|$ and $\theta$ satisfies $\cos(\theta) = a/R$ and
+$\sin(\theta) = b/R$; then real powers can be defined easily as
+\[
+(a + bi)^j = R^j [\cos(\theta j) - i \sin(\theta j)].
+\]
+For our \AR\ coefficient $a < 0$, we have $\theta = \pi$, giving
+$a = |a| \cos(\pi)$ as we originally claimed.
+
+In general,%
+\footnote{See Chapter 1 of \citet{Ham:94} for a textbook treatment.} %
+any \VAR($p$) has a \VAR(1) ``canonical'' representation. If
 \[
 y_t = \sum_{i=1}^p A_i y_{t-i} + \vep_t
 \]
 then
 \[
-\begin{pmatrix}
+\underbrace{\begin{pmatrix}
   y_t \\ y_{t-1} \\ y_{t-2} \\ \vdots \\ y_{t-p+1}
-\end{pmatrix}
+\end{pmatrix}}_{Z_t}
 =
-\begin{pmatrix}
+\underbrace{\begin{pmatrix}
   A_1 & A_2 & \cdots & A_{p-1} & A_p \\
   I_k & 0   & \cdots & 0 & 0 \\
   0  & I_k  & \cdots & 0 & 0 \\
   \vdots & \vdots & & \vdots & \vdots \\
   0 & 0 & \cdots & I_k & 0 
-\end{pmatrix}
-\begin{pmatrix}
+\end{pmatrix}}_{F}
+\underbrace{\begin{pmatrix}
   y_{t-1} \\ y_{t-2} \\ y_{t-3} \\ \vdots \\ y_{t-p}
-\end{pmatrix}
+\end{pmatrix}}_{Z_{t-1}}
 +
-\begin{pmatrix}
+\underbrace{\begin{pmatrix}
   \vep_{t} \\ 0 \\ 0 \\ \vdots \\ 0
+\end{pmatrix}}_{U_t}.
+\]
+Moreover, if the matrix $F$ is $s \times s$ with $q$ distinct
+eigenvalues, then it can be decomposed as
+\[
+F = M J M^{-1}
+\]
+where $J$ is block diagonal of the form
+\[
+J = \begin{pmatrix}
+  J_1 & 0 & \cdots & 0 \\
+  0 & J_2 & \cdots & 0 \\
+  \vdots & \vdots & \cdots & \vdots \\
+  0 & 0 & \cdots & J_q
 \end{pmatrix}
 \]
-or
+and each $J_i$ has the form
 \[
-z_t = B z_{t-1} + v_t.
+J_i =
+\begin{pmatrix}
+  \lambda_i & 1 & 0 & \cdots & 0 & 0 \\
+  0 & \lambda_i & 1 & \cdots & 0 & 0 \\
+  0 & 0 & \lambda_i & \cdots & 0 & 0 \\
+  \vdots & \vdots & \vdots & \cdots & \vdots & \vdots \\
+  0 & 0 & 0 & \cdots & \lambda_i & 1 \\
+  0 & 0 & 0 & \cdots & 0 & \lambda_i
+\end{pmatrix}
 \]
-This representation is convenient, because we have
-\[
-E_t z_{t+k} = B^k z_{t}
-\]
-for any integer $k$, so it is easy to recursively generate \IRF s.
+where $\lambda_1,\dots,\lambda_q$ are the distinct eigenvalues of $F$.
+If all of the eigenvalues of $F$ are distinct, this is just the
+eigenvalue decomposition of $F$.
 
-Our proposal in this paper is to extend this to non-integer values of
-$k$, by using
+This representation is convenient because, for positive integer values
+of $t$, we have
 \[
-E_t z_{t+k} = \Re(B^k) z_{t} = \Re(V D^k V^{-1}) z_t
+F^t = M J^t M^{-1}
 \]
-where $\Re(z)$ returns the real part of the complex number $z$. The
-matrix $V$ is the matrix of eigenvectors of $B$ and the matrix $D$ is
-a diagonal matrix containing the eigenvalues of $B$. When $k$ is an
-integer, this product is guaranteed to be real, but it may be complex
-in general.
-
-Dropping the imaginary part works, because if $a_t$ is any real
-sequence that satisfies $B a_{t-1} = a_t$ for the real matrix $B$,
-then $a_t' = \Re(B^t) a_{0} \equiv \Re(V D^t V^{-1}) a_0$ trivially
-satisfies the same recurrence relationship. Since $B$ is real, $B
-\Re(B^{t-1}) = \Re(B^t)$ and we have
+and $J^t$ has the convenient form
 \begin{align*}
-B a'_{t-1} &= B \Re(B^{t-1}) a_{0} \\
-&= \Re(B^t) a_0 \\
+J^t           & =
+\begin{pmatrix}
+  J_1^t       & 0                      & \cdots                 & 0                                                                        \\
+  0           & J_2^t                  & \cdots                 & 0                                                                        \\
+  \vdots      & \vdots                 & \cdots                 & \vdots                                                                   \\
+  0           & 0                      & \cdots                 & J_q^t
+\end{pmatrix},
+\intertext{where}
+J_i^t         & =
+\begin{pmatrix}
+  \lambda_i^t & \binom{t}{1} \lambda_i^{t-1} & \binom{t}{2} \lambda_i^{t-2} & \cdots & \binom{t}{m_i} \lambda_i^{t-m_i}     \\
+  0           & \lambda_i^t            & \binom{t}{1} \lambda_i^{t-1} & \cdots & \binom{t}{m_i-1} \lambda_i^{t-m_i+1} \\
+  0           & 0                      & \lambda_i^t            & \cdots & \binom{t}{m_i-2} \lambda_i^{t-m_i+2} \\
+  \vdots      & \vdots                 & \vdots                 & \cdots & \vdots                         \\
+  0           & 0                      & 0                      & \cdots & \lambda_i^t \\
+\end{pmatrix} \\
+&=
+\begin{pmatrix}
+  h_i(t,0) & h_i(t,1) & h_i(t,2) & \cdots & h_i(t,m_i)   \\
+  0        & h_i(t,0) & h_i(t,1) & \cdots & h_i(t,m_i-1) \\
+  0        & 0        & h_i(t,0) & \cdots & h_i(t,m_i-2) \\
+  \vdots   & \vdots   & \vdots   & \cdots & \vdots      \\
+  0        & 0        & 0        & \cdots & h_i(t,0)    \\
+\end{pmatrix} \\
+\intertext{and}
+h_j(t,s) &=
+\begin{cases}
+  |\lambda_j|^t \big[\cos(\theta_j t) + i \sin(\theta_j t)\big] & s = 0 \\
+  \frac{t!}{j!(t-s)!} |\lambda_j|^t \big[\cos(\theta_j t) + i \sin(\theta_j t)\big] & \text{if } t \geq s > 0 \\
+  0 & \text{otherwise.}
+\end{cases}
+\end{align*}
+where $\cos(\theta_j) = \Re(\lambda_j)/|\lambda_j|$ and
+$\sin(\theta_j) = \Im(\lambda_j)/|\lambda_j|$ as above.
+
+Then we can write
+\begin{multline}\label{eq:6}
+  F^t =
+  \sum_{j = 1}^q \sum_{l=0}^{m_i} \tfrac{t(t-1)\cdots(t-l+1)}{l (l - 1) \cdots 1} |\lambda_j|^{t-l} \\
+  \times\Big\{\big[A_{jl} \cos(\theta_j t) + B_{jl}(t) \sin(\theta_j t)\big] + i\big[C_{jl} \cos(\theta_j t) + D_{jl}(t) \sin(\theta_j t)\big]\Big\}
+\end{multline}
+where the coefficient matrices $A_{jl}$, $B_{jl}$, $C_{jl}$, and
+$D_{jl}$ are chosen to match $F^0, F^1, F^2,\dots$. 
+For integer values of $t$, the imaginary components of $M J^t M^{-1}$
+exactly cancel, so
+\begin{equation*}
+  0 = \sum_{j = 1}^q \sum_{l=0}^{m_i} \tfrac{t(t-1)\cdots(t-l+1)}{l (l - 1) \cdots 1} |\lambda_j|^{t-l}
+  \big[C_{jl} \cos(\theta_j t) + D_{jl}(t) \sin(\theta_j t)\big]
+\end{equation*}
+for $t = 1,2, \dots$ and we can use the real part alone
+\begin{equation}\label{eq:7}
+  F^t =
+  \sum_{j = 1}^q \sum_{l=0}^{m_i} \tfrac{t(t-1)\cdots(t-l+1)}{l (l - 1) \cdots 1} |\lambda_j|^{t-l} \big[A_{jl} \cos(\theta_j t) + B_{jl}(t) \sin(\theta_j t)\big]
+\end{equation}
+to produce $F^1, F^2, F^3,\dots$. Our proposal, in a nushell, is to
+use the same function for all of the reals rather than just the
+integers, exactly as we did in the motivating \AR(1) examples.
+
+Equation~\eqref{eq:6} has another practical implication. Although
+$F^t$ has real and imaginary components for real $t$, we are only
+interested in its real component, which genereates the \IRF s for
+integer values of $t$. So rather than working out the matrices
+$A_{jl}$ and $B_{jl}$ to use~\eqref{eq:7}, we can calculate the
+complex valued $F^t$ and drop its imaginary component. This
+calculation is directly available in many programming languages and
+can be implemented as $M J^t M^{-1}$ using the Jordan decomposition if
+it is not.
+
+Intuitively, we can see that the real component of $F^t$ must agree
+with the original \IRF s on the integer values and that $\Re(F^t)$
+also satisfies the original \VAR's recurrence relations. If $a_t$ is
+any real sequence that satisfies $F a_{t-1} = a_t$ for the real matrix
+$F$, then $a_t' = \Re(F^t) a_{0} \equiv \Re(M J^t M^{-1}) a_0$
+trivially satisfies the same recurrence relationship. Since $F$ is
+real, $F \Re(F^{t-1}) = \Re(F^t)$ and we have
+\begin{align*}
+F a'_{t-1} &= F \Re(F^{t-1}) a_{0} \\
+&= \Re(F^t) a_0 \\
 &= a'_t.
 \end{align*}
 
@@ -290,4 +467,5 @@ are willing to interpret these ultra short-run dynamics as having an
 economic interpretation, they can also be used to refine sign
 restrictions used in partial identification.
 
+\bibliography{localrefs}
 \end{document}
