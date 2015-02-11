@@ -32,12 +32,14 @@ Rscript = Rscript
 
 .DELETE_ON_ERROR:
 
-plots = $(addsuffix .pdf,$(addprefix graphs/,numeric numeric2))
+plots = $(addsuffix .pdf,$(addprefix graphs/,numeric numeric2 motivation motivation2))
 
+graphs/motivation.pdf graphs/motivation2.pdf: R/motivation.R
+	$(Rscript) $< &> $<out
 graphs/numeric.pdf graphs/numeric2.pdf: R/numeric_example.R
 	$(Rscript) $< &> $<out
 
-smoothirf.pdf: smoothirf.tex VERSION.tex latex_misc/abbrevs.tex $(plots)
+smoothirf.pdf: smoothirf.tex VERSION.tex latex_misc/abbrevs.tex localrefs.bib $(plots)
 	$(latexmk) -pdf -silent $<
 
 smoothirf.zip: $(zipped) smoothirf.pdf $(plots) $(shell git ls-tree -r HEAD --name-only)
