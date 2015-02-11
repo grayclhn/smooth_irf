@@ -14,7 +14,7 @@
     url,
 }
 
-\title{Smooth interpolation for Impulse Response Functions of SVARs}
+\title{Smooth interpolation for Impulse Response Functions from \allcaps{svar}s}
 \author{Gray Calhoun}
 \input{VERSION}
 \input{latex_misc/abbrevs}
@@ -38,6 +38,8 @@
 
 \DeclareMathOperator{\whitenoise}{\mathit{white\ noise}}
 \newcommand{\vep}{\varepsilon}
+\newcommand{\AR}{\allcaps{AR}}
+\newcommand{\RR}{\mathbb{R}}
 
 \begin{document}
 \maketitle
@@ -54,33 +56,42 @@ technology shock. Formally, if $y_t$ is a stochastic process with the
 \end{equation*}
 and $\vep_t \sim \whitenoise(0,\Sigma)$ where $\Sigma$ is normalized
 to have diagonal elements equal to 1, the \IRF\ is the function
-\begin{equation*}
+\begin{equation}\label{eq:1}
   \Psi(j) = \theta_j u
-\end{equation*}
+\end{equation}
 for $j = 0, 1, 2,\dots$ where the vector $u$ has norm 1 and represents
-a specific theoretical shock of interest.
+a specific theoretical shock of interest. In Macroeconomics,
+researchers usually don't work with \MA\ representations directly, but
+instead model the processes as a finite lag \VAR, but the principle is
+exactly the same.
 
-In Macroeconomics, researchers usually don't work with \MA\
-representations directly, but instead model the processes as a finite
-lag \VAR.
+An advantage of using \IRF s is that they show the full set of
+dynamics implied by a particular parameter estimate of the \VAR, and
+to make these dynamics more clear the values determined by
+Equation~\eqref{eq:1} are typicially plotted as a graph and joined by
+straight lines --- see the left column of Figure~\ref{f1} for several
+examples. Indeed, these graphs and connecting lines are indespensible
+when several \IRF s are plotted in the same graph to represent
+statistical uncertainty or a set of potential dynamics --- without
+some method of connecting the points, we can see the marginal
+distributions of each estimate of $\Psi(j)$, but can not see their
+joint distributions.
 
-widedly used graphs in time
-series analysis in general and in Macroeconomics in particular. The
-basic idea is to trace out the effect on the variables of interest
-$(y_{1t},\dots,y_{kt})$ of an exogenous shock, usually one that is
-theoretically motivated such as a technology shock or a monetary
-policy shock. Usually the \IRF s are calculated explicitly for each
-period in the future, $(\hat y_{1,t+j},\dots,\hat y_{k,t+j})$, where
-$j = 1, 2, \dots$ and the shock manifests at period $t$, and the
-function is then linearly interpolated between these points to show
-the joint relationship across time periods. In this note, I show that
-linear interpolation can introduce visual artifacts that distort the
-joint relationship between points. I also show how to use the
-estimated \VAR\ to produce a smooth \IRF\ curve, i.e. to produce
-$(\hat y_{1,t+j},\dots,\hat y_{k,t+j})$ for $j \in (0,+\infty)$ that
-has fewer distortions. Moreover, using the smoothed \IRF\ also allows
-for refinements to partial identification strategies based on sign
+Unfortunately, the ubiquitous method of connecting the points
+$\Psi(0), \Psi(1),\dots$, i.e.\ drawing a straight line between them,
+can introduce misleading visual distortions, which we will explicitly
+discuss later. In this paper, we show how the \IRF\ $\Psi(j)$ can be
+meaningfully defined for \VAR s for any real positive value of $j$ and
+give a convenient method for calculating it. (Figures~\ref{f1}
+and~\ref{f2} have examples if you're impatient to see them.) This
+allows researchers to use the estimated \VAR\ itself to interpolate
+between the points for which it is usually defined and results in
+graphs that do not have the distortions produced by linear
+interpolation. Moreover, using the smoothed \IRF\ also allows for
+refinements to partial identification strategies based on sign
 restrictions.
+
+\section{Motivation and results}
 
 It is well known that any \VAR($p$) has a \VAR(1) ``canonical''
 representation. If
