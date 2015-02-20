@@ -14,7 +14,8 @@
     url,
 }
 
-\title{Smooth interpolation for Impulse Response Functions from \allcaps{svar}s}
+\title{A note on constructing better Impulse Response Functions for
+  discrete-time linear models}
 \author{Gray Calhoun}
 \input{VERSION}
 \input{latex_misc/abbrevs}
@@ -37,6 +38,9 @@
 \renewcommand{\Im}{\operatorname{Im}}
 
 \DeclareMathOperator{\whitenoise}{\mathit{white\ noise}}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\floor}{floor}
+\DeclareMathOperator{\ceil}{ceil}
 \newcommand{\vep}{\varepsilon}
 \newcommand{\AR}{\allcaps{AR}}
 \newcommand{\RR}{\mathbb{R}}
@@ -44,55 +48,106 @@
 
 \begin{document}
 \maketitle
+\begin{abstract}\noindent%
+  In this note, we show how to construct continuous and differentiable
+  Impulse Response Functions and for discrete-time \VAR s and Vector
+  Error-Correction Models. Current methods produce piecewise linear
+  functions that introduce visual distortions, especially when many
+  response functions are plotted in the same graph to represent
+  uncertainty or partial identification. We also show how to plot the
+  cumulative response to a shock. In addition to being more accurate
+  than current methods, our proposed approach is also much prettier.
+\end{abstract}
 
-Impulse Response Functions (\IRF s) are used in signal processing and
-time-series analysis to represent the effect over time of a short
-impulse or shock on a dynamic system; and they are heavily used in
-Macroeconomics to characterize the effects of a shock of theoretical
-interest --- the effect of a monetary policy shock, for example, or a
-technology shock. Formally, if $y_t$ is a stochastic process with the
-\MA($\infty$) representation
-\begin{equation*}
-  y_t = \sum_{j=0}^{\infty} \psi_j \vep_{t-j}
-\end{equation*}
-and $\vep_t \sim \whitenoise(0,\Sigma)$ where $\Sigma$ is normalized
-to have diagonal elements equal to 1, the \IRF\ is the function
+\section{Introduction}
+
+Impulse Response Functions (\IRF s) are widely used in Macroeconomics
+to represent the dynamic effect over time of an unanticipated shock to
+an economic system. Formally, if $\{y_t\}$ is a stationary sequence of
+random vectors in $\RR^k$ and
+\[
+\E(y_{t+j} \mid y_t, y_{t-1},\dots) = g_j(y_t,\dots,y_{t-p})
+\]
+for each $j > 0$,%
+\footnote{For later convenience, define
+  $g_0(y_t,\dots,y_{t-p}) = y_t$ and $g_j = 0$ for $j < 0$.} %
+the \IRF\ corresponding to the shock $\Delta$ is the difference
+\[
+\Psi(j) = g_j(y_t + \Delta, y_{t-1},\dots,y_{t-p}) - g_j(y_t, y_{t-1},\dots,y_{t-p})
+\]
+viewed as a function of $j$.%
+\footnote{Note that $\Psi(0) = \Delta$ and $\Psi(j) = 0$ for $j <
+  0$.} %
+Obviously the values of the \IRF\ depend on the specific nature of the
+shock $\Delta$, and different choices of $\Delta$ can correspond to
+different shocks of theoretical interest.  In Macroeconomic
+applications, $t$ and $j$ are typically integers and $g_j$ is often
+derived from a recursive linear model, the \VAR
 \begin{equation}\label{eq:1}
-  \Psi(j) = \theta_j u
+  y_t = A_0 + A_1 y_{t-1} + \cdots + A_p y_{t-p} + \vep_t
 \end{equation}
-for $j = 0, 1, 2,\dots$ where the vector $u$ has norm 1 and represents
-a specific theoretical shock of interest. In Macroeconomics,
-researchers usually don't work with \MA\ representations directly, but
-instead model the processes as a finite lag \VAR, but the principle is
-exactly the same.
+where $\vep_t$ is a martingale difference sequence is one example.
 
-An advantage of using \IRF s is that they show the full set of
-dynamics implied by a particular parameter estimate of the \VAR, and
-to make these dynamics more clear the values determined by
-Equation~\eqref{eq:1} are typicially plotted as a graph and joined by
-straight lines --- see the left column of Figure~\ref{f1} for several
-examples. Indeed, these graphs and connecting lines are indespensible
-when several \IRF s are plotted in the same graph to represent
-statistical uncertainty or a set of potential dynamics --- without
-some method of connecting the points, we can see the marginal
-distributions of each estimate of $\Psi(j)$, but can not see their
-joint distributions.
+It is straightforward to calculate the values of the \IRF s for
+integer-values of $j$ in models like~\eqref{eq:1}.
+Note that
+\begin{align*}
+  g_1(y_t,\dots,y_{t-p}) &= \E(y_{t+1} \mid y_t, y_{t-1},\dots) \\
+  &= A_0 + A_1 y_{t} + \cdots + A_p y_{t-p+1}
+\end{align*}
+and
+\begin{align*}
+  g_j(y_t,\dots,y_{t-p})
+  &= \E(y_{t+j} \mid y_t, y_{t-1},\dots) \\
+  &= \E( \E(y_{t+j} \mid y_{t+j-1}, y_{t+j-2},\dots) \mid y_t, y_{t-1},\dots) \\
+  &= \E( A_0 + A_1 y_{t+j-1} + \cdots + A_p y_{t+j-p} \mid y_t, y_{t-1},\dots) \\
+  &= A_0 + A_1 \E(y_{t+j-1} \mid y_t, y_{t-1},\dots) + \cdots + A_p \E(y_{t+j-p} \mid y_t, y_{t-1},\dots) \\
+  &= A_0 + A_1 g_{j-1}(y_t,\dots,y_{t-p}) + \cdots + A_p g_{j-p}(y_t,\dots,y_{t-p})
+\end{align*}
+for $j > 1$, which can be calculated recursively for $j =
+2,3,\dots$. Then
+\begin{equation*}
+  \Psi(1) = A_1 \Delta
+\end{equation*}
+and, for $j > 1$,
+\begin{align*}
+  \Psi(j)
+  &= g_j(y_t + \Delta,\dots,y_{t-p}) - g_j(y_t,\dots,y_{t-p}) \\
+  &= \sum_{\ell = 1}^{p} A_\ell \big[g_{j-\ell}(y_t+\Delta,\dots,y_{t-p}) - g_{j-\ell}(y_t,\dots,y_{t-p})\big] \\
+  &= \sum_{\ell = 1}^{p} A_\ell \Psi(j-\ell)
+\end{align*}
+which can again be calculated recursively. In some applications this
+is enough. But in most applications, it is necessary to graph the \IRF
+s and to connect the points; this is especially important when more
+than one \IRF\ is plotted on the same graph --- whether to represent
+dynamics under different assumptions (see \citealp{BeM:98}, and
+\citealp{StW:01}, for representative examples), to represent
+statistical uncertainty (\citealp{Kil:98}, and \citealp{SiZ:99}) or to
+represent regions that are partially identified (\citealp{Uhl:05}, and
+\citealp{InK:13}). So far, representing these dynamics has been
+achieved by linear interpolation, so 
+\begin{equation*}
+  \Psi(s) = (s - \floor(s)) \Psi(\ceil(s)) + (\ceil(s) - s) \Psi(\floor(s))
+\end{equation*}
+for noninteger $s$, where $\floor(\cdot)$ and $\ceil(\cdot)$ return
+the largest integer less than $s$ and smallest integer value greater
+than $s$ respectively.  Unfortunately, this method introduces
+misleading visual distortions, which we will explicitly discuss later.
 
-Unfortunately, the ubiquitous method of connecting the points
-$\Psi(0), \Psi(1),\dots$, i.e.\ drawing a straight line between them,
-can introduce misleading visual distortions, which we will explicitly
-discuss later. In this paper, we show how the \IRF\ $\Psi(j)$ can be
-meaningfully defined for \VAR s for any real positive value of $j$ and
-give a convenient method for calculating it. (Figures~\ref{f1}
-and~\ref{f2} have examples if you're impatient to see them.) This
-allows researchers to use the estimated \VAR\ itself to interpolate
-between the points for which it is usually defined and results in
-graphs that do not have the distortions produced by linear
-interpolation. Moreover, using the smoothed \IRF\ also allows for
-refinements to partial identification strategies based on sign
-restrictions.
+In this paper, we show how the \IRF\ $\Psi(j)$ can be meaningfully
+defined for \VAR s for any real positive value of $j$ and give a
+convenient method for calculating it. (Figures~\ref{f1} and~\ref{f2}
+have examples if you're impatient to see them.) This allows
+researchers to use the \VAR\ itself to interpolate between the points
+for which it is usually defined and results in graphs that do not have
+the distortions produced by linear interpolation. In the next section,
+we offer a simple example of our approach that motivates the general
+technique. Sections~\ref{recommended} and~\ref{extensions} explain the
+methods in general and provide some extensions to cumulative responses
+and Vector Error Correction Models, and Section~\ref{example} provides
+a numerical example.
 
-\section{Motivation and theory}
+\section{Motivation}
 
 \begin{figure}[t]
   \centering
@@ -183,6 +238,8 @@ $\sin(\theta) = b/R$; then real powers can be defined easily as
 \]
 For our \AR\ coefficient $a < 0$, we have $\theta = \pi$, giving
 $a = |a| \cos(\pi)$ as we originally claimed.
+
+\section{General Recommendation}\label{recommended}
 
 In general,%
 \footnote{See Chapter 1 of \citet{Ham:94} for a textbook treatment.} %
@@ -329,7 +386,7 @@ F a'_{t-1} &= F \Re(F^{t-1}) a_{0} \\
 &= a'_t.
 \end{align*}
 
-\section{Cumulative response and other extensions}
+\section{Cumulative response and other extensions}\label{extensions}
 
 The results in the previous section will work for many applications,
 but in others we may may be interested in transformations of the $y_t$
@@ -426,7 +483,7 @@ arguments as before
 In both cases, we can now define the \IRF\ using the canonical \VAR(1)
 representation.
 
-\section{Numerical example}
+\section{Numerical example}\label{example}
 
 For a numerical example, consider the two-variable \VAR(2)
 \begin{equation}
@@ -565,5 +622,5 @@ are willing to interpret these ultra short-run dynamics as having an
 economic interpretation, they can also be used to refine sign
 restrictions used in partial identification.
 
-\bibliography{localrefs}
+\bibliography{localrefs,latex_misc/references}
 \end{document}
