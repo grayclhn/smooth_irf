@@ -248,15 +248,18 @@ solve the recurrence relation using standard tools (as described in
 \citealp{Ham:94}, for example) and use that solution as the \IRF\ for
 real-valued $s$. We pursue that approach in the next section.
 
-\section{General Recommendation}\label{recommended}
+\section{General Approach}\label{recommended}
 
-In general,%
-\footnote{See Chapter 1 of \citet{Ham:94} for a textbook treatment.} %
-any \VAR($p$) has a \VAR(1) ``canonical'' representation. If
+The \AR(1) model in the previous section can be extened to general
+\VAR s using the ``canonical'' representation.%
+\footnote{See Chapter 1 of \citet{Ham:94} for a textbook treatment of
+  much of this material.} %
+Define $y_t$ as in Equation~(\ref{eq:1}), so
 \[
-y_t = \sum_{i=1}^p A_i y_{t-i} + \vep_t
+y_t = \sum_{j=1}^p A_j y_{t-j} + \vep_t.
 \]
-then
+To represent this relationship as a \VAR(1), form the vector
+$(y_t',\dots,y_{t-p+1}')'$ and observe that
 \[
 \underbrace{\begin{pmatrix}
   y_t \\ y_{t-1} \\ y_{t-2} \\ \vdots \\ y_{t-p+1}
@@ -266,7 +269,7 @@ then
   A_1 & A_2 & \cdots & A_{p-1} & A_p \\
   I_k & 0   & \cdots & 0 & 0 \\
   0  & I_k  & \cdots & 0 & 0 \\
-  \vdots & \vdots & & \vdots & \vdots \\
+  \vdots & \vdots & \ddots & \vdots & \vdots \\
   0 & 0 & \cdots & I_k & 0 
 \end{pmatrix}}_{F}
 \underbrace{\begin{pmatrix}
@@ -276,110 +279,112 @@ then
 \underbrace{\begin{pmatrix}
   \vep_{t} \\ 0 \\ 0 \\ \vdots \\ 0
 \end{pmatrix}}_{U_t}.
-\]
-Moreover, if the matrix $F$ is $s \times s$ with $q$ distinct
-eigenvalues, then it can be decomposed as
+\]n
+So this relationship is equivalent to $Z_t = F Z_{t-1} + U_t$.
+
+If the matrix $F$ has $q$ distinct
+eigenvalues, it can be decomposed as
 \[
 F = M J M^{-1}
 \]
 where $J$ is block diagonal of the form
 \[
 J = \begin{pmatrix}
-  J_1 & 0 & \cdots & 0 \\
-  0 & J_2 & \cdots & 0 \\
-  \vdots & \vdots & \cdots & \vdots \\
-  0 & 0 & \cdots & J_q
+  J_1 & \cdots & 0 \\
+  \vdots & \ddots & \vdots \\
+  0 & \cdots & J_q
 \end{pmatrix}
 \]
-and each $J_i$ has the form
+and each $J_\ell$ is $m_\ell \times m_\ell$ of the form
 \[
-J_i =
+J_\ell =
 \begin{pmatrix}
-  \lambda_i & 1 & 0 & \cdots & 0 & 0 \\
-  0 & \lambda_i & 1 & \cdots & 0 & 0 \\
-  0 & 0 & \lambda_i & \cdots & 0 & 0 \\
-  \vdots & \vdots & \vdots & \cdots & \vdots & \vdots \\
-  0 & 0 & 0 & \cdots & \lambda_i & 1 \\
-  0 & 0 & 0 & \cdots & 0 & \lambda_i
+  \lambda_\ell & 1 & 0 & \cdots & 0 & 0 \\
+  0 & \lambda_\ell & 1 & \cdots & 0 & 0 \\
+  0 & 0 & \lambda_\ell & \cdots & 0 & 0 \\
+  \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+  0 & 0 & 0 & \cdots & \lambda_\ell & 1 \\
+  0 & 0 & 0 & \cdots & 0 & \lambda_\ell
 \end{pmatrix}
 \]
-where $\lambda_1,\dots,\lambda_q$ are the distinct eigenvalues of $F$.
-If all of the eigenvalues of $F$ are distinct, this is just the
-eigenvalue decomposition of $F$.
+where $\lambda_1,\dots,\lambda_q$ are the distinct eigenvalues of $F$
+and $m_\ell$ is the number of times the $\ell$th eigenvalue is
+repeated.  If all of the eigenvalues of $F$ are distinct, this is just
+the eigenvalue decomposition of $F$.
 
 This representation is convenient because, for positive integer values
-of $t$, we have
+of $s$, we have
 \[
-F^t = M J^t M^{-1}
+F^s = M J^s M^{-1}
 \]
-and $J^t$ has the convenient form
+and
 \begin{align*}
-J^t           & =
+J^s           & =
 \begin{pmatrix}
-  J_1^t       & 0                      & \cdots                 & 0                                                                        \\
-  0           & J_2^t                  & \cdots                 & 0                                                                        \\
-  \vdots      & \vdots                 & \cdots                 & \vdots                                                                   \\
-  0           & 0                      & \cdots                 & J_q^t
+  J_1^s                  & \cdots                 & 0                                                                        \\
+  \vdots                 & \ddots                 & \vdots                                                                   \\
+  0                      & \cdots                 & J_q^s
 \end{pmatrix},
 \intertext{where}
-J_i^t         & =
+J_\ell^s         & =
 \begin{pmatrix}
-  \lambda_i^t & \binom{t}{1} \lambda_i^{t-1} & \binom{t}{2} \lambda_i^{t-2} & \cdots & \binom{t}{m_i} \lambda_i^{t-m_i}     \\
-  0           & \lambda_i^t            & \binom{t}{1} \lambda_i^{t-1} & \cdots & \binom{t}{m_i-1} \lambda_i^{t-m_i+1} \\
-  0           & 0                      & \lambda_i^t            & \cdots & \binom{t}{m_i-2} \lambda_i^{t-m_i+2} \\
+  \lambda_\ell^s & \binom{s}{1} \lambda_\ell^{s-1} & \binom{s}{2} \lambda_\ell^{s-2} & \cdots & \binom{s}{m_\ell} \lambda_\ell^{s-m_\ell}     \\
+  0           & \lambda_\ell^s            & \binom{s}{1} \lambda_\ell^{s-1} & \cdots & \binom{s}{m_\ell-1} \lambda_\ell^{s-m_\ell+1} \\
+  0           & 0                      & \lambda_\ell^s            & \cdots & \binom{s}{m_\ell-2} \lambda_\ell^{s-m_\ell+2} \\
   \vdots      & \vdots                 & \vdots                 & \cdots & \vdots                         \\
-  0           & 0                      & 0                      & \cdots & \lambda_i^t \\
+  0           & 0                      & 0                      & \cdots & \lambda_\ell^s \\
 \end{pmatrix} \\
 &=
 \begin{pmatrix}
-  h_i(t,0) & h_i(t,1) & h_i(t,2) & \cdots & h_i(t,m_i)   \\
-  0        & h_i(t,0) & h_i(t,1) & \cdots & h_i(t,m_i-1) \\
-  0        & 0        & h_i(t,0) & \cdots & h_i(t,m_i-2) \\
-  \vdots   & \vdots   & \vdots   & \cdots & \vdots      \\
-  0        & 0        & 0        & \cdots & h_i(t,0)    \\
+  h_\ell(s,0) & h_\ell(s,1) & h_\ell(s,2) & \cdots & h_\ell(s,m_\ell)   \\
+  0        & h_\ell(s,0) & h_\ell(s,1) & \cdots & h_\ell(s,m_\ell-1) \\
+  0        & 0        & h_\ell(s,0) & \cdots & h_\ell(s,m_\ell-2) \\
+  \vdots   & \vdots   & \vdots   & \ddots & \vdots      \\
+  0        & 0        & 0        & \cdots & h_\ell(s,0)    \\
 \end{pmatrix} \\
 \intertext{and}
-h_j(t,s) &=
+h_\ell(s,j) &=
 \begin{cases}
-  |\lambda_j|^t \big[\cos(\theta_j t) + i \sin(\theta_j t)\big] & s = 0 \\
-  \frac{t!}{j!(t-s)!} |\lambda_j|^t \big[\cos(\theta_j t) + i \sin(\theta_j t)\big] & \text{if } t \geq s > 0 \\
+  |\lambda_\ell|^s \big[\cos(\theta_\ell s) + i \sin(\theta_\ell s)\big] & j = 0 \\
+  \frac{s!}{j!(s-j)!} |\lambda_\ell|^s \big[\cos(\theta_\ell s) + i \sin(\theta_\ell s)\big] & \text{if } s \geq j > 0 \\
   0 & \text{otherwise.}
 \end{cases}
 \end{align*}
-where $\cos(\theta_j) = \Re(\lambda_j)/|\lambda_j|$ and
-$\sin(\theta_j) = \Im(\lambda_j)/|\lambda_j|$ as above.
+where $\cos(\theta_\ell) = \Re(\lambda_\ell)/|\lambda_\ell|$ and
+$\sin(\theta_\ell) = \Im(\lambda_\ell)/|\lambda_\ell|$ as above.
 
 Then we can write
 \begin{multline}\label{eq:6}
-  F^t =
-  \sum_{j = 1}^q \sum_{l=0}^{m_i} \tfrac{t(t-1)\cdots(t-l+1)}{l (l - 1) \cdots 1} |\lambda_j|^{t-l} \\
-  \times\Big\{\big[A_{jl} \cos(\theta_j t) + B_{jl}(t) \sin(\theta_j t)\big] + i\big[C_{jl} \cos(\theta_j t) + D_{jl}(t) \sin(\theta_j t)\big]\Big\}
+  F^s =
+  \sum_{j = 1}^q \sum_{l=0}^{\min(m_\ell, \floor(s))} \tfrac{s(s-1)\cdots(s-l+1)}{l (l - 1) \cdots 1} |\lambda_j|^{s-l} \\
+  \times\Big\{\big[A_{jl} \cos(\theta_j s) + B_{jl} \sin(\theta_j s)\big] + i\big[C_{jl} \cos(\theta_j s) + D_{jl} \sin(\theta_j s)\big]\Big\}
 \end{multline}
 where the coefficient matrices $A_{jl}$, $B_{jl}$, $C_{jl}$, and
 $D_{jl}$ are chosen to match $F^0, F^1, F^2,\dots$. 
-For integer values of $t$, the imaginary components of $M J^t M^{-1}$
+For integer values of $s$, the imaginary components of $M J^s M^{-1}$
 exactly cancel, so
 \begin{equation*}
-  0 = \sum_{j = 1}^q \sum_{l=0}^{m_i} \tfrac{t(t-1)\cdots(t-l+1)}{l (l - 1) \cdots 1} |\lambda_j|^{t-l}
-  \big[C_{jl} \cos(\theta_j t) + D_{jl}(t) \sin(\theta_j t)\big]
+  0 = \sum_{j = 1}^q \sum_{l=0}^{\min(m_\ell, \floor(s))} \tfrac{s(s-1)\cdots(s-l+1)}{l (l - 1) \cdots 1} |\lambda_j|^{s-l}
+  \big[C_{jl} \cos(\theta_j s) + D_{jl} \sin(\theta_j s)\big]
 \end{equation*}
-for $t = 1,2, \dots$ and we can use the real part alone
+and we can use the real part alone, giving
 \begin{equation}\label{eq:7}
-  F^t =
-  \sum_{j = 1}^q \sum_{l=0}^{m_i} \tfrac{t(t-1)\cdots(t-l+1)}{l (l - 1) \cdots 1} |\lambda_j|^{t-l} \big[A_{jl} \cos(\theta_j t) + B_{jl}(t) \sin(\theta_j t)\big]
+  F^s =
+  \sum_{j = 1}^q \sum_{l=0}^{\min(m_\ell, \floor(s))} \tfrac{s(s-1)\cdots(s-l+1)}{l (l - 1) \cdots 1} |\lambda_j|^{s-l} \big[A_{jl} \cos(\theta_j s) + B_{jl} \sin(\theta_j s)\big]
 \end{equation}
-to produce $F^1, F^2, F^3,\dots$. Our proposal, in a nushell, is to
-use the same function for all of the reals rather than just the
-integers, exactly as we did in the motivating \AR(1) examples.
+to produce $F^1, F^2, F^3,\dots$. Our proposal, in a nutshell, is to
+use the definition given by \eqref{eq:7} for all of the reals rather
+than just the integers, exactly as we did in the motivating \AR(1)
+examples.
 
 Equation~\eqref{eq:6} has another practical implication. Although
-$F^t$ has real and imaginary components for real $t$, we are only
+$F^s$ has real and imaginary components for real $s$, we are only
 interested in its real component, which genereates the \IRF s for
-integer values of $t$. So rather than working out the matrices
+integer values of $s$. So rather than working out the matrices
 $A_{jl}$ and $B_{jl}$ to use~\eqref{eq:7}, we can calculate the
-complex valued $F^t$ and drop its imaginary component. This
+complex valued $F^s$ and simply drop its imaginary component. This
 calculation is directly available in many programming languages and
-can be implemented as $M J^t M^{-1}$ using the Jordan decomposition if
+can be implemented as $M J^s M^{-1}$ using the Jordan decomposition if
 it is not.
 
 Intuitively, we can see that the real component of $F^t$ must agree
@@ -525,13 +530,13 @@ As described above, we will define the smooth \IRF s for a shock to
 the first element as
 \begin{equation*}
   \begin{pmatrix}
-    \hat y_{1j} \\ \hat y_{2j}
+    \hat y_{1s} \\ \hat y_{2s}
   \end{pmatrix}
   =
   \begin{pmatrix}
     1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0
   \end{pmatrix}
-  V D^j V^{-1}
+  V D^s V^{-1}
   \begin{pmatrix}
     1 \\ 0 \\ 0 \\ 0
   \end{pmatrix}
