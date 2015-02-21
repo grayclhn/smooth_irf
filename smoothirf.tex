@@ -44,6 +44,8 @@
 \newcommand{\RR}{\mathbb{R}}
 \newcommand{\VECM}{\allcaps{VECM}}
 
+\newtheorem{prop}{Proposition}
+
 \begin{document}
 \maketitle
 \begin{abstract}\noindent%
@@ -387,18 +389,32 @@ calculation is directly available in many programming languages and
 can be implemented as $M J^s M^{-1}$ using the Jordan decomposition if
 it is not.
 
-Intuitively, we can see that the real component of $F^t$ must agree
-with the original \IRF s on the integer values and that $\Re(F^t)$
-also satisfies the original \VAR's recurrence relations. If $a_t$ is
-any real sequence that satisfies $F a_{t-1} = a_t$ for the real matrix
-$F$, then $a_t' = \Re(F^t) a_{0} \equiv \Re(M J^t M^{-1}) a_0$
-trivially satisfies the same recurrence relationship. Since $F$ is
-real, $F \Re(F^{t-1}) = \Re(F^t)$ and we have
-\begin{align*}
-F a'_{t-1} &= F \Re(F^{t-1}) a_{0} \\
-&= \Re(F^t) a_0 \\
-&= a'_t.
-\end{align*}
+Proposition~\ref{prop1} presents a formal statement of our result.
+
+\begin{prop}[Impulse Response Functions for \VAR s]\label{prop1}
+  Let $F$ be the coefficient matrix of the canonical \VAR(1)
+  representation of an arbitrary \VAR($p$), and let $M$ and $J$ be the
+  matrices of its Jordan-form decompostion, so $F = M J
+  M^{-1}$. Define $\Psi_s(\Delta)$ as the first $k$ elements of the
+  vector $\Re(M J^s M^{-1}) \Delta$ for all $s \in [0,+\infty)$.
+
+  Then
+  \begin{equation*}
+    \Psi_s(\Delta) = \sum_{j=1}^q A_j \Psi_{s-j}(\Delta)
+  \end{equation*}
+  for all $s > 0$, so $\Psi_s(\Delta)$ satisfies the recurrence
+  relation implied by the original \VAR.
+\end{prop}
+\begin{proof}
+  Observe that the series $a_s = \Re(F^s) \Delta$ satisfies
+  $a_s = F \times a_{s-1}$, since $F$ is real and
+  \[
+    F a_{s-1} = F \Re(F^{s-1}) \Delta 
+    = \Re(F^s) \Delta
+    = a_s.
+  \]
+  The conclusion of this proposition is a direct consequence.
+\end{proof}
 
 \section{Cumulative response and other extensions}\label{extensions}
 
