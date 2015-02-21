@@ -64,22 +64,22 @@ to represent the dynamic effect over time of an unanticipated shock to
 an economic system. Formally, if $\{y_t\}$ is a stationary sequence of
 random vectors in $\RR^k$ and
 \[
-\E(y_{t+j} \mid y_t, y_{t-1},\dots) = g_j(y_t,\dots,y_{t-p})
+\E(y_{t+s} \mid y_t, y_{t-1},\dots) = g_s(y_t,\dots,y_{t-p})
 \]
-for each $j > 0$,%
+for each $s > 0$,%
 \footnote{For later convenience, define
-  $g_0(y_t,\dots,y_{t-p}) = y_t$ and $g_j = 0$ for $j < 0$.} %
+  $g_0(y_t,\dots,y_{t-p}) = y_t$ and $g_s = 0$ for $s < 0$.} %
 the \IRF\ corresponding to the shock $\Delta$ is the difference
 \[
-\Psi_j(\Delta) = g_j(y_t + \Delta, y_{t-1},\dots,y_{t-p}) - g_j(y_t, y_{t-1},\dots,y_{t-p})
+\Psi_s(\Delta) = g_s(y_t + \Delta, y_{t-1},\dots,y_{t-p}) - g_s(y_t, y_{t-1},\dots,y_{t-p})
 \]
-viewed as a function of $j$.%
-\footnote{Note that $\Psi_0(\Delta) = \Delta$ and $\Psi_j(\Delta) = 0$ for $j <
+viewed as a function of $s$.%
+\footnote{Note that $\Psi_0(\Delta) = \Delta$ and $\Psi_s(\Delta) = 0$ for $s <
   0$.} %
 Obviously the values of the \IRF\ depend on the specific nature of the
 shock $\Delta$, and different choices of $\Delta$ can correspond to
 different shocks of theoretical interest.  In Macroeconomic
-applications, $t$ and $j$ are typically integers and $g_j$ is often
+applications, $t$ and $s$ are typically integers and $g_s$ is often
 derived from a recursive linear model, the \VAR
 \begin{equation}\label{eq:1}
   y_t = A_0 + A_1 y_{t-1} + \cdots + A_p y_{t-p} + \vep_t
@@ -87,7 +87,7 @@ derived from a recursive linear model, the \VAR
 where $\vep_t$ is a martingale difference sequence is one example.
 
 It is straightforward to calculate the values of the \IRF s for
-integer-values of $j$ in models like~\eqref{eq:1}.
+integer-values of $s$ in models like~\eqref{eq:1}.
 Note that
 \begin{align*}
   g_1(y_t,\dots,y_{t-p}) &= \E(y_{t+1} \mid y_t, y_{t-1},\dots) \\
@@ -95,24 +95,24 @@ Note that
 \end{align*}
 and
 \begin{align*}
-  g_j(y_t,\dots,y_{t-p})
-  &= \E(y_{t+j} \mid y_t, y_{t-1},\dots) \\
-  &= \E( \E(y_{t+j} \mid y_{t+j-1}, y_{t+j-2},\dots) \mid y_t, y_{t-1},\dots) \\
-  &= \E( A_0 + A_1 y_{t+j-1} + \cdots + A_p y_{t+j-p} \mid y_t, y_{t-1},\dots) \\
-  &= A_0 + A_1 \E(y_{t+j-1} \mid y_t, y_{t-1},\dots) + \cdots + A_p \E(y_{t+j-p} \mid y_t, y_{t-1},\dots) \\
-  &= A_0 + A_1 g_{j-1}(y_t,\dots,y_{t-p}) + \cdots + A_p g_{j-p}(y_t,\dots,y_{t-p})
+  g_s(y_t,\dots,y_{t-p})
+  &= \E(y_{t+s} \mid y_t, y_{t-1},\dots) \\
+  &= \E( \E(y_{t+s} \mid y_{t+s-1}, y_{t+s-2},\dots) \mid y_t, y_{t-1},\dots) \\
+  &= \E( A_0 + A_1 y_{t+s-1} + \cdots + A_p y_{t+s-p} \mid y_t, y_{t-1},\dots) \\
+  &= A_0 + A_1 \E(y_{t+s-1} \mid y_t, y_{t-1},\dots) + \cdots + A_p \E(y_{t+s-p} \mid y_t, y_{t-1},\dots) \\
+  &= A_0 + A_1 g_{s-1}(y_t,\dots,y_{t-p}) + \cdots + A_p g_{s-p}(y_t,\dots,y_{t-p})
 \end{align*}
-for $j > 1$, which can be calculated recursively for $j =
+for $s > 1$, which can be calculated recursively for $s =
 2,3,\dots$. Then
 \begin{equation*}
   \Psi_1(\Delta) = A_1 \Delta
 \end{equation*}
-and, for $j > 1$,
+and, for $s > 1$,
 \begin{align*}
-  \Psi_j(\Delta)
-  &= g_j(y_t + \Delta,\dots,y_{t-p}) - g_j(y_t,\dots,y_{t-p}) \\
-  &= \sum_{\ell = 1}^{p} A_\ell \big[g_{j-\ell}(y_t+\Delta,\dots,y_{t-p}) - g_{j-\ell}(y_t,\dots,y_{t-p})\big] \\
-  &= \sum_{\ell = 1}^{p} A_\ell \Psi_{j-\ell}(\Delta)
+  \Psi_s(\Delta)
+  &= g_s(y_t + \Delta,\dots,y_{t-p}) - g_s(y_t,\dots,y_{t-p}) \\
+  &= \sum_{\ell = 1}^{p} A_\ell \big[g_{s-\ell}(y_t+\Delta,\dots,y_{t-p}) - g_{s-\ell}(y_t,\dots,y_{t-p})\big] \\
+  &= \sum_{\ell = 1}^{p} A_\ell \Psi_{s-\ell}(\Delta)
 \end{align*}
 which can again be calculated recursively. In some applications this
 is enough. But in most applications, it is necessary to graph the \IRF
@@ -160,37 +160,37 @@ a numerical example.
 
 For motivation, start with the simplest univariate case and assume
 that $y_t$ is the \AR(1)
-\begin{equation}
+\begin{equation*}
 y_t = a y_{t-1} + \vep_t
-\end{equation}
+\end{equation*}
 It is well-known that the recursive definitions used in the first
-section imply that $\Psi_j(\Delta) = a^j \Delta$.  When $a > 0$, this
-function is well-defined for all positive real $j$, and can be used
+section imply that $\Psi_s(\Delta) = a^s \Delta$.  When $a > 0$, this
+function is well-defined for all positive real $s$, and can be used
 directly to interpolate between the integer points. Figure~\ref{f0}
-plots $\Psi_j(\Delta)$ for $\Delta = 1$ and $a = 0.2$ using three
-approaches: first only for the integer values of $j$, second using
+plots $\Psi_s(\Delta)$ for $\Delta = 1$ and $a = 0.2$ using three
+approaches: first only for the integer values of $s$, second using
 linear interpolation between the integer values, and finally using
-$a^j \Delta$ directly for all $j \geq 0$. While one could debate which
+$a^s \Delta$ directly for all $s \geq 0$. While one could debate which
 of the functions represents the ``true'' impact at a fractional point
-in time, the right panel --- using $0.2^j$ directly --- more clearly
+in time, the right panel --- using $0.2^s$ directly --- more clearly
 expresses the shock's rate of decay and, equivalently, the dynamics of
 the \AR\ model.
 
-This clarity should not be surprising. We can see that $\Psi_j(\Delta)
-= a^j \Delta$ satisfies the recurrence relation implied by the lag
+This clarity should not be surprising. We can see that $\Psi_s(\Delta)
+= a^s \Delta$ satisfies the recurrence relation implied by the lag
 structure of the original \AR\ process for any positive real value of
-$j$:
+$s$:
 \begin{equation*}
-  \Psi_j(\Delta) = a^j \Delta = a \times a^{j-1} \Delta = a \, \Psi_{j-1}(\Delta).
+  \Psi_s(\Delta) = a^s \Delta = a \times a^{s-1} \Delta = a \, \Psi_{s-1}(\Delta).
 \end{equation*}
 For the methods we propose in this paper we will see that this
 condition holds in general: if $\Phi(L)$ is the lag polynomial of the
-\VAR, so $\Phi(L)y_t = \vep_t$ for $t = 1, 2, \dots$, then $\Phi(L)
-\Psi_j(\Delta) = 0$ for all $j \in \RR^+$.%
-\footnote{We have implicitly defined $L \Psi_j(\Delta) =
-  \Psi_{j-1}(\Delta)$.} %
-This condition only holds for integer values of $j$ when
-$\Psi_j(\Delta)$ is constructed by linear interpolation.
+\VAR (so $\Phi(L)y_t = \vep_t$ for $t = 1, 2, \dots$), then $\Phi(L)
+\Psi_s(\Delta) = 0$ for all $s \in \RR^+$.%
+\footnote{We have implicitly defined $L \Psi_s(\Delta) =
+  \Psi_{s-1}(\Delta)$.} %
+This condition only holds for integer values of $s$ when
+$\Psi_s(\Delta)$ is constructed by linear interpolation.
 
 \begin{figure}[t]
   \centering
@@ -203,35 +203,34 @@ $\Psi_j(\Delta)$ is constructed by linear interpolation.
   \label{f0b}
 \end{figure}
 
-It is slightly more complicated when $a \in (-1, 0)$.  Now the
-previous function, $a^j \Delta$, is well-defined and has a real value
-for all integer values of $j$, but is not for non-integer
-values. However, for any integer value of $j$ the equality
-\begin{equation}
-  \label{eq:5}
-  a^j = |a|^j \cos(\pi j)
-\end{equation}
-holds, so $\Psi_j(\Delta) = |a|^j \cos(\pi j) \Delta$ agrees with $a^j
+The case $a \in (-1, 0)$ is slightly more complicated.  The
+previous solution, $a^s \Delta$, continues to be well-defined and has a real value
+for all integer values of $s$, but is not for non-integer
+values. However, for any integer value of $s$ the equality
+\begin{equation*}
+  a^s = |a|^s \cos(\pi s)
+\end{equation*}
+holds, so $\Psi_s(\Delta) = |a|^s \cos(\pi s) \Delta$ agrees with $a^s
 \Delta$ on integer values and is well-defined and real-valued for
-non-integer values. Moreover, this choice of $\Psi_j(\Delta)$
+non-integer values. Moreover, this choice of $\Psi_s(\Delta)$
 satisfies the recurrence relation for the \AR(1) model (when $a < 0$)
 just as before:
 \begin{equation*}
-  \Psi_j(\Delta) = |a|^j \cos(\pi j) \cdot \Delta = - |a| \times |a|^{j-1} \cos(\pi (j-1)) \cdot \Delta = a \, \Psi_{j-1}(\Delta)
+  \Psi_s(\Delta) = |a|^s \cos(\pi s) \cdot \Delta = - |a| \times |a|^{s-1} \cos(\pi (s-1)) \cdot \Delta = a \, \Psi_{s-1}(\Delta)
 \end{equation*}
 implying
 \begin{equation*}
-  (1 - a L) \, \Psi_j(\Delta) = 0.
+  (1 - a L) \, \Psi_s(\Delta) = 0.
 \end{equation*}
 Since it is exactly correct on the integers and satisfies the model's
 dynamics for noninteger values as well, this choice of $\Psi$ is a
 sensible choice for interpolating between the
 integers. Figure~\ref{f0b} plots the \IRF s for $a = -0.2$ and $\Delta
 = 1$ with no interpolation, linear interpolation, and our definition
-of $\Psi_j(\Delta)$. The smooth version more accurately reflects the
+of $\Psi_s(\Delta)$. The smooth version more accurately reflects the
 system's dynamics again.
 
-This choice of $\Psi_j(\Delta)$ was not made at random. Any complex
+This choice of $\Psi_s(\Delta)$ was not made at random. Any complex
 number $a + bi$ can be written in polar form,
 \[
 a + bi = R [\cos(\theta) - i \sin(\theta)]
@@ -240,8 +239,15 @@ where $R = |a^2 + b^2|^{1/2}$ and $\theta$ satisfies $\cos(\theta) = a/R$ and
 $\sin(\theta) = b/R$; then real powers can be defined easily as%
 \footnote{See \citet{Ham:94} for an introduction.} %
 \[
-(a + bi)^j = R^j [\cos(\theta j) - i \sin(\theta j)].
+(a + bi)^s = R^s [\cos(\theta s) - i \sin(\theta s)].
 \]
+For the \AR\ example above, $a < 0$ and $b = 1$ implies that $\theta =
+\pi$, giving $a^s = |a|^s \cos(\pi s)$ as we originally claimed. This
+example also suggests a more general method: for any \VAR\ we can
+solve the recurrence relation using standard tools (as described in
+\citealp{Ham:94}, for example) and use that solution as the \IRF\ for
+real-valued $s$. We pursue that approach in the next section.
+
 \section{General Recommendation}\label{recommended}
 
 In general,%
