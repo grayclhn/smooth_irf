@@ -14,9 +14,8 @@
     url,
 }
 
-\title{Smooth interpolation for Impulse Response Functions from \allcaps{svar}s}
-\author{Gray Calhoun}
-\input{VERSION}
+\title{Graphing better Impulse Response Functions for discrete-time
+  linear models} \author{Gray Calhoun} \input{VERSION}
 \input{latex_misc/abbrevs}
 
 \urlstyle{same}
@@ -37,6 +36,9 @@
 \renewcommand{\Im}{\operatorname{Im}}
 
 \DeclareMathOperator{\whitenoise}{\mathit{white\ noise}}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\floor}{floor}
+\DeclareMathOperator{\ceil}{ceil}
 \newcommand{\vep}{\varepsilon}
 \newcommand{\AR}{\allcaps{AR}}
 \newcommand{\RR}{\mathbb{R}}
@@ -44,55 +46,104 @@
 
 \begin{document}
 \maketitle
+\begin{abstract}\noindent%
+  In this note, we show how to construct continuous and differentiable
+  Impulse Response Functions and for discrete-time \VAR s and Vector
+  Error-Correction Models. Current methods produce piecewise linear
+  functions that introduce visual distortions, especially when many
+  response functions are plotted in the same graph to represent
+  uncertainty or partial identification. We also show how to plot the
+  cumulative response to a shock. In addition to being more accurate
+  than current methods, our proposed approach is also much prettier.
+\end{abstract}
 
 \section{Introduction}
 
-Impulse Response Functions (\IRF s) are used in signal processing and
-time-series analysis to represent the effect over time of a short
-impulse or shock on a dynamic system; and they are heavily used in
-Macroeconomics to characterize the effects of a shock of theoretical
-interest --- the effect of a monetary policy shock, for example, or a
-technology shock. Formally, if $y_t$ is a stochastic process with the
-\MA($\infty$) representation
-\begin{equation*}
-  y_t = \sum_{j=0}^{\infty} \psi_j \vep_{t-j}
-\end{equation*}
-and $\vep_t \sim \whitenoise(0,\Sigma)$ where $\Sigma$ is normalized
-to have diagonal elements equal to 1, the \IRF\ is the function
+Impulse Response Functions (\IRF s) are widely used in Macroeconomics
+to represent the dynamic effect over time of an unanticipated shock to
+an economic system. Formally, if $\{y_t\}$ is a stationary sequence of
+random vectors in $\RR^k$ and
+\[
+\E(y_{t+s} \mid y_t, y_{t-1},\dots) = g_s(y_t,\dots,y_{t-p})
+\]
+for each $s > 0$,%
+\footnote{For later convenience, define
+  $g_0(y_t,\dots,y_{t-p}) = y_t$ and $g_s = 0$ for $s < 0$.} %
+the \IRF\ corresponding to the shock $\Delta$ is the difference
+\[
+\Psi_s(\Delta) = g_s(y_t + \Delta, y_{t-1},\dots,y_{t-p}) - g_s(y_t, y_{t-1},\dots,y_{t-p})
+\]
+viewed as a function of $s$.%
+\footnote{Note that $\Psi_0(\Delta) = \Delta$ and $\Psi_s(\Delta) = 0$ for $s <
+  0$.} %
+Obviously the values of the \IRF\ depend on the specific nature of the
+shock $\Delta$, and different choices of $\Delta$ can correspond to
+different shocks of theoretical interest.  In Macroeconomic
+applications, $t$ and $s$ are typically integers and $g_s$ is often
+derived from a recursive linear model, the \VAR
 \begin{equation}\label{eq:1}
-  \Psi(j) = \theta_j u
+  y_t = A_0 + A_1 y_{t-1} + \cdots + A_p y_{t-p} + \vep_t
 \end{equation}
-for $j = 0, 1, 2,\dots$ where the vector $u$ has norm 1 and represents
-a specific theoretical shock of interest. In Macroeconomics,
-researchers usually don't work with \MA\ representations directly, but
-instead model the processes as a finite lag \VAR, but the principle is
-exactly the same.
+where $\vep_t$ is a martingale difference sequence is one example.
 
-An advantage of using \IRF s is that they show the full set of
-dynamics implied by a particular parameter estimate of the \VAR, and
-to make these dynamics more clear the values determined by
-Equation~\eqref{eq:1} are typicially plotted as a graph and joined by
-straight lines --- see the left column of Figure~\ref{f1} for several
-examples. Indeed, these graphs and connecting lines are indespensible
-when several \IRF s are plotted in the same graph to represent
-statistical uncertainty or a set of potential dynamics --- without
-some method of connecting the points, we can see the marginal
-distributions of each estimate of $\Psi(j)$, but can not see their
-joint distributions.
+It is straightforward to calculate the values of the \IRF s for
+integer-values of $s$ in models like~\eqref{eq:1}.
+Note that
+\begin{align*}
+  g_1(y_t,\dots,y_{t-p}) &= \E(y_{t+1} \mid y_t, y_{t-1},\dots) \\
+  &= A_0 + A_1 y_{t} + \cdots + A_p y_{t-p+1}
+\end{align*}
+and
+\begin{align*}
+  g_s(y_t,\dots,y_{t-p})
+  &= \E(y_{t+s} \mid y_t, y_{t-1},\dots) \\
+  &= \E( \E(y_{t+s} \mid y_{t+s-1}, y_{t+s-2},\dots) \mid y_t, y_{t-1},\dots) \\
+  &= \E( A_0 + A_1 y_{t+s-1} + \cdots + A_p y_{t+s-p} \mid y_t, y_{t-1},\dots) \\
+  &= A_0 + A_1 \E(y_{t+s-1} \mid y_t, y_{t-1},\dots) + \cdots + A_p \E(y_{t+s-p} \mid y_t, y_{t-1},\dots) \\
+  &= A_0 + A_1 g_{s-1}(y_t,\dots,y_{t-p}) + \cdots + A_p g_{s-p}(y_t,\dots,y_{t-p})
+\end{align*}
+for $s > 1$, which can be calculated recursively for $s =
+2,3,\dots$. Then
+\begin{equation*}
+  \Psi_1(\Delta) = A_1 \Delta
+\end{equation*}
+and, for $s > 1$,
+\begin{align*}
+  \Psi_s(\Delta)
+  &= g_s(y_t + \Delta,\dots,y_{t-p}) - g_s(y_t,\dots,y_{t-p}) \\
+  &= \sum_{\ell = 1}^{p} A_\ell \big[g_{s-\ell}(y_t+\Delta,\dots,y_{t-p}) - g_{s-\ell}(y_t,\dots,y_{t-p})\big] \\
+  &= \sum_{\ell = 1}^{p} A_\ell \Psi_{s-\ell}(\Delta)
+\end{align*}
+which can again be calculated recursively. In some applications this
+is enough. But in most applications, it is necessary to graph the \IRF
+s and to connect the points; this is especially important when more
+than one \IRF\ is plotted on the same graph --- whether to represent
+dynamics under different assumptions (see \citealp{BeM:98}, and
+\citealp{StW:01}, for representative examples), to represent
+statistical uncertainty (\citealp{Kil:98}, and \citealp{SiZ:99}) or to
+represent regions that are partially identified (\citealp{Uhl:05}, and
+\citealp{InK:13}). So far, representing these dynamics has been
+achieved by linear interpolation, so 
+\begin{equation*}
+  \Psi_s(\Delta) = (s - \floor(s)) \, \Psi_{\ceil(s)}(\Delta) + (\ceil(s) - s) \, \Psi_{\floor(s)}(\Delta)
+\end{equation*}
+for noninteger $s$, where $\floor(s)$ and $\ceil(s)$ represent the
+largest integer less than $s$ and smallest integer value greater than
+$s$ respectively. Unfortunately, this method introduces misleading
+visual distortions, which we will explicitly discuss later.
 
-Unfortunately, the ubiquitous method of connecting the points
-$\Psi(0), \Psi(1),\dots$, i.e.\ drawing a straight line between them,
-can introduce misleading visual distortions, which we will explicitly
-discuss later. In this paper, we show how the \IRF\ $\Psi(j)$ can be
-meaningfully defined for \VAR s for any real positive value of $j$ and
-give a convenient method for calculating it. (Figures~\ref{f1}
-and~\ref{f2} have examples if you're impatient to see them.) This
-allows researchers to use the estimated \VAR\ itself to interpolate
-between the points for which it is usually defined and results in
-graphs that do not have the distortions produced by linear
-interpolation. Moreover, using the smoothed \IRF\ also allows for
-refinements to partial identification strategies based on sign
-restrictions.
+In this paper, we show how the \IRF\ $\Psi_s(\Delta)$ can be meaningfully
+defined for \VAR s for any real positive value of $s$ and give a
+convenient method for calculating it. (Figures~\ref{f1} and~\ref{f2}
+have examples if you're impatient to see them.) This allows
+researchers to use the \VAR\ itself to interpolate between the points
+for which it is usually defined and results in graphs that do not have
+the distortions produced by linear interpolation. In the next section,
+we offer a simple example of our approach that motivates the general
+technique. Sections~\ref{recommended} and~\ref{extensions} explain the
+methods in general and provide some extensions to cumulative responses
+and Vector Error Correction Models, and Section~\ref{example} provides
+a numerical example.
 
 \section{Motivation}
 
@@ -100,101 +151,115 @@ restrictions.
   \centering
   \includegraphics{graphs/motivation.pdf}
   \caption{\IRF\ for simple AR(1) example. Here $y_t = 0.2 y_{t-1} +
-    \vep_t$. The left panel plots the standard \IRF, using linear
-    interpolation between the points (0,1), (1, .1), (1, .01), etc.,
-    while the right panel plots the function $0.2^x$ directly.}
+    \vep_t$ --- the vertical axis shows $\Psi_x(1)$. The left panel
+    plots only integer values of $x$, the middle panel uses linear
+    interpolation between the integers, and the right panel plots the
+    function $0.2^x$ directly.}
   \label{f0}
 \end{figure}
 
-Start with the simplest univariate case and suppose that
-\begin{equation}\label{eq:2}
-y_t = a y_{t-1} + \vep_t
-\end{equation}
-where $a \in [0, 1)$, which can be rewritten as
-\begin{equation}
-  \label{eq:3}
-  y_t = y_0 + \sum_{j=0}^{t-1} a^j \vep_{t-j},
-\end{equation}
-giving the \IRF\ $\Psi(j) = a^j u$. This function is obviously
-well-defined for all positive real $j$, and can be used directly to
-interpolate between the integer points. Figure~\ref{f0} plots the
-standard \IRF\ (using linear interpolation) on the left and the
-function $a^j u$ on the right. While one could debate which of the
-functions represents the ``true'' impact at a fractional point in
-time, the right panel more clearly expresses the shock's rate of
-decay.
-
-Also note that $\Psi(j) = a^j u$ satisfies the recurrence relation
-implied by the lag structure of the original \AR\ process for any
-positive real value of $j$:
+For motivation, start with the simplest univariate case and assume
+that $y_t$ is the \AR(1)
 \begin{equation*}
-  \Psi(j) = a^j u = a \times a^{j-1} u = a \Psi(j-1).
+y_t = a y_{t-1} + \vep_t
 \end{equation*}
-It seems natural to require that any smooth function $\Psi^*$ that we
-use to represent \IRF s satisfy two conditions,
-\begin{enumerate}
-\item $\Psi^*(j) = \Psi(j)$ (the true \IRF) for all integers $j$
-\item $\Psi^*(j)$ satisfy the recurrence relation defined by the lag
-  structure of the underlying \VAR\ process; i.e.\ if $\Phi(L)$ is the
-  lag polynomial of the \VAR, so $\Phi(L)y_t = \vep_t$ for $t = 1, 2,
-  \dots$, then $\Phi(L) \Psi^*(t) = 0$ for all $t \in \RR$.
-\end{enumerate}
+It is well-known that the recursive definitions used in the first
+section imply that $\Psi_s(\Delta) = a^s \Delta$.  When $a > 0$, this
+function is well-defined for all positive real $s$, and can be used
+directly to interpolate between the integer points. Figure~\ref{f0}
+plots $\Psi_s(\Delta)$ for $\Delta = 1$ and $a = 0.2$ using three
+approaches: first only for the integer values of $s$, second using
+linear interpolation between the integer values, and finally using
+$a^s \Delta$ directly for all $s \geq 0$. While one could debate which
+of the functions represents the ``true'' impact at a fractional point
+in time, the right panel --- using $0.2^s$ directly --- more clearly
+expresses the shock's rate of decay and, equivalently, the dynamics of
+the \AR\ model.
+
+This clarity should not be surprising. We can see that $\Psi_s(\Delta)
+= a^s \Delta$ satisfies the recurrence relation implied by the lag
+structure of the original \AR\ process for any positive real value of
+$s$:
+\begin{equation*}
+  \Psi_s(\Delta) = a^s \Delta = a \times a^{s-1} \Delta = a \, \Psi_{s-1}(\Delta).
+\end{equation*}
+For the methods we propose in this paper we will see that this
+condition holds in general: if $\Phi(L)$ is the lag polynomial of the
+\VAR (so $\Phi(L)y_t = \vep_t$ for $t = 1, 2, \dots$), then $\Phi(L)
+\Psi_s(\Delta) = 0$ for all $s \in \RR^+$.%
+\footnote{We have implicitly defined $L \Psi_s(\Delta) =
+  \Psi_{s-1}(\Delta)$.} %
+This condition only holds for integer values of $s$ when
+$\Psi_s(\Delta)$ is constructed by linear interpolation.
 
 \begin{figure}[t]
   \centering
   \includegraphics{graphs/motivation2.pdf}
   \caption{\IRF\ for simple AR(1) example. Here $y_t = -0.2 y_{t-1} +
-    \vep_t$. The left panel plots the standard \IRF, using linear
-    interpolation between the points (0,1), (1, .1), (1, .01), etc.,
-    while the right panel plots the function $- 0.2^x \cos(\pi x)$ directly.}
+    \vep_t$ --- the vertical axis shows $\Psi_x(1)$. The left panel
+    plots only integer values of $x$, the middle panel uses linear
+    interpolation between the integers, and the right panel plots the
+    function $|a|^x \cos(\pi x)$ directly.}
   \label{f0b}
 \end{figure}
 
-Now suppose that $a \in (-1, 0)$. Again
-\begin{equation}
-  \label{eq:4}
-    y_t = y_0 + \sum_{j=0}^{t-1} a^j \vep_{t-j},
-\end{equation}
-and the \IRF\ $\Psi(j) = a^j$ is well-defined and has a real value for
-all integer values of $j$, but may not be real for non-integer values
-of $j$. However, for any integer value of $j$ the equality
-\begin{equation}
-  \label{eq:5}
-  a^j = |a|^j \cos(\pi j)
-\end{equation}
-holds, and the function $\Psi(j) = |a|^j \cos(\pi j) u$ satisfies the
-recurrence relation implied by the \AR\ model's lag structure when $a < 0$:
+The case $a \in (-1, 0)$ is slightly more complicated.  The
+previous solution, $a^s \Delta$, continues to be well-defined and has a real value
+for all integer values of $s$, but is not for non-integer
+values. However, for any integer value of $s$ the equality
 \begin{equation*}
-  \Psi(j) = |a|^j \cos(\pi j) \cdot u = - |a| \times |a|^{j-1} \cos(\pi (j-1)) \cdot u = a \Psi(j-1).
+  a^s = |a|^s \cos(\pi s)
 \end{equation*}
-So, since it is exactly correct on the integers and satisfies the
-model's dynamics for noninteger values as well, this choice of $\Psi$
-is a sensible choice for interpolating between the
-integers. Figure~\ref{f0b} plots both functions, and again the smooth
-version more accurately reflects the system's dynamics.
+holds, so $\Psi_s(\Delta) = |a|^s \cos(\pi s) \Delta$ agrees with $a^s
+\Delta$ on integer values and is well-defined and real-valued for
+non-integer values. Moreover, this choice of $\Psi_s(\Delta)$
+satisfies the recurrence relation for the \AR(1) model (when $a < 0$)
+just as before:
+\begin{equation*}
+  \Psi_s(\Delta) = |a|^s \cos(\pi s) \cdot \Delta = - |a| \times |a|^{s-1} \cos(\pi (s-1)) \cdot \Delta = a \, \Psi_{s-1}(\Delta)
+\end{equation*}
+implying
+\begin{equation*}
+  (1 - a L) \, \Psi_s(\Delta) = 0.
+\end{equation*}
+Since it is exactly correct on the integers and satisfies the model's
+dynamics for noninteger values as well, this choice of $\Psi$ is a
+sensible choice for interpolating between the
+integers. Figure~\ref{f0b} plots the \IRF s for $a = -0.2$ and $\Delta
+= 1$ with no interpolation, linear interpolation, and our definition
+of $\Psi_s(\Delta)$. The smooth version more accurately reflects the
+system's dynamics again.
 
-This choice of $\Psi(j)$ was not made at random. For any complex
-number $a + bi$, we can write it in polar form:
+This choice of $\Psi_s(\Delta)$ was not made at random. Any complex
+number $a + bi$ can be written in polar form,
 \[
 a + bi = R [\cos(\theta) - i \sin(\theta)]
 \]
-where $R = |a|$ and $\theta$ satisfies $\cos(\theta) = a/R$ and
-$\sin(\theta) = b/R$; then real powers can be defined easily as
+where $R = |a^2 + b^2|^{1/2}$ and $\theta$ satisfies $\cos(\theta) = a/R$ and
+$\sin(\theta) = b/R$; then real powers can be defined easily as%
+\footnote{See \citet{Ham:94} for an introduction.} %
 \[
-(a + bi)^j = R^j [\cos(\theta j) - i \sin(\theta j)].
+(a + bi)^s = R^s [\cos(\theta s) - i \sin(\theta s)].
 \]
-For our \AR\ coefficient $a < 0$, we have $\theta = \pi$, giving
-$a = |a| \cos(\pi)$ as we originally claimed.
+For the \AR\ example above, $a < 0$ and $b = 1$ implies that $\theta =
+\pi$, giving $a^s = |a|^s \cos(\pi s)$ as we originally claimed. This
+example also suggests a more general method: for any \VAR\ we can
+solve the recurrence relation using standard tools (as described in
+\citealp{Ham:94}, for example) and use that solution as the \IRF\ for
+real-valued $s$. We pursue that approach in the next section.
 
-\section{General proposal}
+\section{General Approach}\label{recommended}
 
-In general,%
-\footnote{See Chapter 1 of \citet{Ham:94} for a textbook treatment.} %
-any \VAR($p$) has a \VAR(1) ``canonical'' representation. If
+The \AR(1) model in the previous section can be extened to general
+\VAR s using the ``canonical'' representation.%
+\footnote{See Chapter 1 of \citet{Ham:94} for a textbook treatment of
+  much of this material.} %
+Define $y_t$ as in Equation~(\ref{eq:1}), so
 \[
-y_t = \sum_{i=1}^p A_i y_{t-i} + \vep_t
+y_t = \sum_{j=1}^p A_j y_{t-j} + \vep_t.
 \]
-then
+To represent this relationship as a \VAR(1), form the vector
+$(y_t',\dots,y_{t-p+1}')'$ and observe that
 \[
 \underbrace{\begin{pmatrix}
   y_t \\ y_{t-1} \\ y_{t-2} \\ \vdots \\ y_{t-p+1}
@@ -214,110 +279,112 @@ then
 \underbrace{\begin{pmatrix}
   \vep_{t} \\ 0 \\ 0 \\ \vdots \\ 0
 \end{pmatrix}}_{U_t}.
-\]
-Moreover, if the matrix $F$ is $s \times s$ with $q$ distinct
-eigenvalues, then it can be decomposed as
+\]n
+So this relationship is equivalent to $Z_t = F Z_{t-1} + U_t$.
+
+If the matrix $F$ has $q$ distinct
+eigenvalues, it can be decomposed as
 \[
 F = M J M^{-1}
 \]
 where $J$ is block diagonal of the form
 \[
 J = \begin{pmatrix}
-  J_1 & 0 & \cdots & 0 \\
-  0 & J_2 & \cdots & 0 \\
-  \vdots & \vdots & \ddots & \vdots \\
-  0 & 0 & \cdots & J_q
+  J_1 & \cdots & 0 \\
+  \vdots & \ddots & \vdots \\
+  0 & \cdots & J_q
 \end{pmatrix}
 \]
-and each $J_i$ has the form
+and each $J_\ell$ is $m_\ell \times m_\ell$ of the form
 \[
-J_i =
+J_\ell =
 \begin{pmatrix}
-  \lambda_i & 1 & 0 & \cdots & 0 & 0 \\
-  0 & \lambda_i & 1 & \cdots & 0 & 0 \\
-  0 & 0 & \lambda_i & \cdots & 0 & 0 \\
+  \lambda_\ell & 1 & 0 & \cdots & 0 & 0 \\
+  0 & \lambda_\ell & 1 & \cdots & 0 & 0 \\
+  0 & 0 & \lambda_\ell & \cdots & 0 & 0 \\
   \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
-  0 & 0 & 0 & \cdots & \lambda_i & 1 \\
-  0 & 0 & 0 & \cdots & 0 & \lambda_i
+  0 & 0 & 0 & \cdots & \lambda_\ell & 1 \\
+  0 & 0 & 0 & \cdots & 0 & \lambda_\ell
 \end{pmatrix}
 \]
-where $\lambda_1,\dots,\lambda_q$ are the distinct eigenvalues of $F$.
-If all of the eigenvalues of $F$ are distinct, this is just the
-eigenvalue decomposition of $F$.
+where $\lambda_1,\dots,\lambda_q$ are the distinct eigenvalues of $F$
+and $m_\ell$ is the number of times the $\ell$th eigenvalue is
+repeated.  If all of the eigenvalues of $F$ are distinct, this is just
+the eigenvalue decomposition of $F$.
 
 This representation is convenient because, for positive integer values
-of $t$, we have
+of $s$, we have
 \[
-F^t = M J^t M^{-1}
+F^s = M J^s M^{-1}
 \]
-and $J^t$ has the convenient form
+and
 \begin{align*}
-J^t           & =
+J^s           & =
 \begin{pmatrix}
-  J_1^t       & 0                      & \cdots                 & 0                                                                        \\
-  0           & J_2^t                  & \cdots                 & 0                                                                        \\
-  \vdots      & \vdots                 & \ddots                 & \vdots                                                                   \\
-  0           & 0                      & \cdots                 & J_q^t
+  J_1^s                  & \cdots                 & 0                                                                        \\
+  \vdots                 & \ddots                 & \vdots                                                                   \\
+  0                      & \cdots                 & J_q^s
 \end{pmatrix},
 \intertext{where}
-J_i^t         & =
+J_\ell^s         & =
 \begin{pmatrix}
-  \lambda_i^t & \binom{t}{1} \lambda_i^{t-1} & \binom{t}{2} \lambda_i^{t-2} & \cdots & \binom{t}{m_i} \lambda_i^{t-m_i}     \\
-  0           & \lambda_i^t            & \binom{t}{1} \lambda_i^{t-1} & \cdots & \binom{t}{m_i-1} \lambda_i^{t-m_i+1} \\
-  0           & 0                      & \lambda_i^t            & \cdots & \binom{t}{m_i-2} \lambda_i^{t-m_i+2} \\
-  \vdots      & \vdots                 & \vdots                 & \ddots & \vdots                         \\
-  0           & 0                      & 0                      & \cdots & \lambda_i^t \\
+  \lambda_\ell^s & \binom{s}{1} \lambda_\ell^{s-1} & \binom{s}{2} \lambda_\ell^{s-2} & \cdots & \binom{s}{m_\ell} \lambda_\ell^{s-m_\ell}     \\
+  0           & \lambda_\ell^s            & \binom{s}{1} \lambda_\ell^{s-1} & \cdots & \binom{s}{m_\ell-1} \lambda_\ell^{s-m_\ell+1} \\
+  0           & 0                      & \lambda_\ell^s            & \cdots & \binom{s}{m_\ell-2} \lambda_\ell^{s-m_\ell+2} \\
+  \vdots      & \vdots                 & \vdots                 & \cdots & \vdots                         \\
+  0           & 0                      & 0                      & \cdots & \lambda_\ell^s \\
 \end{pmatrix} \\
 &=
 \begin{pmatrix}
-  h_i(t,0) & h_i(t,1) & h_i(t,2) & \cdots & h_i(t,m_i)   \\
-  0        & h_i(t,0) & h_i(t,1) & \cdots & h_i(t,m_i-1) \\
-  0        & 0        & h_i(t,0) & \cdots & h_i(t,m_i-2) \\
+  h_\ell(s,0) & h_\ell(s,1) & h_\ell(s,2) & \cdots & h_\ell(s,m_\ell)   \\
+  0        & h_\ell(s,0) & h_\ell(s,1) & \cdots & h_\ell(s,m_\ell-1) \\
+  0        & 0        & h_\ell(s,0) & \cdots & h_\ell(s,m_\ell-2) \\
   \vdots   & \vdots   & \vdots   & \ddots & \vdots      \\
-  0        & 0        & 0        & \cdots & h_i(t,0)    \\
+  0        & 0        & 0        & \cdots & h_\ell(s,0)    \\
 \end{pmatrix} \\
 \intertext{and}
-h_j(t,s) &=
+h_\ell(s,j) &=
 \begin{cases}
-  |\lambda_j|^t \big[\cos(\theta_j t) + i \sin(\theta_j t)\big] & s = 0 \\
-  \frac{t!}{j!(t-s)!} |\lambda_j|^t \big[\cos(\theta_j t) + i \sin(\theta_j t)\big] & \text{if } t \geq s > 0 \\
+  |\lambda_\ell|^s \big[\cos(\theta_\ell s) + i \sin(\theta_\ell s)\big] & j = 0 \\
+  \frac{s!}{j!(s-j)!} |\lambda_\ell|^s \big[\cos(\theta_\ell s) + i \sin(\theta_\ell s)\big] & \text{if } s \geq j > 0 \\
   0 & \text{otherwise.}
 \end{cases}
 \end{align*}
-where $\cos(\theta_j) = \Re(\lambda_j)/|\lambda_j|$ and
-$\sin(\theta_j) = \Im(\lambda_j)/|\lambda_j|$ as above.
+where $\cos(\theta_\ell) = \Re(\lambda_\ell)/|\lambda_\ell|$ and
+$\sin(\theta_\ell) = \Im(\lambda_\ell)/|\lambda_\ell|$ as above.
 
 Then we can write
 \begin{multline}\label{eq:6}
-  F^t =
-  \sum_{j = 1}^q \sum_{l=0}^{m_i} \tfrac{t(t-1)\cdots(t-l+1)}{l (l - 1) \cdots 1} |\lambda_j|^{t-l} \\
-  \times\Big\{\big[A_{jl} \cos(\theta_j t) + B_{jl}(t) \sin(\theta_j t)\big] + i\big[C_{jl} \cos(\theta_j t) + D_{jl}(t) \sin(\theta_j t)\big]\Big\}
+  F^s =
+  \sum_{j = 1}^q \sum_{l=0}^{\min(m_\ell, \floor(s))} \tfrac{s(s-1)\cdots(s-l+1)}{l (l - 1) \cdots 1} |\lambda_j|^{s-l} \\
+  \times\Big\{\big[A_{jl} \cos(\theta_j s) + B_{jl} \sin(\theta_j s)\big] + i\big[C_{jl} \cos(\theta_j s) + D_{jl} \sin(\theta_j s)\big]\Big\}
 \end{multline}
 where the coefficient matrices $A_{jl}$, $B_{jl}$, $C_{jl}$, and
 $D_{jl}$ are chosen to match $F^0, F^1, F^2,\dots$. 
-For integer values of $t$, the imaginary components of $M J^t M^{-1}$
+For integer values of $s$, the imaginary components of $M J^s M^{-1}$
 exactly cancel, so
 \begin{equation*}
-  0 = \sum_{j = 1}^q \sum_{l=0}^{m_i} \tfrac{t(t-1)\cdots(t-l+1)}{l (l - 1) \cdots 1} |\lambda_j|^{t-l}
-  \big[C_{jl} \cos(\theta_j t) + D_{jl}(t) \sin(\theta_j t)\big]
+  0 = \sum_{j = 1}^q \sum_{l=0}^{\min(m_\ell, \floor(s))} \tfrac{s(s-1)\cdots(s-l+1)}{l (l - 1) \cdots 1} |\lambda_j|^{s-l}
+  \big[C_{jl} \cos(\theta_j s) + D_{jl} \sin(\theta_j s)\big]
 \end{equation*}
-for $t = 1,2, \dots$ and we can use the real part alone
+and we can use the real part alone, giving
 \begin{equation}\label{eq:7}
-  F^t =
-  \sum_{j = 1}^q \sum_{l=0}^{m_i} \tfrac{t(t-1)\cdots(t-l+1)}{l (l - 1) \cdots 1} |\lambda_j|^{t-l} \big[A_{jl} \cos(\theta_j t) + B_{jl}(t) \sin(\theta_j t)\big]
+  F^s =
+  \sum_{j = 1}^q \sum_{l=0}^{\min(m_\ell, \floor(s))} \tfrac{s(s-1)\cdots(s-l+1)}{l (l - 1) \cdots 1} |\lambda_j|^{s-l} \big[A_{jl} \cos(\theta_j s) + B_{jl} \sin(\theta_j s)\big]
 \end{equation}
-to produce $F^1, F^2, F^3,\dots$. Our proposal, in a nushell, is to
-use the same function for all of the reals rather than just the
-integers, exactly as we did in the motivating \AR(1) examples.
+to produce $F^1, F^2, F^3,\dots$. Our proposal, in a nutshell, is to
+use the definition given by \eqref{eq:7} for all of the reals rather
+than just the integers, exactly as we did in the motivating \AR(1)
+examples.
 
 Equation~\eqref{eq:6} has another practical implication. Although
-$F^t$ has real and imaginary components for real $t$, we are only
+$F^s$ has real and imaginary components for real $s$, we are only
 interested in its real component, which genereates the \IRF s for
-integer values of $t$. So rather than working out the matrices
+integer values of $s$. So rather than working out the matrices
 $A_{jl}$ and $B_{jl}$ to use~\eqref{eq:7}, we can calculate the
-complex valued $F^t$ and drop its imaginary component. This
+complex valued $F^s$ and simply drop its imaginary component. This
 calculation is directly available in many programming languages and
-can be implemented as $M J^t M^{-1}$ using the Jordan decomposition if
+can be implemented as $M J^s M^{-1}$ using the Jordan decomposition if
 it is not.
 
 Intuitively, we can see that the real component of $F^t$ must agree
@@ -333,7 +400,7 @@ F a'_{t-1} &= F \Re(F^{t-1}) a_{0} \\
 &= a'_t.
 \end{align*}
 
-\section{Cumulative response and other extensions}
+\section{Cumulative response and other extensions}\label{extensions}
 
 The results in the previous section will work for many applications,
 but in others we may may be interested in transformations of the $y_t$
@@ -430,7 +497,7 @@ arguments as before
 In both cases, we can now define the \IRF\ using the canonical \VAR(1)
 representation.
 
-\section{Numerical example}
+\section{Numerical example}\label{example}
 
 For a numerical example, consider the two-variable \VAR(2)
 \begin{equation}
@@ -463,13 +530,13 @@ As described above, we will define the smooth \IRF s for a shock to
 the first element as
 \begin{equation*}
   \begin{pmatrix}
-    \hat y_{1j} \\ \hat y_{2j}
+    \hat y_{1s} \\ \hat y_{2s}
   \end{pmatrix}
   =
   \begin{pmatrix}
     1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0
   \end{pmatrix}
-  V D^j V^{-1}
+  V D^s V^{-1}
   \begin{pmatrix}
     1 \\ 0 \\ 0 \\ 0
   \end{pmatrix}
@@ -569,5 +636,5 @@ are willing to interpret these ultra short-run dynamics as having an
 economic interpretation, they can also be used to refine sign
 restrictions used in partial identification.
 
-\bibliography{localrefs}
+\bibliography{localrefs,latex_misc/references}
 \end{document}
