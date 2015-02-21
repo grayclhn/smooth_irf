@@ -151,92 +151,97 @@ a numerical example.
   \centering
   \includegraphics{graphs/motivation.pdf}
   \caption{\IRF\ for simple AR(1) example. Here $y_t = 0.2 y_{t-1} +
-    \vep_t$. The left panel plots the standard \IRF, using linear
-    interpolation between the points (0,1), (1, .1), (1, .01), etc.,
-    while the right panel plots the function $0.2^x$ directly.}
+    \vep_t$ --- the vertical axis shows $\Psi_x(1)$. The left panel
+    plots only integer values of $x$, the middle panel uses linear
+    interpolation between the integers, and the right panel plots the
+    function $0.2^x$ directly.}
   \label{f0}
 \end{figure}
 
-Start with the simplest univariate case and suppose that
-\begin{equation}\label{eq:2}
+For motivation, start with the simplest univariate case and assume
+that $y_t$ is the \AR(1)
+\begin{equation}
 y_t = a y_{t-1} + \vep_t
 \end{equation}
-where $a \in [0, 1)$, which can be rewritten as
-\begin{equation}
-  \label{eq:3}
-  y_t = y_0 + \sum_{j=0}^{t-1} a^j \vep_{t-j},
-\end{equation}
-giving the \IRF\ $\Psi(j) = a^j u$. This function is obviously
-well-defined for all positive real $j$, and can be used directly to
-interpolate between the integer points. Figure~\ref{f0} plots the
-standard \IRF\ (using linear interpolation) on the left and the
-function $a^j u$ on the right. While one could debate which of the
-functions represents the ``true'' impact at a fractional point in
-time, the right panel more clearly expresses the shock's rate of
-decay.
+It is well-known that the recursive definitions used in the first
+section imply that $\Psi_j(\Delta) = a^j \Delta$.  When $a > 0$, this
+function is well-defined for all positive real $j$, and can be used
+directly to interpolate between the integer points. Figure~\ref{f0}
+plots $\Psi_j(\Delta)$ for $\Delta = 1$ and $a = 0.2$ using three
+approaches: first only for the integer values of $j$, second using
+linear interpolation between the integer values, and finally using
+$a^j \Delta$ directly for all $j \geq 0$. While one could debate which
+of the functions represents the ``true'' impact at a fractional point
+in time, the right panel --- using $0.2^j$ directly --- more clearly
+expresses the shock's rate of decay and, equivalently, the dynamics of
+the \AR\ model.
 
-Also note that $\Psi(j) = a^j u$ satisfies the recurrence relation
-implied by the lag structure of the original \AR\ process for any
-positive real value of $j$:
+This clarity should not be surprising. We can see that $\Psi_j(\Delta)
+= a^j \Delta$ satisfies the recurrence relation implied by the lag
+structure of the original \AR\ process for any positive real value of
+$j$:
 \begin{equation*}
-  \Psi(j) = a^j u = a \times a^{j-1} u = a \Psi(j-1).
+  \Psi_j(\Delta) = a^j \Delta = a \times a^{j-1} \Delta = a \, \Psi_{j-1}(\Delta).
 \end{equation*}
-It seems natural to require that any smooth function $\Psi^*$ that we
-use to represent \IRF s satisfy two conditions,
-\begin{enumerate}
-\item $\Psi^*(j) = \Psi(j)$ (the true \IRF) for all integers $j$
-\item $\Psi^*(j)$ satisfy the recurrence relation defined by the lag
-  structure of the underlying \VAR\ process; i.e.\ if $\Phi(L)$ is the
-  lag polynomial of the \VAR, so $\Phi(L)y_t = \vep_t$ for $t = 1, 2,
-  \dots$, then $\Phi(L) \Psi^*(t) = 0$ for all $t \in \RR$.
-\end{enumerate}
+For the methods we propose in this paper we will see that this
+condition holds in general: if $\Phi(L)$ is the lag polynomial of the
+\VAR, so $\Phi(L)y_t = \vep_t$ for $t = 1, 2, \dots$, then $\Phi(L)
+\Psi_j(\Delta) = 0$ for all $j \in \RR^+$.%
+\footnote{We have implicitly defined $L \Psi_j(\Delta) =
+  \Psi_{j-1}(\Delta)$.} %
+This condition only holds for integer values of $j$ when
+$\Psi_j(\Delta)$ is constructed by linear interpolation.
 
 \begin{figure}[t]
   \centering
   \includegraphics{graphs/motivation2.pdf}
   \caption{\IRF\ for simple AR(1) example. Here $y_t = -0.2 y_{t-1} +
-    \vep_t$. The left panel plots the standard \IRF, using linear
-    interpolation between the points (0,1), (1, .1), (1, .01), etc.,
-    while the right panel plots the function $- 0.2^x \cos(\pi x)$ directly.}
+    \vep_t$ --- the vertical axis shows $\Psi_x(1)$. The left panel
+    plots only integer values of $x$, the middle panel uses linear
+    interpolation between the integers, and the right panel plots the
+    function $|a|^x \cos(\pi x)$ directly.}
   \label{f0b}
 \end{figure}
 
-Now suppose that $a \in (-1, 0)$. Again
-\begin{equation}
-  \label{eq:4}
-    y_t = y_0 + \sum_{j=0}^{t-1} a^j \vep_{t-j},
-\end{equation}
-and the \IRF\ $\Psi(j) = a^j$ is well-defined and has a real value for
-all integer values of $j$, but may not be real for non-integer values
-of $j$. However, for any integer value of $j$ the equality
+It is slightly more complicated when $a \in (-1, 0)$.  Now the
+previous function, $a^j \Delta$, is well-defined and has a real value
+for all integer values of $j$, but is not for non-integer
+values. However, for any integer value of $j$ the equality
 \begin{equation}
   \label{eq:5}
   a^j = |a|^j \cos(\pi j)
 \end{equation}
-holds, and the function $\Psi(j) = |a|^j \cos(\pi j) u$ satisfies the
-recurrence relation implied by the \AR\ model's lag structure when $a < 0$:
+holds, so $\Psi_j(\Delta) = |a|^j \cos(\pi j) \Delta$ agrees with $a^j
+\Delta$ on integer values and is well-defined and real-valued for
+non-integer values. Moreover, this choice of $\Psi_j(\Delta)$
+satisfies the recurrence relation for the \AR(1) model (when $a < 0$)
+just as before:
 \begin{equation*}
-  \Psi(j) = |a|^j \cos(\pi j) \cdot u = - |a| \times |a|^{j-1} \cos(\pi (j-1)) \cdot u = a \Psi(j-1).
+  \Psi_j(\Delta) = |a|^j \cos(\pi j) \cdot \Delta = - |a| \times |a|^{j-1} \cos(\pi (j-1)) \cdot \Delta = a \, \Psi_{j-1}(\Delta)
 \end{equation*}
-So, since it is exactly correct on the integers and satisfies the
-model's dynamics for noninteger values as well, this choice of $\Psi$
-is a sensible choice for interpolating between the
-integers. Figure~\ref{f0b} plots both functions, and again the smooth
-version more accurately reflects the system's dynamics.
+implying
+\begin{equation*}
+  (1 - a L) \, \Psi_j(\Delta) = 0.
+\end{equation*}
+Since it is exactly correct on the integers and satisfies the model's
+dynamics for noninteger values as well, this choice of $\Psi$ is a
+sensible choice for interpolating between the
+integers. Figure~\ref{f0b} plots the \IRF s for $a = -0.2$ and $\Delta
+= 1$ with no interpolation, linear interpolation, and our definition
+of $\Psi_j(\Delta)$. The smooth version more accurately reflects the
+system's dynamics again.
 
-This choice of $\Psi(j)$ was not made at random. For any complex
-number $a + bi$, we can write it in polar form:
+This choice of $\Psi_j(\Delta)$ was not made at random. Any complex
+number $a + bi$ can be written in polar form,
 \[
 a + bi = R [\cos(\theta) - i \sin(\theta)]
 \]
-where $R = |a|$ and $\theta$ satisfies $\cos(\theta) = a/R$ and
-$\sin(\theta) = b/R$; then real powers can be defined easily as
+where $R = |a^2 + b^2|^{1/2}$ and $\theta$ satisfies $\cos(\theta) = a/R$ and
+$\sin(\theta) = b/R$; then real powers can be defined easily as%
+\footnote{See \citet{Ham:94} for an introduction.} %
 \[
 (a + bi)^j = R^j [\cos(\theta j) - i \sin(\theta j)].
 \]
-For our \AR\ coefficient $a < 0$, we have $\theta = \pi$, giving
-$a = |a| \cos(\pi)$ as we originally claimed.
-
 \section{General Recommendation}\label{recommended}
 
 In general,%
