@@ -71,10 +71,10 @@ for each $j > 0$,%
   $g_0(y_t,\dots,y_{t-p}) = y_t$ and $g_j = 0$ for $j < 0$.} %
 the \IRF\ corresponding to the shock $\Delta$ is the difference
 \[
-\Psi(j) = g_j(y_t + \Delta, y_{t-1},\dots,y_{t-p}) - g_j(y_t, y_{t-1},\dots,y_{t-p})
+\Psi_j(\Delta) = g_j(y_t + \Delta, y_{t-1},\dots,y_{t-p}) - g_j(y_t, y_{t-1},\dots,y_{t-p})
 \]
 viewed as a function of $j$.%
-\footnote{Note that $\Psi(0) = \Delta$ and $\Psi(j) = 0$ for $j <
+\footnote{Note that $\Psi_0(\Delta) = \Delta$ and $\Psi_j(\Delta) = 0$ for $j <
   0$.} %
 Obviously the values of the \IRF\ depend on the specific nature of the
 shock $\Delta$, and different choices of $\Delta$ can correspond to
@@ -105,14 +105,14 @@ and
 for $j > 1$, which can be calculated recursively for $j =
 2,3,\dots$. Then
 \begin{equation*}
-  \Psi(1) = A_1 \Delta
+  \Psi_1(\Delta) = A_1 \Delta
 \end{equation*}
 and, for $j > 1$,
 \begin{align*}
-  \Psi(j)
+  \Psi_j(\Delta)
   &= g_j(y_t + \Delta,\dots,y_{t-p}) - g_j(y_t,\dots,y_{t-p}) \\
   &= \sum_{\ell = 1}^{p} A_\ell \big[g_{j-\ell}(y_t+\Delta,\dots,y_{t-p}) - g_{j-\ell}(y_t,\dots,y_{t-p})\big] \\
-  &= \sum_{\ell = 1}^{p} A_\ell \Psi(j-\ell)
+  &= \sum_{\ell = 1}^{p} A_\ell \Psi_{j-\ell}(\Delta)
 \end{align*}
 which can again be calculated recursively. In some applications this
 is enough. But in most applications, it is necessary to graph the \IRF
@@ -125,15 +125,15 @@ represent regions that are partially identified (\citealp{Uhl:05}, and
 \citealp{InK:13}). So far, representing these dynamics has been
 achieved by linear interpolation, so 
 \begin{equation*}
-  \Psi(s) = (s - \floor(s)) \Psi(\ceil(s)) + (\ceil(s) - s) \Psi(\floor(s))
+  \Psi_s(\Delta) = (s - \floor(s)) \, \Psi_{\ceil(s)}(\Delta) + (\ceil(s) - s) \, \Psi_{\floor(s)}(\Delta)
 \end{equation*}
-for noninteger $s$, where $\floor(\cdot)$ and $\ceil(\cdot)$ return
-the largest integer less than $s$ and smallest integer value greater
-than $s$ respectively.  Unfortunately, this method introduces
-misleading visual distortions, which we will explicitly discuss later.
+for noninteger $s$, where $\floor(s)$ and $\ceil(s)$ represent the
+largest integer less than $s$ and smallest integer value greater than
+$s$ respectively. Unfortunately, this method introduces misleading
+visual distortions, which we will explicitly discuss later.
 
-In this paper, we show how the \IRF\ $\Psi(j)$ can be meaningfully
-defined for \VAR s for any real positive value of $j$ and give a
+In this paper, we show how the \IRF\ $\Psi_s(\Delta)$ can be meaningfully
+defined for \VAR s for any real positive value of $s$ and give a
 convenient method for calculating it. (Figures~\ref{f1} and~\ref{f2}
 have examples if you're impatient to see them.) This allows
 researchers to use the \VAR\ itself to interpolate between the points
