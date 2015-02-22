@@ -125,7 +125,7 @@ dynamics under different assumptions (see \citealp{BeM:98}, and
 statistical uncertainty (\citealp{Kil:98}, and \citealp{SiZ:99}) or to
 represent regions that are partially identified (\citealp{Uhl:05}, and
 \citealp{InK:13}). So far, representing these dynamics has been
-achieved by linear interpolation, so 
+achieved by linear interpolation, so
 \begin{equation*}
   \Psi_s(\Delta) = (s - \floor(s)) \, \Psi_{\ceil(s)}(\Delta) + (\ceil(s) - s) \, \Psi_{\floor(s)}(\Delta)
 \end{equation*}
@@ -172,11 +172,13 @@ directly to interpolate between the integer points. Figure~\ref{f0}
 plots $\Psi_s(\Delta)$ for $\Delta = 1$ and $a = 0.2$ using three
 approaches: first only for the integer values of $s$, second using
 linear interpolation between the integer values, and finally using
-$a^s \Delta$ directly for all $s \geq 0$. While one could debate which
-of the functions represents the ``true'' impact at a fractional point
-in time, the right panel --- using $0.2^s$ directly --- more clearly
-expresses the shock's rate of decay and, equivalently, the dynamics of
-the \AR\ model.
+$a^s \Delta$ directly for all $s \geq 0$.%
+\footnote{All of the graphs in this paper were produced using
+  \citet{R}} %
+While one could debate which of the functions represents the ``true''
+impact at a fractional point in time, the right panel --- using
+$0.2^s$ directly --- more clearly expresses the shock's rate of decay
+and, equivalently, the dynamics of the \AR\ model.
 
 This clarity should not be surprising. We can see that $\Psi_s(\Delta)
 = a^s \Delta$ satisfies the recurrence relation implied by the lag
@@ -252,7 +254,7 @@ real-valued $s$. We pursue that approach in the next section.
 
 \section{General Approach}\label{recommended}
 
-The \AR(1) model in the previous section can be extened to general
+The \AR(1) model in the previous section can be extended to general
 \VAR s using the ``canonical'' representation.%
 \footnote{See Chapter 1 of \citet{Ham:94} for a textbook treatment of
   much of this material.} %
@@ -272,7 +274,7 @@ $(y_t',\dots,y_{t-p+1}')'$ and observe that
   I_k & 0   & \cdots & 0 & 0 \\
   0  & I_k  & \cdots & 0 & 0 \\
   \vdots & \vdots & \ddots & \vdots & \vdots \\
-  0 & 0 & \cdots & I_k & 0 
+  0 & 0 & \cdots & I_k & 0
 \end{pmatrix}}_{F}
 \underbrace{\begin{pmatrix}
   y_{t-1} \\ y_{t-2} \\ y_{t-3} \\ \vdots \\ y_{t-p}
@@ -362,7 +364,7 @@ Then we can write
   \times\Big\{\big[A_{jl} \cos(\theta_j s) + B_{jl} \sin(\theta_j s)\big] + i\big[C_{jl} \cos(\theta_j s) + D_{jl} \sin(\theta_j s)\big]\Big\}
 \end{multline}
 where the coefficient matrices $A_{jl}$, $B_{jl}$, $C_{jl}$, and
-$D_{jl}$ are chosen to match $F^0, F^1, F^2,\dots$. 
+$D_{jl}$ are chosen to match $F^0, F^1, F^2,\dots$.
 For integer values of $s$, the imaginary components of $M J^s M^{-1}$
 exactly cancel, so
 \begin{equation*}
@@ -381,7 +383,7 @@ examples.
 
 Equation~\eqref{eq:6} has another practical implication. Although
 $F^s$ has real and imaginary components for real $s$, we are only
-interested in its real component, which genereates the \IRF s for
+interested in its real component, which generates the \IRF s for
 integer values of $s$. So rather than working out the matrices
 $A_{jl}$ and $B_{jl}$ to use~\eqref{eq:7}, we can calculate the
 complex valued $F^s$ and simply drop its imaginary component. This
@@ -394,9 +396,10 @@ We conclude this section with a formal statement of the result.
 \begin{prop}[Impulse Response Functions for \VAR s]\label{prop1}
   Let $F$ be the coefficient matrix of the canonical \VAR(1)
   representation of an arbitrary \VAR($p$), and let $M$ and $J$ be the
-  matrices of its Jordan-form decompostion, so $F = M J
+  matrices of its Jordan decomposition, so $F = M J
   M^{-1}$. Define $\Psi_s(\Delta)$ as the first $k$ elements of the
-  vector $\Re(M J^s M^{-1}) \Delta$ for all $s \in [0,+\infty)$.
+  vector $\Re(M J^s M^{-1}) \Delta_0$ for all $s \in [0,+\infty)$, where
+  $\Delta_0 = (\Delta', 0')'$.
 
   Then
   \begin{equation*}
@@ -406,11 +409,11 @@ We conclude this section with a formal statement of the result.
   relation implied by the original \VAR.
 \end{prop}
 \begin{proof}
-  Observe that the series $a_s = \Re(F^s) \Delta$ satisfies
-  $a_s = F \times a_{s-1}$, since $F$ is real and
+  Observe that the series $a_s = \Re(F^s) \Delta_0$ satisfies
+  $a_s = F a_{s-1}$, since $F$ is real and
   \[
-    F a_{s-1} = F \Re(F^{s-1}) \Delta 
-    = \Re(F^s) \Delta
+    F a_{s-1} = F \Re(F^{s-1}) \Delta_0
+    = \Re(F^s) \Delta_0
     = a_s.
   \]
   The conclusion of this proposition is a direct consequence.
@@ -419,7 +422,7 @@ We conclude this section with a formal statement of the result.
 \section{Cumulative response and other extensions}\label{extensions}
 
 The results in the previous section will work for many applications,
-but in others we may may be interested in transformations of the $y_t$
+but in others we may may be interested in other functions of the
 variables. An example is if $y_t$ represents differenced variables,
 (say, the first difference of log GDP), but we are interested in the
 response on the level of the variable. A different but very similar
@@ -432,7 +435,8 @@ for these two examples.
 First, suppose that $y_t$ has a stationary \VAR($p$) representation as
 before, but now we want to derive the response on some elements of the
 vector $S_t = \sum_{s=0}^t y_s$. Immediately we have $S_t - y_t =
-S_{t-1}$, so we can extend the canonical representation for $y_t$ as
+S_{t-1}$, so we can extend the canonical representation for $y_t$ by
+adding $S_t$ as the first element of the vector $Z_t$. Observe that
 \begin{equation*}
   \begin{pmatrix}
     S_t - y_t \\ y_t \\ y_{t-1} \\ y_{t-2} \\ \vdots \\ y_{t-p+1}
@@ -454,8 +458,7 @@ S_{t-1}$, so we can extend the canonical representation for $y_t$ as
     0 \\ \vep_t \\ 0 \\ 0 \\ \vdots \\ 0
   \end{pmatrix}.
 \end{equation*}
-
-This equation can be rewritten as
+And this equation can be rewritten as
 \begin{equation*}
   \begin{pmatrix}
     S_t \\ y_t \\ y_{t-1} \\ y_{t-2} \\ \vdots \\ y_{t-p+1}
@@ -477,9 +480,9 @@ This equation can be rewritten as
     \vep_t \\ \vep_t \\ 0 \\ 0 \\ \vdots \\ 0
   \end{pmatrix}.
 \end{equation*}
-which is again a \VAR(1) that can be handled exactly as above.
+This representation is now a \VAR(1) that can be handled exactly as above.
 
-For a \VECM\ model, suppose now that we have the stationary
+The \VECM\ model is similar. Suppose now that we have the stationary
 relationship
 \begin{equation*}
   \Delta y_t = B y_{t-1} + A_1 \Delta y_{t-1} + \cdots + A_p \Delta
@@ -516,7 +519,7 @@ representation.
 \section{Numerical example}\label{example}
 
 For a numerical example, consider the two-variable \VAR(2)
-\begin{equation}
+\begin{equation}\label{eq:2}
   \begin{pmatrix}
     y_{1t} \\ y_{2t}
   \end{pmatrix}
@@ -552,40 +555,30 @@ the first element as
   \begin{pmatrix}
     1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0
   \end{pmatrix}
-  V D^s V^{-1}
+  M J^s M^{-1}
   \begin{pmatrix}
     1 \\ 0 \\ 0 \\ 0
   \end{pmatrix}
 \end{equation*}
-with
+with $M$ and $J$ the Jordan decomposition of the matrix
 \begin{equation}
-V = \begin{pmatrix}
-     0.23 + 0.30 i & 0.23 - 0.30 i  & 0.06 + 0.03 i & 0.06 - 0.03 i \\
-     0.27 + 0.06 i & 0.27 - 0.06 i  & 0.12 + 0.13 i & 0.12 - 0.13 i \\
-     0.71 + 0.00 i & 0.71 + 0.00 i  & 0.31 - 0.12 i & 0.31 + 0.12 i \\
-    -0.23 - 0.47 i & -0.23 + 0.47 i & 0.92 + 0.00 i & 0.92 + 0.00 i
+F = \begin{pmatrix}
+    - 0.5 & 0.01 & -0.2 & 0.1 \\
+      0.3 & 0.1 & -0.1 & 0.0 \\
+      1.0 & 0.0 & 0.0 & 0.0 \\
+      0.0 & 1.0 & 0.0 & 0.0
   \end{pmatrix}
 \end{equation}
-and
-\begin{equation}
-  D = diag(-0.33 + 0.42 i, -0.33 - 0.42 i, 0.13 + 0.14 i, 0.13 - 0.14 i)
-\end{equation}
-the matrices of eigenvectors and eigenvalues of
-\begin{equation*}
-  \begin{pmatrix}
-   -0.5            &  0.01          & -0.2          & 0.1          \\
-    0.3            &  0.1           & -0.1          & 0.0          \\
-    1.0            &  0.0           &  0.0          & 0.0          \\
-    0.0            &  1.0           &  0.0          & 0.0
-  \end{pmatrix}.
-\end{equation*}
 The same equations hold for the \IRF s for a shock to the second
 element of $y_t$, but now the last vector should be $(0, 1, 0, 0)'$.
 
 \begin{figure}[t]
   \centering
   \includegraphics{graphs/numeric.pdf}
-  \caption{Impulse Response Functions from example}
+  \caption{Impulse Response Functions from Section~\ref{example}
+    example; $y_t$ is generated by Equation~\eqref{eq:2}. The left
+    column plots standard \IRF s and the right column plots our new
+    method.}
   \label{f1}
 \end{figure}
 
@@ -593,7 +586,7 @@ We plot the \IRF s in Figure~\ref{f1}. The first column plots the
 standard \IRF s and the second plots our proposed smooth
 plots. Although the general impressions from both graphs are similar,
 there are important differences. First, peaks and troughs are often
-underestimated by the standard IRFs and their timing is frequently
+underestimated by the standard \IRF s and their timing is frequently
 misidentified. This is especially apparent in the first peak in the
 second row. Second, even the sign of the \IRF\ can be misidentified,
 as we see with the immediate response of $y_{1t}$ to a shock in
@@ -604,12 +597,17 @@ introduces misleading asymmetries and kinks.
 \begin{figure}[t]
   \centering
   \includegraphics{graphs/numeric2.pdf}
-  \caption{Impulse Response Functions from example}
+  \caption{Impulse Response Functions from Section~\ref{example}
+    example; $y_t$ is generated by Equation~\eqref{eq:2}, with
+    independent $N(0,0.15)$ random variable added to each
+    coefficient. These graphs plot the \IRF s from 150 independent
+    draws of the coefficient matrices. The left column plots standard
+    \IRF s and the right column plots our new method.}
   \label{f2}
 \end{figure}
 
 These distortions are even more apparent when we graph multiple
-perterbations of the \IRF s in the same panel, which is a common way
+perturbations of the \IRF s in the same panel, which is a common way
 of representing uncertainty or set-identified responses. To
 demonstrate this phenomenon, we generated 150 replications of the \IRF
 s by adding independent N(0, 0.15) noise terms to each element of $A$,
@@ -622,7 +620,7 @@ that there is substantial negative correlation between the period 2
 and period 3 estimated response and the period 3 and 4 response. But
 the smoothed graph makes it clear that this is driven by the timing
 and size of the first peak. When that peak is near period 2, the curve
-has time to fall noticably before period 2, but when the peak is
+has time to fall noticeably before period 2, but when the peak is
 closer to period 3, the curve is still rising for that interval. The
 actual dynamics implied by the different curves are very
 similar. Similar but less dramatic distortions appear in the other
@@ -646,11 +644,8 @@ the \VAR's canonical \VAR(1) representation. Even when researchers do
 not want to assign any economic importance to these ultra short-run
 dynamics, plotting them in the \IRF s minimizes visual distortions
 that can arise from discretizing the dynamics, especially when several
-\IRF s are plotted over eachother to represent uncertainty or set
-identification --- see Figure~\ref{f2} for an example. If researchers
-are willing to interpret these ultra short-run dynamics as having an
-economic interpretation, they can also be used to refine sign
-restrictions used in partial identification.
+\IRF s are plotted over each other to represent uncertainty or set
+identification --- see Figure~\ref{f2} for an example.
 
 \bibliography{localrefs,latex_misc/references}
 \end{document}
