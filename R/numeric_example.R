@@ -70,14 +70,14 @@ col <- "dark gray"
 pdf(file = "graphs/numeric.pdf", width = 6, height = 7)
 par(mfcol = c(4, 2), mar = c(2,3,3,1), fg = col,
     col.axis = "black", col.main = "black")
-subplot1(icoarse1, 1, main = "y_1 shock on y_1")
-subplot1(icoarse1, 2, main = "y_1 shock on y_2")
-subplot1(icoarse2, 1, main = "y_2 shock on y_1")
-subplot1(icoarse2, 2, main = "y_2 shock on y_2")
-subplot1(ismooth1, 1, main = "y_1 shock on y_1 (smoothed)")
-subplot1(ismooth1, 2, main = "y_1 shock on y_2 (smoothed)")
-subplot1(ismooth2, 1, main = "y_2 shock on y_1 (smoothed)")
-subplot1(ismooth2, 2, main = "y_2 shock on y_2 (smoothed)")
+subplot1(icoarse1, 1, main = expression(paste(y[1], " shock on ", y[1])))
+subplot1(icoarse1, 2, main = expression(paste(y[1], " shock on ", y[2])))
+subplot1(icoarse2, 1, main = expression(paste(y[2], " shock on ", y[1])))
+subplot1(icoarse2, 2, main = expression(paste(y[2], " shock on ", y[2])))
+subplot1(ismooth1, 1, main = expression(paste(y[1], " shock on ", y[1], " (smooth)")))
+subplot1(ismooth1, 2, main = expression(paste(y[1], " shock on ", y[2], " (smooth)")))
+subplot1(ismooth2, 1, main = expression(paste(y[2], " shock on ", y[1], " (smooth)")))
+subplot1(ismooth2, 2, main = expression(paste(y[2], " shock on ", y[2], " (smooth)")))
 dev.off()
 
 ## Graphs for Figure 2
@@ -115,12 +115,16 @@ subplot2 <- function(ys,...) {
 pdf(file = "graphs/numeric2.pdf", width = 6, height = 7)
 par(mfcol = c(4, 2), mar = c(2,3,3,1), fg = col,
     col.axis = "black", col.main = "black")
-subplot2(ycoarse1on1, main = "y_1 shock on y_1", col = rgb(0,0,0,.05))
-subplot2(ycoarse1on2, main = "y_1 shock on y_2", col = rgb(0,0,0,.05))
-subplot2(ycoarse2on1, main = "y_2 shock on y_1", col = rgb(0,0,0,.05))
-subplot2(ycoarse2on2, main = "y_2 shock on y_2", col = rgb(0,0,0,.05))
-subplot2(ysmooth1on1, main = "y_1 shock on y_1 (smooth)", col = rgb(0,0,0,.05))
-subplot2(ysmooth1on2, main = "y_1 shock on y_2 (smooth)", col = rgb(0,0,0,.05))
-subplot2(ysmooth2on1, main = "y_2 shock on y_1 (smooth)", col = rgb(0,0,0,.05))
-subplot2(ysmooth2on2, main = "y_2 shock on y_2 (smooth)", col = rgb(0,0,0,.05))
+subplot2(ycoarse1on1, main = expression(paste(y[1], " shock on ", y[1])), col = rgb(0,0,0,.05))
+subplot2(ycoarse1on2, main = expression(paste(y[1], " shock on ", y[2])), col = rgb(0,0,0,.05))
+subplot2(ycoarse2on1, main = expression(paste(y[2], " shock on ", y[1])), col = rgb(0,0,0,.05))
+subplot2(ycoarse2on2, main = expression(paste(y[2], " shock on ", y[2])), col = rgb(0,0,0,.05))
+subplot2(ysmooth1on1, main = expression(paste(y[1], " shock on ", y[1], " (smooth)")),
+         col = rgb(0,0,0,.05))
+subplot2(ysmooth1on2, main = expression(paste(y[1], " shock on ", y[2], " (smooth)")),
+         col = rgb(0,0,0,.05))
+subplot2(ysmooth2on1, main = expression(paste(y[2], " shock on ", y[1], " (smooth)")),
+         col = rgb(0,0,0,.05))
+subplot2(ysmooth2on2, main = expression(paste(y[2], " shock on ", y[2], " (smooth)")),
+         col = rgb(0,0,0,.05))
 dev.off()
