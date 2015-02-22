@@ -10,9 +10,8 @@ paper should be available at my homepage
 version of this directory at
 <https://git.ece.iastate.edu/gcalhoun/smooth_irf>.
 
-I'm still working on a first reasonable draft of this paper and this
-version is likely to contain errors and will be substantially changed
-as I edit it. This directory is for the 2015-02-11 version of the paper.
+This directory is for the 2015-02-21 version of the paper, which will
+be submitted to summer conferences and probably to a journal soon.
 
 Main files
 ----------
