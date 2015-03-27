@@ -10,8 +10,14 @@ should be available at <http://gray.clhn.org> and you can find the
 latest version of this directory at
 <https://git.ece.iastate.edu/gcalhoun/smooth_irf>.
 
-This directory is for the 2015-02-22 version of the paper, which will
-be submitted to summer conferences and probably to a journal soon.
+The version number for this copy of the project is listed in the file
+`VERSION.tex`. (We're using the date in yyyy-mm-dd format as the
+version number.)
+
+* The 2015-02-22 version has been submitted to the Econometric Society
+  summer meetings.
+* The 2015-03-27 version has been submitted to the NBER Summer Institute
+  as well as the ASSA annual meetings.
 
 Main files
 ----------
