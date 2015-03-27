@@ -1,13 +1,13 @@
 smooth_irf overview
 ===================
 
-This repository contains the code and data for my (Gray Calhoun's)
-working paper *Smooth interpolation for Impulse Response Functions of
-SVARs*.  If you have trouble reproducing the paper's analysis, please
-contact me: <gcalhoun@iastate.edu>. A pdf of the latest version of the
-paper should be available at my homepage
-<http://www.econ.iastate.edu/~gcalhoun> and you can find the latest
-version of this directory at
+This repository contains the code and data for the working paper
+*Smooth interpolation for Impulse Response Functions of SVARs*, which
+is being cowritten by Gray Calhoun and Seth Pruitt.  If you have
+trouble reproducing the paper's analysis, please contact Gray Calhoun:
+<gcalhoun@iastate.edu>. A pdf of the latest version of the paper
+should be available at <http://gray.clhn.org> and you can find the
+latest version of this directory at
 <https://git.ece.iastate.edu/gcalhoun/smooth_irf>.
 
 This directory is for the 2015-02-22 version of the paper, which will
@@ -35,7 +35,7 @@ commands in the right order.
 License and copying
 -------------------
 
-Copyright (c) 2015, Gray Calhoun.
+Copyright (c) 2015, Gray Calhoun and Seth Pruitt.
 
 All of the R code for this project is licensed under the
 [MIT "Expat" License](http://opensource.org/licenses/MIT):
@@ -63,7 +63,7 @@ All of the R code for this project is licensed under the
 Errors and contact information
 ------------------------------
 
-Please let me know if you find errors. You can email
+Please let us know if you find errors. You can email
 <gcalhoun@iastate.edu> or file an issue at
 <https://git.ece.iastate.edu/gcalhoun/smooth_irf/issues>.
 Thanks!
