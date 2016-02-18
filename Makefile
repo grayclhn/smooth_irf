@@ -23,6 +23,7 @@
 ## CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ## SOFTWARE.
 
+SHELL = bash
 .PHONY: all clean burn zip VERSION.tex
 all: smoothirf.pdf
 zip: smoothirf.zip
