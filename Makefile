@@ -47,7 +47,7 @@ smoothirf.zip: $(zipped) smoothirf.pdf $(plots) \
 VERSION.tex:
 	echo "\newcommand\VERSION{$$(latex_misc/version_git.sh)}" > $@
 
-cruft := *~ *.Rout *.aux *.blg *.dvi *.log *.toc auto
+cruft := *~ *.Rout *.aux *.blg *.dvi *.log *.toc auto *.fdb_latexmk *.fls
 
 clean: 
 	rm -rf $(cruft)
