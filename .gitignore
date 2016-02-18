@@ -1,5 +1,9 @@
+VERSION.tex
 *.zip
+
+# Emacs files
 *~
+auto/
 
 # History files
 .Rhistory

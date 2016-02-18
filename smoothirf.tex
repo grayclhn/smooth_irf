@@ -6,6 +6,7 @@
     amsthm,
     booktabs,
     enumerate,
+    fancyhdr,
     flexisym,
     graphicx,
     setspace,
@@ -15,6 +16,7 @@
 }
 
 \input{VERSION}
+\date{\VERSION}
 
 \author{Gray Calhoun\thanks{Economics Department; Iowa State
     University; Ames, IA 50011. Telephone: (515) 294-6271.  Email:
@@ -56,6 +58,11 @@
 
 \newtheorem{prop}{Proposition}
 
+\pagestyle{fancy}
+\fancyhead[LE,LO]{\small\slshape\VERSION}
+\fancyhead[RE,RO]{\small\slshape\leftmark}
+\renewcommand{\headrulewidth}{0pt}
+
 \begin{document}
 \maketitle
 \begin{abstract}\noindent%
@@ -68,6 +75,9 @@
   cumulative response to a shock. In addition to being more accurate
   than current methods, our proposed approach is also much more attractive.
 \end{abstract}
+
+\tableofcontents
+\newpage
 
 \section{Introduction}
 
@@ -429,7 +439,8 @@ We conclude this section with a formal statement of the result.
   The conclusion of this proposition is a direct consequence.
 \end{proof}
 
-\section{Cumulative response and other extensions}\label{extensions}
+\section[Extensions]{Cumulative response and other extensions}
+\label{extensions}
 
 The results in the previous section will work for many applications,
 but in others we may may be interested in other functions of the
@@ -659,3 +670,8 @@ identification --- see Figure~\ref{f2} for an example.
 
 \bibliography{localrefs,latex_misc/references}
 \end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

@@ -23,31 +23,36 @@
 ## CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ## SOFTWARE.
 
-.PHONY: all clean burn zip
+.PHONY: all clean burn zip VERSION.tex
 all: smoothirf.pdf
 zip: smoothirf.zip
-
-latexmk = latexmk
-Rscript = Rscript
 
 .DELETE_ON_ERROR:
 
 plots = $(addsuffix .pdf,$(addprefix graphs/,numeric numeric2 motivation motivation2))
 
 graphs/motivation.pdf graphs/motivation2.pdf: R/motivation.R
-	$(Rscript) $< &> $<out
+	Rscript $< &> $<out
 graphs/numeric.pdf graphs/numeric2.pdf: R/numeric_example.R
-	$(Rscript) $< &> $<out
+	Rscript $< &> $<out
 
-smoothirf.pdf: smoothirf.tex VERSION.tex latex_misc/abbrevs.tex localrefs.bib $(plots)
-	$(latexmk) -pdf -silent $<
+smoothirf.pdf: smoothirf.tex localrefs.bib VERSION.tex $(plots) \
+  latex_misc/abbrevs.tex latex_misc/references.bib
+	texi2dvi -p -q -c $<
 
-smoothirf.zip: $(zipped) smoothirf.pdf $(plots) $(shell git ls-tree -r HEAD --name-only)
+smoothirf.zip: $(zipped) smoothirf.pdf $(plots) \
+  $(shell git ls-tree -r HEAD --name-only)
 	zip -ruo9 $@ $^ -x *.gitignore
 
+VERSION.tex:
+	echo "\newcommand\VERSION{$$(latex_misc/version_git.sh)}" > $@
+
+cruft := *~ *.Rout *.aux *.blg *.dvi *.log *.toc auto
+
 clean: 
-	$(latexmk) -c smoothirf.tex
-	rm -f *~ *.Rout
+	rm -rf $(cruft)
+	rm -rf $(addprefix R/,$(cruft) *.pdf)
+	rm -rf $(addprefix latex_misc/,$(cruft) *.pdf)
+
 burn: clean
-	$(latexmk) -C smoothirf.tex
-	rm -f graphs/*.pdf *.zip *.bbl
+	rm -rf VERSION.tex graphs *.pdf *.zip *.bbl
