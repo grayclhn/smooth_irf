@@ -23,7 +23,7 @@
 ## CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ## SOFTWARE.
 
-.PHONY: all clean burn zip
+.PHONY: all clean burn zip VERSION.tex
 all: smoothirf.pdf
 zip: smoothirf.zip
 
@@ -45,9 +45,11 @@ smoothirf.pdf: smoothirf.tex VERSION.tex latex_misc/abbrevs.tex localrefs.bib $(
 smoothirf.zip: $(zipped) smoothirf.pdf $(plots) $(shell git ls-tree -r HEAD --name-only)
 	zip -ruo9 $@ $^ -x *.gitignore
 
+VERSION.tex:
+	echo "\newcommand\VERSION{$$(latex_misc/version_git.sh)}" > $@
+
 clean: 
 	$(latexmk) -c smoothirf.tex
 	rm -f *~ *.Rout
 burn: clean
-	$(latexmk) -C smoothirf.tex
-	rm -f graphs/*.pdf *.zip *.bbl
+	rm -rf VERSION.tex graphs *.pdf *.zip *.bbl
