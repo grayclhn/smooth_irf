@@ -1,0 +1,200 @@
+#+Title: Graphing better Impulse Response Functions for discrete-time linear models
+#+Date: November 12, 2015
+#+Author: Gray Calhoun \newline Iowa State University \newline (http://gray.clhn.org)
+
+* _Introduction_
+  I'll briefly discuss
+  - Empirical macroeconomics (background)
+  - How Impulse Response Functions are used (more background)
+  - My contribution --- smoothed Impulse Response Functions
+
+  {{{s}}}
+
+  - Please interrupt with questions, otherwise it gets boring
+
+  {{{s}}}
+
+  - I should probably plug my class: Econ 674, macroeconometrics, co-taught with
+    Helle Bunzel. \newline (Should be offered next academic year.)
+* _What is [empirical] macroeconomics?_
+  - /``Macroeconomics is the study of the economy as a whole..../
+    - /Why are some countries rich and others poor?/
+    - /Why do countries grow?/
+    - /What are the sources of recessions and booms?/
+    - /Why is there unemployment and what determines its extent?/
+    - /What are the sources of inflation?/
+    - /How do government policies affect output, unemployment, inflation, and
+      growth?/''
+    (David Romer, /Advanced Macroeconomics/, p. 1)
+  - Some interest in financial markets, but less than you might think.
+    (There is more interest now than, say, 10 years ago.)
+  - Mixture of policy and academic interest
+* _Key challenges in research in macro (an incomplete list)_
+  1. There is not very much data.
+     - Great Depression and WWII were the motivation for a lot of economic data
+       collection
+     - Most studies use data that starts after WWII
+     - The economy changes over time
+     - WWII was *unusual* so initial values for some of these variables are
+       very far from steady-state values (debt, for example)
+  2. Statistically small differences in persistence can have large economic
+     effects
+* 
+  [[./graphs/cbo-potential-output.pdf]]
+* _Key challenges in research in macro (an incomplete list)_
+  1. There is not very much data.
+     - Great Depression and WWII were the motivation for a lot of economic data
+       collection
+     - Most studies use data that starts after WWII
+     - The economy changes over time
+     - WWII was *unusual* so initial values for some of these variables are
+       very far from steady-state values (debt, for example)
+  2. Statistically small differences in persistence can have large economic
+     effects
+  3. Households and firms are ``forward looking,'' so the same
+     intervention/treatment can have different effects if beliefs about future
+     policies are different
+     - Savings decisions reflect beliefs about future outcomes
+     - Especially important in understanding inflation, asset prices
+  4. Economic theory is not especially true
+
+* _Basic theoretical modeling strategies_
+  Very simple theoretical model
+  - A single representative agent chooses consumption and labor to maximize
+    current and future expected future utlility:
+    \[
+      u(c_t, h_t) + \sum_{j=1}^\infty \beta^j \E_t u(c_{t+j}^*, h_{t+j}^*)
+    \]
+    - $c_t$ is period $t$ consumption
+    - $h_t$ is period $t$ labor
+    - $*$'s denote variables that are chosen optimally in the future.
+  - A representative firm turns labor and capital into consumption goods
+    \[
+      c_t = f(k_t, h_t)
+    \]
+  - Firms maximize profits, budget constraints hold, etc
+* _Empirical strategies_
+  - Solve and estimate the model directly (Bayesian DSGE)
+    - Sometimes used to generate a prior for a more flexible model
+  - Use moment conditions implied by theoretical models to estimate
+    parameters / test hypotheses
+    \[
+      \beta (1 + r_t) \E_t u'(c_{t+1}) / u'(c_t) = 1
+    \]
+    (dropping $h_t$) (/Generalized/ Method of Moments)
+  - Use theoretical models to motivate restrictions on a more general model
+    (usually a Vector Autoregression)
+* _Vector Autoregressions_
+  - One approach is to let $y_{t}$ be a vector autoregression (VAR)
+    \[
+      y_t = A_0 + A_1 y_{t-1} + A_2 y_{t-2} + \cdots + A_k y_{t-k} + \varepsilon_t
+    \]
+    - $y_t$ is a vector of interesting macroeconomic variables
+      - quarterly GDP, unemployment rate, inflation, fed funds rate, etc
+    - can capture many stationary dynamics by increasing lag length
+      (Wald decomposition)
+    - Assume that we've successfully transformed the data so that $y_t$ is
+      more or less covariance stationary)
+    - Usually estimate with OLS or Bayesian
+  - Advantage: don't need to assume that a macroeconomic model is true (or
+    ``close to true'')
+  - Disadvantage: fundamentally can not answer many important questions
+    - i.e. what will happen if the Fed replaces `interest rate targeting' with
+      another policy rule
+* _Structural Vector Autoregressions_
+  - A `VAR' becomes a `Structural' VAR when we can assign economic meaning
+    to the innovations
+    \[
+      y_t = A_0 + A_1 y_{t-1} + A_2 y_{t-2} + \cdots + A_k y_{t-k} +
+            C v_t
+    \]
+    $v_t \sim \operatorname{white\ noise}(0, I)$
+    - Each element of $v_t$ is a different economic shock
+    - $v_{1t}$ could be a monetary policy shock
+    - $v_{2t}$ could be a `technology shock'
+    - etc.
+  - We can only estimate $C C'$ from the data (i.e. the variance covariance
+    matrix of the innovations)
+  - ``Economic theory'' can motivate additional restrictions that allow all
+    elements of $C$ to be estimated
+* _Impulse Response Functions_
+  - Interested in dynamics after a `shock' to $v_t$
+  - How does changing $v_t$ to $v_t + e$ change forecast for $y_t$, 
+    $y_{t+1}$, $y_{t+2}$,\dots
+
+\footnotesize
+    \begin{align*}
+      \Delta y_t &= A_0 + \sum_{j=1}^p A_j y_{t-j} + C (v_t + e) -  \Big(A_0 + \sum_{j=1}^p A_j y_{t-j} + C v_t\Big) = C e \\
+      \Delta y_{t+1} &= A_1 \Delta y_t \\
+      &\vdots \\
+      \Delta y_{t+k} &= \sum_{j=1}^p A_j \Delta y_{t+k-j}
+    \end{align*}
+* _Impulse Response Functions (example graph)_
+  Example plot for $y_t = -0.2 y_{t-1} + v_t$
+
+  {{{s}}}
+
+  [[./graphs/motivation2_cropped.pdf]]
+* _Impulse Response Functions (example graph 2)_
+
+  \includegraphics[width=2.15in]{./graphs/numericb.pdf} \includegraphics[width=2.15in]{./graphs/numeric2b.pdf}
+* _This paper's proposal_
+  - Use VAR for interpolation too
+  - VAR($p$) can be represented as giant VAR(1)
+    \begin{equation*}
+      \begin{pmatrix} y_t \\ y_{t-1} \\ \vdots \\ y_{t-p+2} \\ y_{t-p+1} \end{pmatrix}
+      = \begin{pmatrix} A_1 & A_2 & \dots & A_{p-1} & A_p \\
+                        I   & 0   & \dots & 0 & 0 \\
+                        0   & I   & \dots & 0 & 0 \\
+                        \vdots \\
+                        0   & 0   & \dots & I & 0 \end{pmatrix}
+      \begin{pmatrix} y_{t-1} \\ y_{t-2} \\ \vdots \\ y_{t-p+1} \\ y_{t-p} \end{pmatrix}+
+      \begin{pmatrix} C v_t \\ 0 \\ \vdots \\ 0 \\ 0 \end{pmatrix}
+    \end{equation*}
+    or
+    \[
+      \mathbf{y}_t = \mathbf{A} \mathbf{y}_{t-1} + \mathbf{C} \mathbf{v}_t
+    \]
+    (set $A_0 = 0$ for simplicity)
+  - This is convenient because $\Delta \mathbf{y}_{t+j} = \mathbf{A}^j \mathbf{C} e$
+* _This paper's proposal_
+  - Our paper: use $\Delta \mathbf{y}_{t+j} = \mathbf{A}^j \mathbf{C} e$ for
+    fractional values of $j$ too.
+    - Throw away imaginary part, so
+      \[
+        \Delta \mathbf{y}_{t+j} = \operatorname{Re}(\mathbf{A}^j \mathbf{C}) e
+      \]
+  - The paper shows that this is ok.
+* _Example graphs_
+  Example plot for $y_t = -0.2 y_{t-1} + v_t$ (again)
+
+  {{{s}}}
+
+  [[./graphs/motivation2.pdf]]
+* _Example graph 2 (again)_
+
+
+  \includegraphics[width=2.15in]{./graphs/numericc.pdf} \includegraphics[width=2.15in]{./graphs/numeric2c.pdf}
+
+* _What other potential improvements are there?_
+  - Jitter start point? (might be too exotic)
+  - How to plot ``95%'' confidence intervals? (marginal and joint)
+  - Target output is usually a pdf
+  - (Note to Gray: show examples `in the wild')
+* COMMENT slide setup
+#+OPTIONS: toc:nil
+#+OPTIONS: H:1
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [presentation,fleqn,t,serif]
+#+STARTUP: beamer
+#+LaTeX_HEADER: \input{slides-preamble}
+#+MACRO: s \vspace{\baselineskip}
+#+BEAMER_HEADER_EXTRA: \defbeamertemplate*{sec page}{default}[1][]
+#+BEAMER_HEADER_EXTRA: {
+#+BEAMER_HEADER_EXTRA:   \centering
+#+BEAMER_HEADER_EXTRA:     \begin{beamercolorbox}[sep=8pt,center,#1]{sec title}
+#+BEAMER_HEADER_EXTRA:       \usebeamerfont{sec title}\Huge\insertsection\par
+#+BEAMER_HEADER_EXTRA:     \end{beamercolorbox}
+#+BEAMER_HEADER_EXTRA: }
+#+BEAMER_HEADER_EXTRA: \newcommand*{\secpage}{\usebeamertemplate*{sec page}}
+#+BEAMER_HEADER_EXTRA: \AtBeginSection{\begin{frame}[c] \secpage \end{frame}}
