@@ -1,5 +1,8 @@
 *.zip
+
+# Emacs files
 *~
+auto/
 
 # History files
 .Rhistory
