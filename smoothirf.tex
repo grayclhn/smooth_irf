@@ -68,8 +68,8 @@
 \maketitle
 \begin{abstract}\noindent%
   We show how to construct continuous and differentiable
-  Impulse Response Functions and for discrete-time \VAR s and Vector
-  Error-Correction Models. Current methods produce piecewise linear
+  Impulse Response Functions and for discrete-time Vector Autoregressions
+  and Vector Error-Correction Models. Current methods produce piecewise linear
   functions that introduce visual distortions, especially when many
   response functions are plotted in the same graph to represent
   uncertainty or partial identification. We also show how to plot the
@@ -85,9 +85,10 @@
 Impulse Response Functions (\IRF s) are widely used in Macroeconomics
 to represent the dynamic effect over time of an unanticipated shock to
 an economic system. Formally, if $\{y_t\}$ is a stationary sequence of
-random vectors in $\RR^k$ and
+random vectors in $\RR^k$ and the function $g_s$ denotes the conditional
+expectation of $y_{t+s}$ given current information, so
 \[
-\E(y_{t+s} \mid y_t, y_{t-1},\dots) = g_s(y_t,\dots,y_{t-p})
+g_s(y_t,\dots,y_{t-p}) = \E(y_{t+s} \mid y_t, y_{t-1},\dots)
 \]
 for each $s > 0$,%
 \footnote{For later convenience, define
@@ -101,13 +102,14 @@ viewed as a function of $s$.%
   0$.} %
 Obviously the values of the \IRF\ depend on the specific nature of the
 shock $\Delta$, and different choices of $\Delta$ can correspond to
-different shocks of theoretical interest.  In Macroeconomic
+different shocks of theoretical interest.  In macroeconomic
 applications, $t$ and $s$ are typically integers and $g_s$ is often
-derived from a recursive linear model, the \VAR
+derived from a recursive linear model. A stationary Vector Autoregression
+(\VAR), represented abstractly as
 \begin{equation}\label{eq:1}
   y_t = A_0 + A_1 y_{t-1} + \cdots + A_p y_{t-p} + \vep_t
 \end{equation}
-where $\vep_t$ is a martingale difference sequence is one example.
+where $\vep_t$ is a martingale difference sequence, is one common example.
 
 It is straightforward to calculate the values of the \IRF s for
 integer-values of $s$ in models like~\eqref{eq:1}.
