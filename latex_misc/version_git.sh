@@ -37,8 +37,4 @@ case $(uname) in
     ;;
 esac
 
-if [ $(git describe --tags --exact-match 2> /dev/null) ]; then
-    echo $(git describe --tags --exact-match)
-else
-    echo "$date_string, commit $commit_short"
-fi
+echo "$date_string, $(git describe --tags)"
