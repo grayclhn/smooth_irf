@@ -46,7 +46,7 @@ smoothirf.zip: $(zipped) smoothirf.pdf $(plots) \
 	zip -ruo9 $@ $^ -x *.gitignore
 
 VERSION.tex:
-	echo "\newcommand\VERSION{$$(latex_misc/version_git.sh)}" > $@
+	echo "\newcommand\VERSION{$$(git log -1 --date=short --format=%cd), $$(git describe --tag --dirty)}" > $@
 
 cruft := *~ *.Rout *.aux *.blg *.dvi *.log *.toc auto *.fdb_latexmk *.fls
 
