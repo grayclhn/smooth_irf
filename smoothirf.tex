@@ -36,6 +36,14 @@
 \urlstyle{same}
 \newcolumntype{C}{>{\centering\arraybackslash}X}
 
+\pagestyle{fancy}
+\renewcommand{\sectionmark}[1]{\markboth{}{\footnotesize{\thesection. #1}}}
+\renewcommand{\subsectionmark}[1]{\markboth{}{\footnotesize{\thesubsection. #1}}}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[LE,LO]{\textit{\footnotesize{\nouppercase{\rightmark}}}}
+\rhead{\footnotesize{\textit{\VERSION}}}
+
 \onehalfspacing
 
 \usepackage[small]{caption}
@@ -60,11 +68,6 @@
 \newcommand{\VECM}{\allcaps{VECM}}
 
 \newtheorem{prop}{Proposition}
-
-\pagestyle{fancy}
-\fancyhead[LE,LO]{\footnotesize{\slshape\VERSION}}
-\fancyhead[RE,RO]{\footnotesize{\slshape\leftmark}}
-\renewcommand{\headrulewidth}{0pt}
 
 \begin{document}
 \maketitle
