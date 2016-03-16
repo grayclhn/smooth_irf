@@ -24,7 +24,7 @@
 ## SOFTWARE.
 
 SHELL = bash
-.PHONY: all clean burn zip VERSION.tex
+.PHONY: all clean burn zip
 all: smoothirf.pdf
 zip: smoothirf.zip
 
@@ -37,16 +37,13 @@ graphs/motivation.pdf graphs/motivation2.pdf: R/motivation.R
 graphs/numeric.pdf graphs/numeric2.pdf: R/numeric_example.R
 	Rscript $< &> $<out
 
-smoothirf.pdf: smoothirf.tex VERSION.tex $(plots) \
+smoothirf.pdf: smoothirf.tex $(plots) \
   latex_misc/abbrevs.tex latex_misc/references.bib
 	texi2dvi -p -q -c $<
 
 smoothirf.zip: $(zipped) smoothirf.pdf $(plots) \
   $(shell git ls-tree -r HEAD --name-only)
 	zip -ruo9 $@ $^ -x *.gitignore
-
-VERSION.tex:
-	echo "\newcommand\VERSION{$$(git log -1 --date=short --format=%cd), $$(git describe --tag --dirty)}" > $@
 
 cruft := *~ *.Rout *.aux *.blg *.dvi *.log *.toc auto *.fdb_latexmk *.fls
 

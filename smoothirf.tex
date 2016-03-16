@@ -1,4 +1,14 @@
 \documentclass[12pt,fleqn]{article}
+% Check if shell commands can be executed
+\ifnum\pdfshellescape=1
+% Yes, enabled
+\newcommand{\VERSION}{\splice{echo `git log -1 --date=short --format=\%cd`, `git describe --dirty`}}
+\else
+% No, disabled
+\providecommand\VERSION{\today}
+\fi
+\date{\VERSION}
+
 \usepackage{lucidabr}
 \usepackage[margin=1in]{geometry}
 \usepackage{
@@ -6,6 +16,7 @@
     amsmath,
     amssymb,
     amsthm,
+    bashful,
     booktabs,
     enumerate,
     fancyhdr,
@@ -18,16 +29,12 @@
     url,
 }
 
-\input{VERSION}
-\date{\VERSION}
-
 \author{Gray Calhoun\thanks{Economics Department; Iowa State
     University; Ames, IA 50011. Telephone: (515) 294-6271.  Email:
     \guillemotleft gcalhoun@iastate.edu\guillemotright, web:
     \guillemotleft http://www.econ.iastate.edu/\textasciitilde
     gcalhoun\guillemotright.} \\
   Iowa State University}
-
 
 \title{Graphing better Impulse Response Functions for discrete-time
   linear models}
@@ -682,4 +689,5 @@ identification --- see Figure~\ref{f2} for an example.
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: t
+%%% TeX-command-extra-options: "-shell-escape"
 %%% End:

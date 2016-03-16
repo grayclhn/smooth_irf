@@ -48,9 +48,13 @@ _region_.tex
 *.pdfsync
 *.ps
 *.snm
+*.stderr
+*.stdout
 *.synctex.gz
 *.toc
 *.vrb
 *.maf
 *.mtc
 *.mtc0
+
+smoothirf.sh
