@@ -537,22 +537,22 @@ this can be written as a canonical VAR(1) using the equation
 \begin{equation*}
 \begin{pmatrix*}[l]
   y_t \\ y_{t-1} \\ \vdots \\ y_{t-p+1} \\
-  \vep_t \\ \vep_{t-1} \\ \vdots \\ \vep_{t-q+1}
+  x_t \\ x_{t-1} \\ \vdots \\ x_{t-q+1}
 \end{pmatrix*}
 =
 \underbrace{\begin{pmatrix*}[l]
-  A_1    & \cdots & A_{p-1} & A_p    & B_1    & \cdots & B_q    \\
-  I_k    & \cdots & 0       & 0      & 0      & \cdots & 0      \\
-  \vdots & \ddots & \vdots  & \vdots & \vdots &        & \vdots \\
-  0      & \cdots & I_k     & 0      & 0      & \cdots & 0      \\
-  0      & \cdots & 0       & 0      & 0      & \cdots & 0      \\
-  0      & \cdots & 0       & 0      & I_k    & \cdots & 0      \\
-  \vdots &        & \vdots  & \vdots & \vdots & \ddots & \vdots \\
-  0      & \cdots & 0       & 0      & 0      & \cdots & I_k    \\
+  A_1    & \cdots & A_{p-1} & A_p    & B_1    & \cdots & B_{q-1} & B_q    \\
+  I_k    & \cdots & 0       & 0      & 0      & \cdots & 0       & 0      \\
+  \vdots & \ddots & \vdots  & \vdots & \vdots &        & \vdots  & \vdots \\
+  0      & \cdots & I_k     & 0      & 0      & \cdots & 0       & 0      \\
+  0      & \cdots & 0       & 0      & 0      & \cdots & 0       & 0      \\
+  0      & \cdots & 0       & 0      & I_k    & \cdots & 0       & 0      \\
+  \vdots &        & \vdots  & \vdots & \vdots & \ddots & \vdots  & 0      \\
+  0      & \cdots & 0       & 0      & 0      & \cdots & I_k     & 0      \\
 \end{pmatrix*}}_{F}
 \begin{pmatrix*}[l]
-  y_{t-1} \\ y_{t-2} \\ \vdots \\ y_{t-p} \\
-  \vep_{t-1} \\ \vep_{t-2} \\ \vdots \\ \vep_{t-q}
+  y_{t-1} \\ \vdots \\ y_{t-p+1} \\ y_{t-p} \\
+  x_{t-1} \\ \vdots \\ x_{t-q+1} \\ x_{t-q}
 \end{pmatrix*}
 +
 \begin{pmatrix*}[l]
