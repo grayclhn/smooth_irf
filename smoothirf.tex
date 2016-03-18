@@ -34,45 +34,45 @@
 \label{S1}
 
 Impulse Response Functions (\IRF s) are widely used in macroeconomics
-to represent the dynamic effect over time of an unanticipated shock to
-an economic system. If $y_t$ is a stationary sequence of random
-vectors, an \IRF\ is a graph of the change in the conditional
-expectation of $y_{t+s}$ in response to an unanticipated shock to
-$y_t$, plotted as a function of $s$. The conditional expectation may
-be implied by a theoretical model or a statistical model, such as a
-\VAR, in which case additional assumptions may be necessary to
-identify the shocks of interest. In either of these cases, \IRF s
-provide a parsimonious and interpretable summary of the key features
-of the model.
+to represent the dynamic effect over time of an unanticipated
+shock. If $y_t$ is a stationary sequence of random vectors, an \IRF\
+is a graph of the change in the conditional expectation of $y_{t+s}$
+in response to an unanticipated shock to $y_t$, plotted as a function
+of $s$. The conditional expectation may be implied by a theoretical
+model or a statistical model, such as a \VAR, in which case additional
+assumptions may be necessary to identify the shocks of economic
+interest. In either of these cases, \IRF s provide a parsimonious and
+interpretable summary of the key features of the model.
 
 Producing an \IRF\ requires calculating the conditional expectation
-$\E_t y_{t+s}$ under different counterfactual scenarios; with and
+$\E_t y_{t+s}$ under different counterfactual scenarios, with and
 without the shock of interest. Since most macroeconomic models are
-defined and estimated in discrete time (both $t$ and $s$ are
-integers) the conditional expectations used to produce \IRF s are
-calculated in discrete time as well. (See Chapter 1 of
-\citealp{Ham:94}, for example.) But in most applications, it is
-desireable to graph the \IRF s as curves and connect the points; this
-is especially important when more than one \IRF\ is plotted on the
-same graph --- whether to represent dynamics under different
+defined and estimated in discrete time (both $t$ and $s$ are integers)
+the conditional expectations used to produce \IRF s are calculated in
+discrete time as well. (See Chapter 1 of \citealp{Ham:94}, for
+example.) But in most applications, it is desireable to graph the \IRF
+s as curves and connect the points between the integer values of $s$;
+this is especially important when more than one \IRF\ is plotted on
+the same graph --- whether to represent dynamics under different
 assumptions (see \citealp{BeM:98}, and \citealp{StW:01}, for
 representative examples), to represent statistical uncertainty
 (\citealp{Kil:98}, and \citealp{SiZ:99}) or to represent regions that
 are partially identified (\citealp{Uhl:05}, and
 \citealp{InK:13}). Currently, this is done by linear interpolation
-between the integer values of $\E_t y_{t+s}$. Unfortunately, this
-practice has some drawbacks: linear interpolation introduces
-misleading visual distortions and can remove potentially interesting
-dynamics from the model.
+between the integer values of $\E_t y_{t+s}$ but this practice has
+some drawbacks. Linear interpolation introduces misleading visual
+distortions and can remove potentially interesting dynamics from the
+model.
 
-In this paper, we show how \IRF s can be meaningfully defined for
-vector ARMA and other linear time series models for all values of $t$
-and $s$, even noninteger values. This allows researchers to use the
-model itself to interpolate between the integers and ensures that the
-interpolation obeys the same dynamics as the rest of the model. The
-resulting graph removes the distortions introduced by current methods.
-Section~\ref{S2} presents these results, Section~\ref{S3} provides
-some numeric and empirical examples, and Section~\ref{S4} concludes.
+In this paper, we show how to construct continuous and smooth \IRF s
+for vector ARMA and other linear time series models. These \IRF s are
+defined for all values of $t$ and $s$, even noninteger values, and
+ensure that the interpolation obeys the same dynamics as the rest of
+the model. The resulting graph removes the distortions introduced by
+current methods.  Section~\ref{S2} presents these results,
+Section~\ref{S3} provides some numeric and empirical examples, and
+Section~\ref{S4} concludes.
+
 
 \section{Finite-order linear models}
 \label{S2}
