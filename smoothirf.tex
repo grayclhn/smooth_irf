@@ -73,8 +73,7 @@ current methods.  Section~\ref{S2} presents these results,
 Section~\ref{S3} provides some numeric and empirical examples, and
 Section~\ref{S4} concludes.
 
-
-\section{Finite-order linear models}
+\section{Smooth \IRF s for finite-order linear models}
 \label{S2}
 
 This section presents the main results of the paper: smooth \IRF s for
@@ -83,7 +82,7 @@ the AR(1) to motivate our approach. Section~\ref{S2.2} extends this
 result to finite-order \VAR s and Section~\ref{S2.3} extends the
 result further to VARMA and VECM models and to cumulative responses.
 The rest of this subsection introduces some notation and defines the
-\IRF s.
+\IRF s formally.
 
 Let $\{y_t\}$ be a stationary sequence of random vectors in $\RR^k$,
 let $\Fs_t$ represent the information set available in period $t$,
@@ -91,7 +90,7 @@ let $\Fs_t$ represent the information set available in period $t$,
   \Fs_t = \sigma(y_t, y_{t-1}, y_{t-2},\dots),
 \end{equation*}
 and let $\E_t$ denote the conditional expectation
-$\E(\cdot \mid \Fs_t)$. Assume for now that $\E_t y_{t+s}$ for
+$\E(\cdot \mid \Fs_t)$. Assume that $\E_t y_{t+s}$ for
 nonnegative $s$ only depends on $y_t,\dots,y_{t-p}$ for a finite value
 of $p$ and let the function $m_s$ represent this conditional
 expectation of $y_{t+s}$, so
@@ -99,10 +98,9 @@ expectation of $y_{t+s}$, so
   m_s(x_0,\dots,x_p)
   = \E(y_{t+s} \mid y_t = x_0,\dots, y_{t-p} = x_p)
 \end{equation*}
-for each $s \geq 0$. For later convenience, define $m_s = 0$ for
-$s < 0$ and let $\E y_t = \mu$. For a shock of theoretical interest
-$u$, with $u \in \RR^k$, the \IRF\ corresponding to $u$ is the
-difference
+for each $s \geq 0$. Define $m_s = 0$ for $s < 0$ and let
+$\E y_t = \mu$. For a shock of theoretical interest $u$, with
+$u \in \RR^k$, the \IRF\ corresponding to $u$ is the function
 \[
   \Psi_u(s) =
   m_s(\mu + u, \mu, \dots, \mu) - m_s(\mu, \mu, \dots,\mu).
@@ -124,17 +122,17 @@ and let
 Note that $\Psi_{tu}$ can be independent of $t$ even if $m_{ts}$ is
 not.
 
-\subsection{Motivation with an AR(1)}
+\subsection{AR(1) motivation}
 \label{S2.1}
 
 \begin{figure}[t]
   \centering
   \includegraphics{graphs/motivation.pdf}
   \caption{\IRF\ for simple AR(1) example. Here $y_t = 0.2 y_{t-1} +
-    \vep_t$ --- the vertical axis shows $\Psi_1(x)$. The left panel
-    plots only integer values of $x$, the middle panel uses linear
+    \vep_t$ --- the vertical axis shows $\Psi_1(s)$. The left panel
+    plots only integer values of $s$, the middle panel uses linear
     interpolation between the integers, and the right panel plots the
-    function $0.2^x$ directly.}
+    function $0.2^s$ directly.}
   \label{fig:1}
 \end{figure}
 
@@ -188,7 +186,7 @@ $\Phi(L)y_t = \vep_t$ for all $t$) we can express~\eqref{eq:4} in a
 form that will be easier to extend to more complicated \DGP s,
 \begin{equation}
   \label{eq:5}
-  \Phi(L) \Psi_u(s) = 0
+  \Phi(L) \Psi_u(s) = (1 - a L) \Psi_{u}(s) = 0
 \end{equation}
 for all $s \in \RR^+$ with the implicit definition
 $L \Psi_u(s) = \Psi_u(s-1)$. When $\Psi_u(s)$ is constructed by linear
@@ -200,30 +198,32 @@ values of $s$.
   \centering
   \includegraphics{graphs/motivation2.pdf}
   \caption{\IRF\ for simple AR(1) example. Here $y_t = -0.2 y_{t-1} +
-    \vep_t$ --- the vertical axis shows $\Psi_x(1)$. The left panel
-    plots only integer values of $x$, the middle panel uses linear
+    \vep_t$ --- the vertical axis shows $\Psi_s(1)$. The left panel
+    plots only integer values of $s$, the middle panel uses linear
     interpolation between the integers, and the right panel plots the
-    function $|a|^x \cos(\pi x)$ directly.}
+    function $|a|^s \cos(\pi s)$ directly.}
   \label{fig:2}
 \end{figure}
 
 The case $a \in (-1, 0)$ is slightly more complicated.  The previous
 solution, $a^s u$, is well-defined and real-valued only for integer
 values of $s$, so it can no longer be used directly for interpolation
-between the noninteger points. Instead, we consider the definition
+between the noninteger points. Instead, consider the definition
 \begin{equation}
+  \label{eq:11}
   \Psi_u(s) = |a|^s \cos(\pi s) \cdot u.
 \end{equation}
-This function is exactly equal to $a^s u$ for nonnegative integer
-values of $s$ and is well-defined and real valued for noninteger $s$.
-Moreover, this $\Psi_u(s)$ satisfies the recurrence relation for the
-\AR(1) model for all values of $a \in (-1,1)$
+For integer values of $s$, $\cos(\pi s) = 1$ so~\eqref{eq:11} is
+exactly equal to $a^s u$. But~\eqref{eq:11} remains real-valued and
+well defined for noninteger $s$ as well. Moreover,~\eqref{eq:11}
+satisfies the recurrence relation for the \AR(1) model for all values
+of $a \in (-1,1)$
 \begin{equation*}
   \Psi_u(s) = |a|^s \cos(\pi s) \cdot u = - |a| \times |a|^{s-1} \cos(\pi (s-1)) \cdot u = a \, \Psi_u(s-1)
 \end{equation*}
 implying that
 \begin{equation*}
-  (1 - a L) \, \Psi_u(s) = 0
+  \Phi(L) \Psi_u(s) = (1 - a L) \, \Psi_u(s) = 0
 \end{equation*}
 as before. Figure~\ref{fig:2} plots the \IRF s for $a = -0.2$ and
 $u = 1$ with no interpolation, linear interpolation, and the
@@ -243,20 +243,21 @@ can be expressed as\footnote{%
 (a + bi)^s = R^s [\cos(\theta s) - i \sin(\theta s)].
 \]
 For the \AR\ example above, $a < 0$ and $b = 0$ so $\theta = \pi$.
-Then $a^s = |a|^s \cos(\pi s)$ as we originally claimed. This example
-also suggests a more general method for interpolating between integer
-values of $s$ for any \VAR; solve recurrence relation using standard
-tools (as described in \citealp{Ham:94}, for example) and use the
-solution as the \IRF\ for real-valued $s$. We pursue that approach in
-the next section.
+Then $a^s = |a|^s \cos(\pi s)$ as we originally claimed.
+
+This example also suggests a more general method for interpolating
+between integer values of $s$ for any \VAR; solve recurrence relation
+using standard tools (as described in \citealp{Ham:94}, for example)
+and use the solution as the \IRF\ for real-valued $s$. We pursue that
+approach in the next section.
 
 \subsection{General Approach for VAR(\textit{p})}
 \label{S2.2}
 
 The \AR(1) model in the previous section can be extended to general
 \VAR s using the ``canonical'' representation.\footnote{%
-  See Chapter 1 of \citet{Ham:94} for a textbook treatment of much of
-  this material.} %
+  See \citet{Ham:94} or \citet{HaS:13} for a textbook treatment of
+  much of this material.} %
 Define $y_t$ to be the \VAR($p$),
 \[
 y_t = \sum_{j=1}^p A_j y_{t-j} + \vep_t.
@@ -278,7 +279,7 @@ vector $(y_t',\dots,y_{t-p+1}')'$ and observe that
   0 & 0 & \cdots & I_k & 0
 \end{pmatrix*}}_{F}
 \underbrace{\begin{pmatrix*}[l]
-  y_{t-1} \\ y_{t-2} \\ y_{t-3} \\ \vdots \\ y_{t-p}
+  y_{t-1} \\ y_{t-2} \\ \vdots \\ y_{t-p+1} \\ y_{t-p}
 \end{pmatrix*}}_{Z_{t-1}}
 +
 \underbrace{\begin{pmatrix*}[l]
@@ -289,36 +290,37 @@ So this relationship is equivalent to $Z_t = F Z_{t-1} + U_t$. The
 conditional expectation has a convenient form that is trivial to
 calculate for integer values of $s$,
 \begin{equation*}
-  m_s(x) = e_1 F^s x
+  m_s(x) = e_{1p} F^s x
 \end{equation*}
-where $e_1$ is the selection matrix
+where $e_{jp}$ is the $k p \times k$ selection matrix
 \begin{equation*}
-  e_1 = \begin{pmatrix*}[l]
-    I_k & 0 & \cdots & 0
+  e_{jp} = \begin{pmatrix*}[l]
+    0_{k \times (j-1)p} & I_k & 0_{k \times (k - j)p}
   \end{pmatrix*}.
 \end{equation*}
-Consequently, the \IRF\ has the form
+Consequently, for integer values of $s$, the \IRF\ has the form
 \begin{equation*}
-  \Psi_u(s) = e_1 F^s u_0
+  \Psi_u(s) = e_{1p} F^s e_{1p}' u.
 \end{equation*}
-for integer values of $s$, where we define $u_0$ to be the vector
-$(u', 0)'$. This section will show that a variation of this definition
-remains meaningful for noninteger values of $s$.
+This section will show that a variation of
+this definition remains meaningful for noninteger values of $s$.
 
-Suppose that $F$ has $q$ distinct eigenvalues. Then $F$ can be
-decomposed as
-\[
-F = M J M^{-1}
-\]
+To see this, notice that $F$ can be decomposed as (citation?)
+\begin{equation}
+  \label{eq:12}
+  F = M J M^{-1}
+\end{equation}
+
 where $J$ is block diagonal of the form
 \[
 J = \begin{pmatrix*}[l]
   J_1 & \cdots & 0 \\
   \vdots & \ddots & \vdots \\
   0 & \cdots & J_q
-\end{pmatrix*}.
+\end{pmatrix*}
 \]
-Each $J_\ell$ is an $n_\ell \times n_\ell$ of the form
+and $q$ is the number of unique eigenvalues of $J_{\ell}$. Each
+$J_\ell$ is an $n_\ell \times n_\ell$ of the form
 \[
 J_\ell =
 \begin{pmatrix*}[l]
@@ -332,8 +334,8 @@ J_\ell =
 \]
 where $\lambda_1,\dots,\lambda_q$ are the distinct eigenvalues of $F$
 and $n_\ell$ is the number of times the $\ell$th eigenvalue is
-repeated.  If all of the eigenvalues of $F$ are distinct, this is just
-the eigenvalue decomposition of $F$.
+repeated.  If all of the eigenvalues of $F$ are
+distinct,~\eqref{eq:12} is just the eigenvalue decomposition of $F$.
 
 This representation is convenient because, for positive integer values
 of $s$, we have
@@ -393,13 +395,13 @@ examples.
 
 Equation~\eqref{eq:7} has another practical implication. Although
 $F^s$ has real and imaginary components for real $s$, we are only
-interested in its real component, which generates the \IRF s for
-integer values of $s$. Rather than calculating the matrices $B_{jl}$
-and $C_{jl}$ to use~\eqref{eq:8}, we can calculate the complex valued
-$F^s$ and simply drop its imaginary component. This calculation is
-directly available in many programming languages and can be
-implemented as $M J^s M^{-1}$ using the Jordan decomposition if it is
-not.
+interested in its real component that generates the \IRF s for integer
+values of $s$. Rather than explicitly calculating the matrices
+$B_{jl}$ and $C_{jl}$ to use~\eqref{eq:8}, we can calculate the
+complex valued $F^s$ and simply drop its imaginary component. This
+calculation is directly available in many programming languages and
+can be implemented as $M J^s M^{-1}$ using the Jordan decomposition if
+it is not.
 
 We conclude this section with a formal statement of the result.
 
@@ -407,25 +409,24 @@ We conclude this section with a formal statement of the result.
   \label{P1}
   Let $F$ be the coefficient matrix of the canonical \VAR(1)
   representation of an arbitrary real-valued \VAR($p$). Define
-  $\Psi_u(s) = e_1 \Re(F^s) u_0$ for all $s \in [0,+\infty)$, where
-  $u_0 = (u', 0')'$ for some shock $u$ of theoretical interest. Then
+  $\Psi_u(s) = e_{1p} \Re(F^s) e_{1p}' u$ for all $s \in [0,+\infty)$, where
+  $u \in \RR^k$ is a shock of theoretical interest. Then
   $\Psi_u(s) = m_s(\mu + u, \dots, \mu) - m_s(\mu,\dots,\mu)$ for all
   integer values of $s$ and $\Psi_u(s)$ satisfies the recurrence
-  relation implied by the original \VAR,
+  relation implied by the original \VAR for all $s > 0$,
   \begin{equation}
     \label{eq:9}
-    \Psi_u(s) = \sum_{j=1}^q A_j \Psi_u(s-j)
+    \Psi_u(s) = \sum_{j=1}^q A_j \Psi_u(s-j).
   \end{equation}
-  for all $s > 0$.
 \end{proposition}
 \begin{proof}
   The fact that $\Psi_u(s)$ meets the definition of the \IRF\ on
-  integers is discussed in the text and follows from well-known
-  algebra. Observe that the series $a_s = \Re(F^s) u_0$ satisfies
+  integers is discussed in the text and follows from simple
+  algebra. Observe that the series $a_s = \Re(F^s) e_{1p}'u$ satisfies
   $a_s = F a_{s-1}$ since $F$ is real and
   \[
-    F a_{s-1} = F \Re(F^{s-1}) u_0
-    = \Re(F^s) u_0
+    F a_{s-1} = F \Re(F^{s-1}) e_{1p}'u
+    = \Re(F^s) e_{1p}'u
     = a_s.
   \]
   The conclusion of this proposition is a direct consequence.
@@ -437,14 +438,14 @@ We conclude this section with a formal statement of the result.
 This section considers three extensions to the previous section.
 First, we show how to calculate cumulative response functions for
 \VAR($p$)s. Second, we show how to calculate \IRF s for Vector Error
-Correction Models (\VECM). Third, we show how to calculate \IRF s for
-VARMA($p$, $q$) models. These results all rely on augmenting the
+Correction Models (\VECM). And, third, we show how to calculate \IRF s
+for VARMA($p$, $q$) models. These results all rely on augmenting the
 series to create a new canonical \VAR(1) and can easily be combined
-and extended further.
+and extended further to other recursive linear models.
 
 First, suppose that $y_t$ has a \VAR($p$) representation as before.
 but we want to derive the effect of the shock $u$ on $S_t$, the
-cumulative sum of the $y_t$'s,
+cumulative sum of the $y_t$s,
 \[
   S_t = \sum_{s=0}^t y_s.
 \]
@@ -495,16 +496,16 @@ and can be rewritten as
 \end{equation*}
 This representation is now a \VAR(1) that can be handled exactly as in
 Proposition~\ref{P1} and $\Psi_u(s)$ can be defined as
-$e_1 \Re(F^s) \cdot (u', u', \bm{0})'$.
+$e_{1,p+1} \Re(F^s) (e_{1,p+1} + e_{2,p+1})' u$
 
-The \VECM\ model is similar. Suppose now that we have the stationary
-relationship
+The \VECM\ model has similar behavior. Suppose now that we have the
+stationary relationship
 \begin{equation*}
   \Delta y_t = B y_{t-1} + A_1 \Delta y_{t-1} + \cdots + A_p \Delta
   y_{t-p} + \vep_t.
 \end{equation*}
 This can also be put in a canonical form using almost identical
-arguments as before
+arguments as before,
 \begin{equation*}
   \begin{pmatrix*}[l]
     y_t \\ \Delta y_t \\ \Delta y_{t-1} \\ \vdots \\ \Delta y_{t-p+1}
@@ -526,7 +527,7 @@ arguments as before
   \end{pmatrix*}
 \end{equation*}
 and $\Psi_u(s)$ can be defined as
-$e_1 \Re(F^s) \cdot (u', u', \bm{0})'$ again.
+$e_{1,p+1} \Re(F^s) (e_{1,p+1} + e_{2,p+1})' u$ again.
 
 VARMA($p$, $q$)s can also be handled similarly. If $y_t$ satisfies
 \begin{equation*}
@@ -558,7 +559,7 @@ this can be written as a canonical VAR(1) using the equation
   \vep_{t} \\ 0 \\ \vdots \\ 0 \\ \vep_t \\ 0 \\ \vdots \\ 0
 \end{pmatrix*}.
 \end{equation*}
-Now $\Psi_u(s) = e_1 \Re(F^s) \cdot (u', 0, u', 0)'$.
+Now $\Psi_u(s) = e_{1,p+q} \Re(F^s) (e_{1,p+q} + e_{p+1,p+q})' u$.
 
 Other extensions are obviously possible as well. See~\citet{FRSW:07}
 and~\citet{HaS:13} for additional examples and discussion.
