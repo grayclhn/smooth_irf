@@ -1,34 +1,7 @@
 \documentclass[12pt,fleqn]{article}
-% Check if shell commands can be executed
-\ifnum\pdfshellescape=1
-% Yes, enabled
-\newcommand{\VERSION}{\splice{echo `git log -1 --date=short --format=\%cd`, `git describe --dirty`}}
-\else
-% No, disabled
-\providecommand\VERSION{\today}
-\fi
-\date{\VERSION}
 
-\usepackage{lucidabr}
-\usepackage[margin=1in]{geometry}
-\usepackage{
-    amsfonts,
-    amsmath,
-    amssymb,
-    amsthm,
-    bashful,
-    booktabs,
-    enumerate,
-    fancyhdr,
-    flexisym,
-    graphicx,
-    mathtools,
-    setspace,
-    slantsc,
-    tabularx,
-    tocstyle,
-    url,
-}
+\title{Graphing better Impulse Response Functions for discrete-time
+  linear models}
 
 \author{Gray Calhoun\thanks{Economics Department; Iowa State
     University; Ames, IA 50011. Telephone: (515) 294-6271.  Email:
@@ -37,45 +10,9 @@
     gcalhoun\guillemotright.} \\
   Iowa State University}
 
-\title{Graphing better Impulse Response Functions for discrete-time
-  linear models}
 \input{latex_misc/abbrevs}
-
-\urlstyle{same}
-\newcolumntype{C}{>{\centering\arraybackslash}X}
-
-\pagestyle{fancy}
-\renewcommand{\sectionmark}[1]{\markboth{}{\footnotesize{\thesection. #1}}}
-\renewcommand{\subsectionmark}[1]{\markboth{}{\footnotesize{\thesubsection. #1}}}
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}
-\fancyhead[LE,LO]{\textit{\footnotesize{\nouppercase{\rightmark}}}}
-\rhead{\footnotesize{\textit{\VERSION}}}
-
-\onehalfspacing
-
-\usepackage[small]{caption}
-\usepackage[T1]{fontenc}
-\usepackage[letterspace=35]{microtype}
-\usepackage[sort,round,comma]{natbib}
-\bibliographystyle{abbrvnat}
-\newcommand\citepos[2][]{\citeauthor{#2}'s \citeyearpar[#1]{#2}}
-\newcommand\poscw{\citeauthor{ClW:06}'s \citeyearpar{ClW:06,ClW:07}}
-\newcommand\citen[1]{\citeauthor{#1}, \citeyear{#1}}
-
-\renewcommand{\Re}{\operatorname{Re}}
-\renewcommand{\Im}{\operatorname{Im}}
-
-\DeclareMathOperator{\whitenoise}{\mathit{white\ noise}}
-\DeclareMathOperator{\E}{E}
-\DeclareMathOperator{\floor}{floor}
-\DeclareMathOperator{\ceil}{ceil}
-\newcommand{\vep}{\varepsilon}
-\newcommand{\AR}{\allcaps{AR}}
-\newcommand{\RR}{\mathbb{R}}
-\newcommand{\VECM}{\allcaps{VECM}}
-
-\newtheorem{prop}{Proposition}
+\input{tex/setup}
+\input{tex/shorthand}
 
 \begin{document}
 \maketitle
