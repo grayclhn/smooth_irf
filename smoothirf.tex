@@ -210,12 +210,12 @@ solution, $a^s u$, is well-defined and real-valued only for integer
 values of $s$, so it can no longer be used directly for interpolation
 between the noninteger points. Instead, consider the definition
 \begin{equation}
-  \label{eq:11}
+  \label{eq:6}
   \Psi_u(s) = |a|^s \cos(\pi s) \cdot u.
 \end{equation}
-For integer values of $s$, $\cos(\pi s) = 1$ so~\eqref{eq:11} is
-exactly equal to $a^s u$. But~\eqref{eq:11} remains real-valued and
-well defined for noninteger $s$ as well. Moreover,~\eqref{eq:11}
+For integer values of $s$, $\cos(\pi s) = 1$ so~\eqref{eq:6} is
+exactly equal to $a^s u$. But~\eqref{eq:6} remains real-valued and
+well defined for noninteger $s$ as well. Moreover,~\eqref{eq:6}
 satisfies the recurrence relation for the \AR(1) model for all values
 of $a \in (-1,1)$
 \begin{equation*}
@@ -266,7 +266,7 @@ y_t = \sum_{j=1}^p A_j y_{t-j} + \vep_t.
 of generality.) To represent this relationship as a \VAR(1), form the
 vector $(y_t',\dots,y_{t-p+1}')'$ and observe that
 \begin{equation}
-\label{eq:6}
+\label{eq:7}
 \underbrace{\begin{pmatrix*}[l]
   y_t \\ y_{t-1} \\ y_{t-2} \\ \vdots \\ y_{t-p+1}
 \end{pmatrix*}}_{Z_t}
@@ -307,7 +307,7 @@ this definition remains meaningful for noninteger values of $s$.
 
 To see this, notice that $F$ can be decomposed as (citation?)
 \begin{equation}
-  \label{eq:12}
+  \label{eq:8}
   F = M J M^{-1}
 \end{equation}
 
@@ -335,7 +335,7 @@ J_\ell =
 where $\lambda_1,\dots,\lambda_q$ are the distinct eigenvalues of $F$
 and $n_\ell$ is the number of times the $\ell$th eigenvalue is
 repeated.  If all of the eigenvalues of $F$ are
-distinct,~\eqref{eq:12} is just the eigenvalue decomposition of $F$.
+distinct,~\eqref{eq:8} is just the eigenvalue decomposition of $F$.
 
 This representation is convenient because, for positive integer values
 of $s$, we have
@@ -374,7 +374,7 @@ $\sin(\theta_\ell) = \Im(\lambda_\ell)/|\lambda_\ell|$ as before.
 
 This representation allows us to write
 \begin{multline}
-  \label{eq:7}
+  \label{eq:9}
   F^s =
   \sum_{j = 1}^q \sum_{l=0}^{\min(n_\ell, \lfloor s\rfloor)} \tfrac{s(s-1)\cdots(s-l+1)}{l (l - 1) \cdots 1} |\lambda_j|^{s-l} \\
   \times\Big\{\big[B_{jl} \cos(\theta_j s) + C_{jl} \sin(\theta_j s)\big] + i\big[D_{jl} \cos(\theta_j s) + E_{jl} \sin(\theta_j s)\big]\Big\}
@@ -382,22 +382,22 @@ This representation allows us to write
 where the coefficient matrices $B_{jl}$, $C_{jl}$, $D_{jl}$, and
 $E_{jl}$ are chosen to match $F^0, F^1, F^2,\dots$. For integer
 values of $s$, the imaginary components of $M J^s M^{-1}$ exactly
-cancel, so we can use the real part of~\eqref{eq:7} alone, giving
+cancel, so we can use the real part of~\eqref{eq:9} alone, giving
 \begin{equation}
-  \label{eq:8}
+  \label{eq:10}
   F^s =
   \sum_{j = 1}^q \sum_{l=0}^{\min(n_\ell, \lfloor s \rfloor)} \tfrac{s(s-1)\cdots(s-l+1)}{l (l - 1) \cdots 1} |\lambda_j|^{s-l} \big[B_{jl} \cos(\theta_j s) + C_{jl} \sin(\theta_j s)\big]
 \end{equation}
 to produce $F^1, F^2, F^3,\dots$. Our proposal, in a nutshell, is to
-use the definition given by~\eqref{eq:8} for all of the reals rather
+use the definition given by~\eqref{eq:10} for all of the reals rather
 than just the integers, exactly as we did in the motivating \AR(1)
 examples.
 
-Equation~\eqref{eq:7} has another practical implication. Although
+Equation~\eqref{eq:9} has another practical implication. Although
 $F^s$ has real and imaginary components for real $s$, we are only
 interested in its real component that generates the \IRF s for integer
 values of $s$. Rather than explicitly calculating the matrices
-$B_{jl}$ and $C_{jl}$ to use~\eqref{eq:8}, we can calculate the
+$B_{jl}$ and $C_{jl}$ to use~\eqref{eq:10}, we can calculate the
 complex valued $F^s$ and simply drop its imaginary component. This
 calculation is directly available in many programming languages and
 can be implemented as $M J^s M^{-1}$ using the Jordan decomposition if
@@ -415,7 +415,7 @@ We conclude this section with a formal statement of the result.
   integer values of $s$ and $\Psi_u(s)$ satisfies the recurrence
   relation implied by the original \VAR for all $s > 0$,
   \begin{equation}
-    \label{eq:9}
+    \label{eq:11}
     \Psi_u(s) = \sum_{j=1}^q A_j \Psi_u(s-j).
   \end{equation}
 \end{proposition}
@@ -451,7 +451,7 @@ cumulative sum of the $y_t$s,
 \]
 Since $S_t - y_t = S_{t-1}$, we can extend the canonical
 representation for $y_t$ by embedding this relationship as the first
-element of the vector $Z_t$ in~\eqref{eq:6}. Equation~\eqref{eq:6}
+element of the vector $Z_t$ in~\eqref{eq:7}. Equation~\eqref{eq:7}
 becomes
 \begin{equation*}
   \begin{pmatrix*}[l]
@@ -578,7 +578,7 @@ shocks.
 
 For a numerical example, consider the two-variable \VAR(2)
 \begin{equation}
-  \label{eq:10}
+  \label{eq:12}
   \begin{pmatrix*}[l]
     y_{1t} \\ y_{2t}
   \end{pmatrix*}
@@ -635,7 +635,7 @@ element of $y_t$, but now the last vector should be $(0, 1, 0, 0)'$.
   \centering
   \includegraphics{graphs/numeric.pdf}
   \caption{Impulse Response Functions from Section~\ref{S3}
-    example; $y_t$ is generated by Equation~\eqref{eq:10}. The left
+    example; $y_t$ is generated by Equation~\eqref{eq:12}. The left
     column plots standard \IRF s and the right column plots our new
     method.}
   \label{fig:3}
@@ -657,7 +657,7 @@ introduces misleading asymmetries and kinks.
   \centering
   \includegraphics{graphs/numeric2.pdf}
   \caption{Impulse Response Functions from Section~\ref{S3}
-    example; $y_t$ is generated by Equation~\eqref{eq:10}, with
+    example; $y_t$ is generated by Equation~\eqref{eq:12}, with
     independent $N(0,0.15)$ random variable added to each
     coefficient. These graphs plot the \IRF s from 150 independent
     draws of the coefficient matrices. The left column plots standard
