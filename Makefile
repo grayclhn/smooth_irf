@@ -37,8 +37,8 @@ graphs/motivation.pdf graphs/motivation2.pdf: R/motivation.R
 graphs/numeric.pdf graphs/numeric2.pdf: R/numeric_example.R
 	Rscript $< &> $<out
 
-smoothirf.pdf: smoothirf.tex $(plots) \
-  latex_misc/abbrevs.tex latex_misc/references.bib
+smoothirf.pdf: smoothirf.tex CHANGELOG.tex tex/shorthand.tex tex/setup.tex \
+  latex_misc/abbrevs.tex latex_misc/references.bib $(plots)
 	texi2dvi -p -q -c $<
 
 smoothirf.zip: $(zipped) smoothirf.pdf $(plots) \
