@@ -1,3 +1,9 @@
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage[T1]{fontenc}
+\usepackage{lucidabr}
+\usepackage[margin=1in]{geometry}
+\usepackage[letterspace=35]{microtype}
+
 % Check if shell commands can be executed
 \ifnum\pdfshellescape=1
 % Yes, enabled
@@ -7,25 +13,16 @@
 \providecommand\VERSION{\today}
 \fi
 \date{\VERSION}
-\usepackage{amsmath}
-\usepackage{lucidabr}
-\usepackage[margin=1in]{geometry}
+
 \usepackage{
-    amsfonts,
-    amssymb,
-    amsthm,
     bashful,
-    bm,
     booktabs,
     enumitem,
     fancyhdr,
-    flexisym,
     graphicx,
-    mathtools,
     ragged2e,
     sectsty,
     setspace,
-    slantsc,
     tabularx,
     tocstyle,
     url,
@@ -46,13 +43,8 @@
 \onehalfspacing
 
 \usepackage[small]{caption}
-\usepackage[T1]{fontenc}
-\usepackage[letterspace=35]{microtype}
 \usepackage[sort,round,comma]{natbib}
 \bibliographystyle{abbrvnat}
-\newcommand\citepos[2][]{\citeauthor{#2}'s \citeyearpar[#1]{#2}}
-\newcommand\poscw{\citeauthor{ClW:06}'s \citeyearpar{ClW:06,ClW:07}}
-\newcommand\citen[1]{\citeauthor{#1}, \citeyear{#1}}
 
 \newtheorem{proposition}{Proposition}
 
