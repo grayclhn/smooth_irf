@@ -30,11 +30,14 @@ zip: smoothirf.zip
 
 .DELETE_ON_ERROR:
 
-plots = $(addsuffix .pdf,$(addprefix graphs/,numeric numeric2 motivation motivation2))
+plots = $(addsuffix .pdf,$(addprefix graphs/,numeric numeric2 \
+  motivation motivation2 empirics))
 
 graphs/motivation.pdf graphs/motivation2.pdf: R/motivation.R
-	Rscript $< &> $<out
 graphs/numeric.pdf graphs/numeric2.pdf: R/numeric_example.R
+graphs/empirics.pdf: R/empirics.R data/GDPC1.csv data/GDPDEF.csv data/DFF.csv
+
+$(plots):
 	Rscript $< &> $<out
 
 smoothirf.pdf: smoothirf.tex CHANGELOG.tex tex/shorthand.tex tex/setup.tex \

@@ -566,6 +566,13 @@ and~\citet{HaS:13} for additional examples and discussion.
 
 \section{Examples}
 \label{S3}
+In this section, we present two examples. The first is a numerical
+example that demonstrates how these methods scale when they are used
+to graph many curves simultaneously. The second is an application to
+Uhlig's~(2005) partial identification strategy for monetary policy
+shocks.
+\nocite{Uhl:05}
+
 \subsection{Numerical example}
 \label{S3.1}
 
@@ -613,14 +620,14 @@ the first element as
   \end{pmatrix*}
 \end{equation*}
 with $M$ and $J$ the Jordan decomposition of the matrix
-\begin{equation}
+\begin{equation*}
 F = \begin{pmatrix*}[r]
     - 0.50 & 0.01 & -0.20 & 0.10 \\
       0.30 & 0.10 & -0.10 & 0.00 \\
       1.00 & 0.00 & 0.00 & 0.00 \\
       0.00 & 1.00 & 0.00 & 0.00
   \end{pmatrix*}
-\end{equation}
+\end{equation*}
 The same equations hold for the \IRF s for a shock to the second
 element of $y_t$, but now the last vector should be $(0, 1, 0, 0)'$.
 
@@ -684,6 +691,71 @@ decrease, but that many start to increase very soon. The exact
 location of the peak that falls between periods 1 and 2 determines
 most of the initial dynamics, but this is impossible to see in the
 discrete curve.
+
+\subsection{Empirical analysis of the effect of monetary policy}
+
+This section demonstrates our proposal in a widely-studied empirical
+setting. We conduct a brief analysis of the effect of monetary policy
+on the real economy, a question that has motivated much of the
+research on \VAR s in general. In particular, we will demonstrate the
+partial identification strategy proposed by \citet{Uhl:05}.
+
+Just a quick review: in Structural \VAR\ models, the shocks of
+theoretical interest --- a monetary policy shock in this section ---
+can simultaneously affect all of the variables in the model. Without
+additional assumptions beyond those necessary to estimate the
+coefficients of the \VAR, we can not estimate all of the unknown
+parameters necessary to identify the shock.
+
+Uhlig's (2005) approach is to identify \emph{potential} monetary
+shocks by looking at their effect on major monetary policy
+variables. The shocks that give \IRF s that have the correct sign on
+these variables are stored as candidate monetary policy shocks, and
+the effect on other variables is partially identified. More
+specifically, Uhlig imposes the following restrictions:
+\begin{itemize}
+\item the Federal Funds rate does not increase for five months after a
+  monetary policy shock,
+\item the price level does not decrease for five months after a
+  monetary policy shock
+\item nonborrowed reserves does not decrease after a monetary policy
+  shock.\footnote{%
+    \citet{Uhl:05} obviously conducts other sensitivity analyses as
+    well.} %
+\end{itemize}
+
+For this empirical analysis, we use monthly data on six variables:
+real GDP, the GDP deflator, the federal funds rate, borrowed reserves,
+nonborrowed reserves, and a commodity price index, and the goal is to
+find the effect of a negative monetary policy shock on these
+variables. Obviously, \GDP\ and the \GDP\ deflator are not available
+at monthly frequencies, so their values are interpolated as described
+by \citet{BGW:97} and \citet{BeM:98}. Formally, for given values of
+$\hat F$ and $\hat \Sigma$, we generate a candidate shock $u^* = \hat
+\Sigma^{1/2} u / \| u \|_2$ where $u \sim N(0,I)$ and calculate the
+candidate \IRF\ as
+\[
+\Psi^*(t) = [I_6, 0,\dots,0] \hat F^t (u^*, 0,\dots,0)'.
+\]
+
+Now let $\Psi^*_1(t)$, $\Psi^*_2(t)$, and $\Psi^*_3(t)$ are the \IRF s
+for the Federal Funds rate, the price level, and nonborrowed reserves
+$t$ periods after a shock. If $\Psi^*_1(t) > 0$, $\Psi^*_2(t) < 0$ or
+$\Psi^*_3(t) < 0$ for any $t \in [0,5]$ then this shock is definitely
+not a monetary policy shock (in the context of this identification
+strategy) and is discarded. Otherwise, we keep this as a potential
+monetary policy shock. Either way, we generate another value of $u^*$
+and continue to generate candidate monetary policy shocks. For this
+exercise, we generate 100 total monetary policy shocks.
+
+Figure~\ref{fig:5} presents these graphs
+
+\begin{figure}[t]
+  \centering
+  \includegraphics{graphs/empirics}
+  \caption{Empircs}
+  \label{fig:5}
+\end{figure}
 
 \section{Conclusion}
 \label{S4}
