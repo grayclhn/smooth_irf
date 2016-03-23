@@ -99,14 +99,18 @@ expectation of $y_{t+s}$, so
   = \E(y_{t+s} \mid y_t = x_0,\dots, y_{t-p} = x_p)
 \end{equation*}
 for each $s \geq 0$. Define $m_s = 0$ for $s < 0$ and let
-$\E y_t = \mu$. For a shock of theoretical interest $u$, with
-$u \in \RR^k$, the \IRF\ corresponding to $u$ is the function
+$\E y_t = \mu$. For a shock of interest $u$, with $u \in \RR^k$, the
+\IRF\ corresponding to $u$ is the function
 \[
   \Psi_u(s) =
   m_s(\mu + u, \mu, \dots, \mu) - m_s(\mu, \mu, \dots,\mu).
 \]
-Often theoretical shocks are normalized so that $\lvert u \rvert = 1$
-but that is not necessary.
+The shock, $u$, in these equations should be viewed as the ``reduced
+form'' version of the shock --- an unanticipated change in the current
+value of $y_t$. In a Structural \VAR\ application, $u$ will typicall
+be related to a more fundamental shock of economic interest $\delta$
+through the linear transformation $u = \Gamma \delta$, for some known
+or estimated matrix $\Gamma$.
 
 If $y_t$ is nonstationary $\E_t$ may depend on the value of $t$. In that
 case, define
