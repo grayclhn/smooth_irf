@@ -435,7 +435,7 @@ We conclude this section with a formal statement of the result.
   The conclusion of this proposition is a direct consequence.
 \end{proof}
 
-\subsection[Finite-order linear models]{Extensions to other finite-order linear models}
+\subsection[Finite-order linear models]{Extensions to other linear models}
 \label{S2.3}
 
 This section considers three extensions to the previous section.
@@ -610,12 +610,12 @@ shocks of interest.
 
 The IRF for an $\vep_1$-shock is defined as described above,
 \begin{equation*}
-  \Psi_1(s) = e_{1,2} M J^s M^{-1} e_{1,2}'
+  \Psi_1(s) = e_{1,2} \Re(F^s) e_{1,2}'
   \begin{pmatrix*}[l]
     1 \\ 0
   \end{pmatrix*}
 \end{equation*}
-with $M$ and $J$ the Jordan decomposition of the matrix
+with
 \begin{equation*}
 F = \begin{pmatrix*}[r]
     - 0.50 & 0.01 & -0.20 & 0.10 \\
@@ -715,68 +715,159 @@ to emphasize the integer-valued time periods while using our method of
 interpolation.
 
 \subsection{Empirical analysis of the effect of monetary policy}
+\label{S3.2}
 
-This section demonstrates our proposal in a widely-studied empirical
-setting. We conduct a brief analysis of the effect of monetary policy
-on the real economy, a question that has motivated much of the
-research on VARs in general. In particular, we will demonstrate the
-partial identification strategy proposed by \citet{Uhl:05}.
+This section demonstrates our proposed method for constructing IRFs
+in a widely-studied empirical setting. We conduct a brief analysis of
+the effect of monetary policy on the real economy using Uhlig's~(2005)
+sign-restriction partial identification strategy.
 
-Just a quick review: in Structural VAR models, the shocks of
+First, a quick review. In Structural VAR models, the shocks of
 theoretical interest --- a monetary policy shock in this section ---
 can simultaneously affect all of the variables in the model. Without
 additional assumptions beyond those necessary to estimate the
 coefficients of the VAR, we can not estimate all of the unknown
-parameters necessary to identify the shock.
+parameters necessary to identify the shock.\footnote{%
+  \citet{Kil:13} gives a recent review of the SVAR literature.} %
+I.e., if $y_t$ is a VAR($p$),
+\begin{equation}
+  \label{eq:13}
+  y_t = \alpha + \sum_{i=1}^p A_i y_{t-p} + \vep_t,
+\end{equation}
+with $\vep_t \sim (0, \Sigma)$ a martingale difference sequence, then
+$\vep_t$ is related to the sequence of theoretical shocks $\delta_t$
+through
+\begin{equation*}
+  \vep_t = \Gamma \delta_t
+\end{equation*}
+and $\delta_t \sim (0, I)$ is also martingale difference sequence. The
+variance covariance matrix, $\Sigma$, can be consistently estimated,
+but $\Gamma$ will in general have more unique elements than $\Sigma$.
+The IRF corresponding to a vector of theoretical shocks $\delta$ is
+given by
+\begin{equation}
+  \label{eq:14}
+  \Psi_\delta(s) = e_{1p} \Re(F^s) e_{1p}' \Gamma \delta
+\end{equation}
+so additional restrictions on $\Gamma$ are necessary to estimate
+$\Psi_\delta$.
 
-Uhlig's (2005) approach is to identify \emph{potential} monetary
-shocks by looking at their effect on major monetary policy
-variables. The shocks that give IRFs that have the correct sign on
-these variables are stored as candidate monetary policy shocks, and
-the effect on other variables is partially identified. More
-specifically, Uhlig imposes the following restrictions:
-\begin{itemize}
+\citet{Uhl:05} proposes using a minimal set of assumptions to identify
+\emph{potential} monetary policy shocks. Letting the first element of
+$\delta$ represent a positive monetary policy shock, Uhlig's approach
+is to generate candidate shocks randomly and calculate $\Psi_\delta$
+corresponding to that specific shock. IRFs that match some a priori
+plausible criteria are kept as potential responses to monetary policy
+shocks and the resulting set of functions partially identifies the
+effect of a shock. Formally, for given estimates $\hat F$ and
+$\hat \Sigma$, this procedure amounts to generating many candidate
+shocks $u^* = u / \| u \|_2$ where $u \sim N(0,I)$ and calculating the
+candidate IRFs as
+\begin{equation}
+  \label{eq:15}
+  \hat \Psi_{u^*}(s) =  e_{1p} \Re(\hat F^s) e_{1p}' \hat\Sigma^{1/2} u^*,
+\end{equation}
+then discarding $\hat\Psi_{u^*}(s)$ that do not meet the criteria of
+allowed responses to monetary policy shock.
+
+In this paper, we use our proposed method for graphing IRFs to plot
+the candidate responses to a monetary policy shock using Uhlig's sign
+restrictions. We fit a 6-lag VAR using the same six variables as
+Uhlig: real GDP, the GDP deflator, the federal funds rate, borrowed
+reserves, nonborrowed reserves, and a commodity price
+index.\footnote{%
+  As in Uhlig, we fit the model in levels and without an explicit time
+  trend.} %
+We also impose the same restrictions as Uhlig:
+\begin{itemize}[noitemsep]
 \item the Federal Funds rate does not increase for five months after a
   monetary policy shock,
 \item the price level does not decrease for five months after a
-  monetary policy shock
+  monetary policy shock, and
 \item nonborrowed reserves does not decrease after a monetary policy
-  shock.\footnote{%
-    \citet{Uhl:05} obviously conducts other sensitivity analyses as
-    well.} %
+  shock.
 \end{itemize}
+Since our interest here is in the method of displaying IRFs, we use
+\citeauthor{BeM:98}'s original dataset, which covers January 1965
+through December 1997.  Most of the variables are available
+monthly. Since GDP and the GDP deflator are only quarterly, their
+values are interpolated as described by \citet{BGW:97} and
+\citet{BeM:98}.
 
-For this empirical analysis, we use monthly data on six variables:
-real GDP, the GDP deflator, the federal funds rate, borrowed reserves,
-nonborrowed reserves, and a commodity price index, and the goal is to
-find the effect of a negative monetary policy shock on these
-variables. Obviously, GDP and the GDP deflator are not available
-at monthly frequencies, so their values are interpolated as described
-by \citet{BGW:97} and \citet{BeM:98}. Formally, for given values of
-$\hat F$ and $\hat \Sigma$, we generate a candidate shock $u^* = \hat
-\Sigma^{1/2} u / \| u \|_2$ where $u \sim N(0,I)$ and calculate the
-candidate IRF as
-\[
-\Psi^*(t) = [I_6, 0,\dots,0] \hat F^t (u^*, 0,\dots,0)'.
-\]
-
-Now let $\Psi^*_1(t)$, $\Psi^*_2(t)$, and $\Psi^*_3(t)$ are the IRFs
-for the Federal Funds rate, the price level, and nonborrowed reserves
-$t$ periods after a shock. If $\Psi^*_1(t) > 0$, $\Psi^*_2(t) < 0$ or
-$\Psi^*_3(t) < 0$ for any $t \in [0,5]$ then this shock is definitely
-not a monetary policy shock (in the context of this identification
-strategy) and is discarded. Otherwise, we keep this as a potential
-monetary policy shock. Either way, we generate another value of $u^*$
-and continue to generate candidate monetary policy shocks. For this
-exercise, we generate 100 total monetary policy shocks.
-
-Figure~\ref{fig:5} presents these graphs
+Figures~\ref{fig:5}--\ref{fig:10} present our graphs. For this
+exercise, we only present the estimate of the identified set that is
+associated with the OLS point estimates and ignore the additional
+uncertainty in estimating the coefficients. The main results are
+essentially already known: the immediate effect of a sign-identified
+monetary policy shock on GDP is ambiguous in the very short run but
+lowers GDP relative to trend after about two years. And the effects on
+the other variables are consistent with the identification strategy
+and with the previous literature. But our approach to smoothing the
+IRFS allows each of the individual candidate shocks to be studied as
+well. Many of the curves have a minimum between 1/2 to 2 years, but
+there is considerable uncertainty over the exact date of the minimum.
 
 \begin{figure}[t]
   \centering
-  \includegraphics{graphs/empirics}
-  \caption{Empircs}
+  \includegraphics{graphs/empirics_GDPM}
+  \caption{%
+    Response of GDP to a sign-identified negative monetary policy
+    shock; see description in Section~\ref{S3.2}. This figure graphs
+    500 candidate shocks.}
   \label{fig:5}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics{graphs/empirics_PGDPM}
+  \caption{%
+    Response of GDP deflator to a sign-identified negative monetary
+    policy shock; see description in Section~\ref{S3.2}. This response
+    is used in part to identify the shock. This figure graphs 500
+    candidate shocks.}
+  \label{fig:6}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics{graphs/empirics_FYFF}
+  \caption{%
+    Response of the Federal Funds rate to a sign-identified negative
+    monetary policy shock; see description in Section~\ref{S3.2}. This
+    response is used in part to identify the shock. This figure graphs
+    500 candidate shocks.}
+  \label{fig:7}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics{graphs/empirics_PSCCOM}
+  \caption{%
+    Response of commodity prices to a sign-identified negative
+    monetary policy shock; see description in Section~\ref{S3.2}. This
+    figure graphs 500 candidate shocks.}
+  \label{fig:8}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics{graphs/empirics_TRES}
+  \caption{%
+    Response of total reserves to a sign-identified negative monetary
+    policy shock; see description in Section~\ref{S3.2}. This figure
+    graphs 500 candidate shocks.}
+  \label{fig:9}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics{graphs/empirics_NBREC}
+  \caption{%
+    Response of non-borrowed reserves to a sign-identified negative
+    monetary policy shock; see description in Section~\ref{S3.2}.
+    This response is used in part to identify the monetary policy
+    shock. This figure graphs 500 candidate shocks.}
+  \label{fig:10}
 \end{figure}
 
 \section{Conclusion}

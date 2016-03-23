@@ -25,132 +25,113 @@
 
 ## This code should be run in the directory above ./R
 source("R/functions.R")
-library(dplyr)
+
+makeshock <- function(V = NULL, P = t(chol(V)), e = rnorm(ncol(P))) {
+    drop(P %*% e / sqrt(sum(e * e)))
+}
 
 newvar <- function(y, p) {
     k <- ncol(y)
     z = y[-(1:p),]
-    ynames <- if (is.null(colnames(y))) {
-        paste("y", 1:k, sep = "")
-    } else {
-        colnames(y)
-    }
     x = matrix(1, nrow(z), 1 + p*k)
-    xnames <- character(p*k)
     for (i in 1:p) {
-        xcols_i<- 1 + (((i-1)*k + 1):(i*k))
-        x[,xcols_i] = y[((p+1):nrow(y)) - i,]
-        xnames[xcols_i - 1] <- paste(ynames, "_L", i, sep = "")
+        x[,1 + (((i-1)*k + 1):(i*k))] = y[((p+1):nrow(y)) - i,]
     }
     m <- lapply(1:k, function(i) lm.fit(x, z[,i]))
-    A <- t(sapply(m, function(mi) coefficients(mi)[-1]))
     ep <- sapply(m, residuals)
-    rownames(A) <- ynames
-    colnames(A) <- xnames
-    colnames(ep) <- ynames
-    list(A = A, V = var(ep), resid = ep)
+    list(A = t(sapply(m, function(mi) coefficients(mi)[-1])),
+         V = var(ep),
+         resid = ep)
 }
 
-get_irfs <- function(A, shock, M, N = 100, sumindex= NULL) {
+get_irfs <- function(A, shock, M, N = 100) {
     k <- nrow(A)
     p <- ncol(A) / k
-    nsum <- length(sumindex)
-    F <- matrix(0, k * p + nsum, k * p + nsum)
-    colnames(F) <- c(paste("Δ⁻(", rownames(A)[sumindex], ")_L1", sep = ""), colnames(A))
-    rownames(F) <- c(paste("Δ⁻", rownames(A)[sumindex], sep = ""), rownames(A), colnames(A)[1:(k*(p-1))])
-    diag(F[1:nsum,1:nsum]) <- 1
-    F[-(1:nsum), -(1:nsum)] <- canonical(A)
-    F[1:nsum, -(1:nsum)] <- A[sumindex,]
-
-    e <- eigen(F, symmetric = FALSE)
+    e <- eigen(canonical(A), symmetric = FALSE)
     V <- e$vectors
     Vi <- solve(V)
-    
-    y0 <- rep(0, nrow(F))
-    y0[1:(k + nsum)] <- c(shock[sumindex], shock)
     xout <- seq(0, M, by = 1/N)
     yout <- matrix(0, k, length(xout))
-    yout[,1] <- y0[1:k]
+    yout[,1] <- shock
+    y0 <- rep(0, p*k)
+    y0[1:k] <- shock
 
     for (i in 2:ncol(yout)) {
         yout[,i] <- Re(V %*% diag(e$values^((i-1)/N)) %*% Vi %*% y0)[1:k]
     }
-    rownames(yout) <- rownames(F)[1:k]
     list(x = xout, y = yout)
 }
 
-makeshock <- function(V = NULL, P = t(chol(V)), e = rnorm(ncol(P))) {
-    s <- drop(P %*% e / sqrt(sum(e * e)))
-    s * 100 / s[1] ## scale to be a 100bp shock in abs value
-}
+d1 <- read.csv("data/Newdata1.csv")
+d1$NBREC <- log(d1$NBREC)
+d1$TRES <- log(d1$TRES)
+d1$PSCCOM <- log(d1$PSCCOM)
+d2 <- read.csv("data/Newgdp97.csv")
+d2$GDPM <- log(d2$GDPM)
+d2$PGDPM <- log(d2$PGDPM)
 
-d <-
-    cbind(r = ts(data = read.csv("data/DFF.csv")$VALUE,
-              start = c(1954,3), freq=4),
-          Δy = 25 * diff(ts(data = read.csv("data/GDPC1.csv")$VALUE,
-              start = c(1947,1), frequency=4)),
-          π = 25 * diff(ts(data = read.csv("data/GDPDEF.csv")$VALUE,
-              start = c(1947,1), frequency=4))) %>%
-    window(start = c(1955,1), end=c(2014,4))
-v <- newvar(d, 4)
-P = t(chol(v$V))
+d <- cbind(ts(as.matrix(subset(d1, select = -X)), start = c(1959,1), frequency = 12),
+           ts(as.matrix(subset(d2, select = -X)), start = c(1965,1), frequency = 12))
+colnames(d) <- c(names(d1)[-1], names(d2)[-1])
+d <- window(d, start = c(1965,1))
+rm(d1, d2)
 
-maxiter <- 5000
+maxiter <- 15000
+M <- 60
 Nsmooth <- 20
-M <- 2.5 * 4
 
-varboot <- function(A, ep) {
-    n <- nrow(ep)
-    k <- ncol(ep)
-    p <- ncol(A) / k
-    y <- matrix(nrow = n, ncol = k)
-    y[1:p,] <- ep[sample(1:n, p, replace = TRUE),]
-    for (i in (p+1):n) {
-        y[i,] <- drop(A %*% c(t(y[i - (1:p),]))) + ep[sample(1:n, 1),]
-    }
-    colnames(y) <- rownames(A)
-    y
-}
+v <- newvar(d, 6)
+P <- t(chol(v$V))
 
-irfs <- replicate(150, simplify = FALSE, {
+irfs1 <- replicate(500, simplify = FALSE, {
     for (j in 1:maxiter) {
-        yboot <- varboot(v$A, v$resid)
-        bootest <- newvar(yboot, 4)
-        shock <- makeshock(bootest$V)
-        icoarse <- get_irfs(bootest$A, shock, M, 1, sumindex = c(2,3))
-        ismooth <- get_irfs(bootest$A, shock, M, Nsmooth, sumindex = c(2,3))
-        if (all(ismooth$y[3,ismooth$x <=2] >= 0)
-            && all(ismooth$y[2, ismooth$x <= 2] <= 0)
-            && all(abs(ismooth$y[2,]) <= 30)
-            && all(abs(ismooth$y[1,]) <= 30)
-            && all(abs(ismooth$y[3,]) <= abs(2 * ismooth$y[3,1])))
+        ## Calculate potential shock, then normalize so that it
+        ## induces a 1ppt move in the Federal Funds rate.
+        shock <- makeshock(P = P)
+        icoarse <- get_irfs(v$A, shock, M, 1)
+        ismooth <- get_irfs(v$A, shock, M, Nsmooth)
+
+        rownames(icoarse$y) <- colnames(d)
+        rownames(ismooth$y) <- colnames(d)
+
+        if (all(ismooth$y["NBREC", ismooth$x <= 5] <= 0) &&
+            all(ismooth$y["PGDPM", ismooth$x <= 5] <= 0) &&
+            all(ismooth$y["FYFF", ismooth$x  <= 5] >= 0))
             break
     }
     stopifnot(j < maxiter)
     list(coarse = icoarse$y, smooth = ismooth$y)
 })
 
-subplot1 <- function(irfs, type, series, N,...) {
-    y <- ts(sapply(irfs, function(z) z[[type]][series,]), start = 0, freq = N)
-    plot(y, plot.type = "single", bty = "n", xlab = "", ylab = "", lwd = 1.5,...)
+subplot1 <- function(irfs, type, series, N, ...) {
+    y <- ts(100 * sapply(irfs, function(z) z[[type]][series,]), start = 0, freq = N)
+    plot(y, plot.type = "single", bty = "n", ylab = "", las = 1,
+    xlab = "Number of years after negative monetary policy shock",...)
     abline(0, 0, col = rgb(0,0,0,.2))
     for (i in 0:5) {
         lines(c(i,i), range(y), col = rgb(0,0,0,.2))
     }
 }
 
-makeplot <- function(irfs, file, N, linecolor,...) {
+makeplot <- function(irfs, series, type, N, linecolor,
+    ylab = "Percent change (%)",...) {
     col = "dark gray"
-    pdf(file = file, width = 6, height = 7)
-    par(mfcol = c(3, 2), mar = c(2,3,3,1), fg = col,
-        col.axis = "black", col.main = "black")
-    subplot1(irfs, "coarse", 1, 4, col = linecolor, main = "GDP (percent difference)")
-    subplot1(irfs, "coarse", 2, 4, col = linecolor, main = "Prices (percent difference)")
-    subplot1(irfs, "coarse", 3, 4, col = linecolor, main = "Fed. Funds")
-    subplot1(irfs, "smooth", 1, N * 4, col = linecolor, main = "GDP (smooth)")
-    subplot1(irfs, "smooth", 2, N * 4, col = linecolor, main = "Prices (smooth)")
-    subplot1(irfs, "smooth", 3, N * 4, col = linecolor, main = "Fed. Funds (smooth)")
+    pdf(file = paste("graphs/empirics_", series, ".pdf", sep = ""),
+        width = 4.5, height = 3.5)
+    par(fg = "dark gray", col.axis = "black", col.main = "black")
+    subplot1(irfs, type, series, N*12, col = linecolor,...)
     dev.off()
 }
 
-makeplot(irfs, "graphs/empirics.pdf", N = Nsmooth, rgb(0,0,0,.1))
+makeplot(irfs1, "GDPM", "smooth", Nsmooth, rgb(0,0,0,0.1),
+    main = "GDP response")
+makeplot(irfs1, "FYFF", "smooth", Nsmooth, rgb(0,0,0,0.1),
+    main = "Federal funds rate response", ylab = "Basis points")
+makeplot(irfs1, "TRES", "smooth", Nsmooth, rgb(0,0,0,0.1),
+    main = "Total reserves response")
+makeplot(irfs1, "PGDPM", "smooth", Nsmooth, rgb(0,0,0,0.1),
+    main = "GDP deflator response")
+makeplot(irfs1, "PSCCOM", "smooth", Nsmooth, rgb(0,0,0,0.1),
+    main = "Commodity price response")
+makeplot(irfs1, "NBREC", "smooth", Nsmooth, rgb(0,0,0,0.1),
+    main = "Non-borrowed reserves response")
