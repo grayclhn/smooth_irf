@@ -33,7 +33,7 @@
 \section{Introduction}
 \label{S1}
 
-Impulse Response Functions (\IRF s) are widely used in macroeconomics
+Impulse Response Functions (\IRFs) are widely used in macroeconomics
 to represent the dynamic effect over time of an unanticipated
 shock. If $y_t$ is a stationary sequence of random vectors, an \IRF\
 is a graph of the change in the conditional expectation of $y_{t+s}$
@@ -41,14 +41,14 @@ in response to an unanticipated shock to $y_t$, plotted as a function
 of $s$. The conditional expectation may be implied by a theoretical
 model or a statistical model, such as a \VAR, in which case additional
 assumptions may be necessary to identify the shocks of economic
-interest. In either of these cases, \IRF s provide a parsimonious and
+interest. In either of these cases, \IRFs\ provide a parsimonious and
 interpretable summary of the key features of the model.
 
 Producing an \IRF\ requires calculating the conditional expectation
 $\E_t y_{t+s}$ under different counterfactual scenarios, with and
 without the shock of interest. Since most macroeconomic models are
 defined and estimated in discrete time (both $t$ and $s$ are integers)
-the conditional expectations used to produce \IRF s are calculated in
+the conditional expectations used to produce \IRFs\ are calculated in
 discrete time as well. (See Chapter 1 of \citealp{Ham:94}, for
 example.) But in most applications, it is desireable to graph the \IRF
 s as curves and connect the points between the integer values of $s$;
@@ -64,8 +64,8 @@ some drawbacks. Linear interpolation introduces misleading visual
 distortions and can remove potentially interesting dynamics from the
 model.
 
-In this paper, we show how to construct continuous and smooth \IRF s
-for vector ARMA and other linear time series models. These \IRF s are
+In this paper, we show how to construct continuous and smooth \IRFs\
+for vector ARMA and other linear time series models. These \IRFs\ are
 defined for all values of $t$ and $s$, even noninteger values, and
 ensure that the interpolation obeys the same dynamics as the rest of
 the model. The resulting graph removes the distortions introduced by
@@ -73,16 +73,16 @@ current methods.  Section~\ref{S2} presents these results,
 Section~\ref{S3} provides some numeric and empirical examples, and
 Section~\ref{S4} concludes.
 
-\section{Smooth \IRF s for finite-order linear models}
+\section{Smooth \IRFs\ for finite-order linear models}
 \label{S2}
 
-This section presents the main results of the paper: smooth \IRF s for
+This section presents the main results of the paper: smooth \IRFs\ for
 finite-order linear models. Section~\ref{S2.1} presents results for
 the AR(1) to motivate our approach. Section~\ref{S2.2} extends this
 result to finite-order \VAR s and Section~\ref{S2.3} extends the
 result further to VARMA and VECM models and to cumulative responses.
 The rest of this subsection introduces some notation and defines the
-\IRF s formally.
+\IRFs\ formally.
 
 Let $\{y_t\}$ be a stationary sequence of random vectors in $\RR^k$,
 let $\Fs_t$ represent the information set available in period $t$,
@@ -225,7 +225,7 @@ implying that
 \begin{equation*}
   \Phi(L) \Psi_u(s) = (1 - a L) \, \Psi_u(s) = 0
 \end{equation*}
-as before. Figure~\ref{fig:2} plots the \IRF s for $a = -0.2$ and
+as before. Figure~\ref{fig:2} plots the \IRFs\ for $a = -0.2$ and
 $u = 1$ with no interpolation, linear interpolation, and the
 definition of $\Psi_u(s)$. Just as before, the smooth version more
 accurately reflects the system's dynamics after a shock.
@@ -395,7 +395,7 @@ examples.
 
 Equation~\eqref{eq:9} has another practical implication. Although
 $F^s$ has real and imaginary components for real $s$, we are only
-interested in its real component that generates the \IRF s for integer
+interested in its real component that generates the \IRFs\ for integer
 values of $s$. Rather than explicitly calculating the matrices
 $B_{jl}$ and $C_{jl}$ to use~\eqref{eq:10}, we can calculate the
 complex valued $F^s$ and simply drop its imaginary component. This
@@ -437,8 +437,8 @@ We conclude this section with a formal statement of the result.
 
 This section considers three extensions to the previous section.
 First, we show how to calculate cumulative response functions for
-\VAR($p$)s. Second, we show how to calculate \IRF s for Vector Error
-Correction Models (\VECM). And, third, we show how to calculate \IRF s
+\VAR($p$)s. Second, we show how to calculate \IRFs\ for Vector Error
+Correction Models (\VECM). And, third, we show how to calculate \IRFs\
 for VARMA($p$, $q$) models. These results all rely on augmenting the
 series to create a new canonical \VAR(1) and can easily be combined
 and extended further to other recursive linear models.
@@ -622,18 +622,18 @@ F = \begin{pmatrix*}[r]
 \end{equation*}
 Similarly, the \IRF\ for an $\vep_2$-shock is given by
 \begin{equation*}
-  \Psi_2(s) = e_{1,2} M J^s M^{-1} e_{1,2}'
+  \Psi_2(s) = e_{1,2} \Re(F^s) e_{1,2}'
   \begin{pmatrix*}[l]
     0 \\ 1
   \end{pmatrix*}.
 \end{equation*}
 
-We plot the \IRF s in the first two columns Figure~\ref{fig:3}. The
-first column plots the standard \IRF s, using linear interpolation
+We plot the \IRFs\ in the first two columns Figure~\ref{fig:3}. The
+first column plots the standard \IRFs\, using linear interpolation
 between integer-valued time periods, and the second plots our proposed
 smooth plots. Although the general impressions from both graphs are
 similar, there are important differences. First, peaks and troughs are
-often underestimated by the standard \IRF s and their timing is
+often underestimated by the standard \IRFs\ and their timing is
 frequently misidentified. This is especially apparent in the first
 peak in the second row, which falls exactly on period $t+1$ using
 linear interpolation but approximately $t+0.5$ using ours.  Second,
@@ -652,19 +652,19 @@ version of the curve.
   \includegraphics{graphs/numeric.pdf}
   \caption{Impulse Response Functions from Section~\ref{S3.1} example;
     $y_t$ is generated by Equation~\eqref{eq:12}. The left column
-    plots standard \IRF s, the middle column plots our new method, and
+    plots standard \IRFs\, the middle column plots our new method, and
     the right column plots our new approach, emphasizing the values at
     integer time periods.}
   \label{fig:3}
 \end{figure}
 
 The weaknesses of using linear interpolation become more apparent when
-we graph multiple perturbations of the \IRF s in the same panel, which
+we graph multiple perturbations of the \IRFs\ in the same panel, which
 is a common way of representing uncertainty or set-identified
 responses. To demonstrate this phenomenon, we generated 150
-perterbuations of the \IRF s by adding independent $N(0, 0.15)$ noise
+perterbuations of the \IRFs\ by adding independent $N(0, 0.15)$ noise
 terms to each element of the \VAR\ coefficients in~\eqref{eq:12}, then
-calculating and plotting the \IRF s as before. (The graphs use alpha
+calculating and plotting the \IRFs\ as before. (The graphs use alpha
 blending, a form of partial transparancy, to make the individual
 curves more visible.)
 
@@ -674,8 +674,8 @@ curves more visible.)
   \caption{Impulse Response Functions from Section~\ref{S3.1} example;
     $y_t$ is generated by Equation~\eqref{eq:12} with independent
     $N(0,0.15)$ random variable added to each coefficient. These
-    graphs plot the \IRF s from 150 independent draws of the
-    coefficient matrices. The left column plots standard \IRF s, the
+    graphs plot the \IRFs\ from 150 independent draws of the
+    coefficient matrices. The left column plots standard \IRFs\, the
     middle column plots our new method, and the right column plots our
     new approach with an emphasis on the integer time periods..}
   \label{fig:4}
@@ -701,7 +701,7 @@ exact location of the peak that falls between periods 1 and 2
 determines most of the initial dynamics, but this is impossible to see
 in the discrete curve.
 
-These graphs reveal that this method of constructing \IRF s is more
+These graphs reveal that this method of constructing \IRFs\ is more
 resiliant to perturbation than linear interpolation: curves generated
 by close coefficient values have a more similar appearance. This
 property is particularly useful when graphing many similar curves to
@@ -756,7 +756,7 @@ candidate \IRF\ as
 \Psi^*(t) = [I_6, 0,\dots,0] \hat F^t (u^*, 0,\dots,0)'.
 \]
 
-Now let $\Psi^*_1(t)$, $\Psi^*_2(t)$, and $\Psi^*_3(t)$ are the \IRF s
+Now let $\Psi^*_1(t)$, $\Psi^*_2(t)$, and $\Psi^*_3(t)$ are the \IRFs\
 for the Federal Funds rate, the price level, and nonborrowed reserves
 $t$ periods after a shock. If $\Psi^*_1(t) > 0$, $\Psi^*_2(t) < 0$ or
 $\Psi^*_3(t) < 0$ for any $t \in [0,5]$ then this shock is definitely
@@ -782,12 +782,12 @@ Vector Autoregressive models do not just have implications for the
 period-to-period dynamics of a stochastic process, they also have
 implications about the very short-run dynamics within periods. In this
 paper, we propose that researchers graph those intra-period dynamics
-when plotting the \IRF s for linear models and we give a simple method
+when plotting the \IRFs\ for linear models and we give a simple method
 to do so, based on the model's canonical \VAR(1) representation. Even
 when researchers do not want to assign any economic importance to
-these ultra short-run dynamics, plotting them in the \IRF s minimizes
+these ultra short-run dynamics, plotting them in the \IRFs\ minimizes
 visual distortions that can arise from discretizing the dynamics,
-especially when several \IRF s are plotted over each other to
+especially when several \IRFs\ are plotted over each other to
 represent uncertainty or set identification.
 
 \clearpage
