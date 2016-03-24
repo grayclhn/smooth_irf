@@ -12,7 +12,6 @@
 
 \input{tex/setup}
 \input{tex/shorthand}
-\input{latex_misc/abbrevs}
 
 \begin{document}
 \maketitle
@@ -33,26 +32,26 @@
 \section{Introduction}
 \label{S1}
 
-Impulse Response Functions (\IRFs) are widely used in macroeconomics
+Impulse Response Functions (IRFs) are widely used in macroeconomics
 to represent the dynamic effect over time of an unanticipated
-shock. If $y_t$ is a stationary sequence of random vectors, an \IRF\
+shock. If $y_t$ is a stationary sequence of random vectors, an IRF
 is a graph of the change in the conditional expectation of $y_{t+s}$
 in response to an unanticipated shock to $y_t$, plotted as a function
 of $s$. The conditional expectation may be implied by a theoretical
-model or a statistical model, such as a \VAR, in which case additional
+model or a statistical model, such as a VAR, in which case additional
 assumptions may be necessary to identify the shocks of economic
-interest. In either of these cases, \IRFs\ provide a parsimonious and
+interest. In either of these cases, IRFs provide a parsimonious and
 interpretable summary of the key features of the model.
 
-Producing an \IRF\ requires calculating the conditional expectation
+Producing an IRF requires calculating the conditional expectation
 $\E_t y_{t+s}$ under different counterfactual scenarios, with and
 without the shock of interest. Since most macroeconomic models are
 defined and estimated in discrete time (both $t$ and $s$ are integers)
-the conditional expectations used to produce \IRFs\ are calculated in
+the conditional expectations used to produce IRFs are calculated in
 discrete time as well. (See Chapter 1 of \citealp{Ham:94}, for
-example.) But in most applications, it is desireable to graph the \IRF
-s as curves and connect the points between the integer values of $s$;
-this is especially important when more than one \IRF\ is plotted on
+example.) But in most applications, it is desireable to graph the IRFs
+as curves and connect the points between the integer values of $s$;
+this is especially important when more than one IRF is plotted on
 the same graph --- whether to represent dynamics under different
 assumptions (see \citealp{BeM:98}, and \citealp{StW:01}, for
 representative examples), to represent statistical uncertainty
@@ -64,8 +63,8 @@ some drawbacks. Linear interpolation introduces misleading visual
 distortions and can remove potentially interesting dynamics from the
 model.
 
-In this paper, we show how to construct continuous and smooth \IRFs\
-for vector ARMA and other linear time series models. These \IRFs\ are
+In this paper, we show how to construct continuous and smooth IRFs
+for vector ARMA and other linear time series models. These IRFs are
 defined for all values of $t$ and $s$, even noninteger values, and
 ensure that the interpolation obeys the same dynamics as the rest of
 the model. The resulting graph removes the distortions introduced by
@@ -73,16 +72,16 @@ current methods.  Section~\ref{S2} presents these results,
 Section~\ref{S3} provides some numeric and empirical examples, and
 Section~\ref{S4} concludes.
 
-\section{Smooth \IRFs\ for finite-order linear models}
+\section{Smooth IRFs for finite-order linear models}
 \label{S2}
 
-This section presents the main results of the paper: smooth \IRFs\ for
+This section presents the main results of the paper: smooth IRFs for
 finite-order linear models. Section~\ref{S2.1} presents results for
 the AR(1) to motivate our approach. Section~\ref{S2.2} extends this
-result to finite-order \VAR s and Section~\ref{S2.3} extends the
+result to finite-order VARs and Section~\ref{S2.3} extends the
 result further to VARMA and VECM models and to cumulative responses.
 The rest of this subsection introduces some notation and defines the
-\IRFs\ formally.
+IRFs formally.
 
 Let $\{y_t\}$ be a stationary sequence of random vectors in $\RR^k$,
 let $\Fs_t$ represent the information set available in period $t$,
@@ -100,14 +99,14 @@ expectation of $y_{t+s}$, so
 \end{equation*}
 for each $s \geq 0$. Define $m_s = 0$ for $s < 0$ and let
 $\E y_t = \mu$. For a shock of interest $u$, with $u \in \RR^k$, the
-\IRF\ corresponding to $u$ is the function
+IRF corresponding to $u$ is the function
 \[
   \Psi_u(s) =
   m_s(\mu + u, \mu, \dots, \mu) - m_s(\mu, \mu, \dots,\mu).
 \]
 The shock, $u$, in these equations should be viewed as the ``reduced
 form'' version of the shock --- an unanticipated change in the current
-value of $y_t$. In a Structural \VAR\ application, $u$ will typicall
+value of $y_t$. In a Structural VAR application, $u$ will typicall
 be related to a more fundamental shock of economic interest $\delta$
 through the linear transformation $u = \Gamma \delta$, for some known
 or estimated matrix $\Gamma$.
@@ -132,7 +131,7 @@ not.
 \begin{figure}[t]
   \centering
   \includegraphics{graphs/motivation.pdf}
-  \caption{\IRF\ for simple AR(1) example. Here $y_t = 0.2 y_{t-1} +
+  \caption{IRF for simple AR(1) example. Here $y_t = 0.2 y_{t-1} +
     \vep_t$ --- the vertical axis shows $\Psi_1(s)$. The left panel
     plots only integer values of $s$, the middle panel uses linear
     interpolation between the integers, and the right panel plots the
@@ -141,14 +140,14 @@ not.
 \end{figure}
 
 For motivation, start with the simplest univariate case and assume
-that $y_t$ is the \AR(1)
+that $y_t$ is the AR(1)
 \begin{equation}
   \label{eq:1}
   y_t = a y_{t-1} + \vep_t
 \end{equation}
 where $\vep_t$ is a martingale difference sequence and
 $\lvert a \rvert < 1$.  For discrete-time models, it is easy to define
-the \IRF\ recursively and $\Psi_h(s) = a^s u$. When $a > 0$, this
+the IRF recursively and $\Psi_h(s) = a^s u$. When $a > 0$, this
 function is well-defined for all positive real $s$, and can be used
 directly to interpolate between the integer points. But typically
 representing these dynamics has been achieved by linear interpolation,
@@ -179,15 +178,15 @@ panel that graphs $0.2^s$ directly.
 
 This should not be surprising. We can see that $\Psi_u(s) = a^s u$
 satisfies the recurrence relation implied by the lag structure of the
-original \AR\ process for any positive real value of $s$:
+original AR process for any positive real value of $s$:
 \begin{equation}
   \label{eq:4}
   \Psi_u(s) = a^s u = a \times a^{s-1} u = a \, \Psi_u(s-1).
 \end{equation}
-Letting $\Phi(L)$ define the lag polynomial of the \AR(1) defined by
+Letting $\Phi(L)$ define the lag polynomial of the AR(1) defined by
 Equation~\eqref{eq:1}, (so the autoregressive model is defined as
 $\Phi(L)y_t = \vep_t$ for all $t$) we can express~\eqref{eq:4} in a
-form that will be easier to extend to more complicated \DGP s,
+form that will be easier to extend to more complicated DGPs,
 \begin{equation}
   \label{eq:5}
   \Phi(L) \Psi_u(s) = (1 - a L) \Psi_{u}(s) = 0
@@ -201,7 +200,7 @@ values of $s$.
 \begin{figure}[t]
   \centering
   \includegraphics{graphs/motivation2.pdf}
-  \caption{\IRF\ for simple AR(1) example. Here $y_t = -0.2 y_{t-1} +
+  \caption{IRF for simple AR(1) example. Here $y_t = -0.2 y_{t-1} +
     \vep_t$ --- the vertical axis shows $\Psi_s(1)$. The left panel
     plots only integer values of $s$, the middle panel uses linear
     interpolation between the integers, and the right panel plots the
@@ -220,7 +219,7 @@ between the noninteger points. Instead, consider the definition
 For integer values of $s$, $\cos(\pi s) = 1$ so~\eqref{eq:6} is
 exactly equal to $a^s u$. But~\eqref{eq:6} remains real-valued and
 well defined for noninteger $s$ as well. Moreover,~\eqref{eq:6}
-satisfies the recurrence relation for the \AR(1) model for all values
+satisfies the recurrence relation for the AR(1) model for all values
 of $a \in (-1,1)$
 \begin{equation*}
   \Psi_u(s) = |a|^s \cos(\pi s) \cdot u = - |a| \times |a|^{s-1} \cos(\pi (s-1)) \cdot u = a \, \Psi_u(s-1)
@@ -229,7 +228,7 @@ implying that
 \begin{equation*}
   \Phi(L) \Psi_u(s) = (1 - a L) \, \Psi_u(s) = 0
 \end{equation*}
-as before. Figure~\ref{fig:2} plots the \IRFs\ for $a = -0.2$ and
+as before. Figure~\ref{fig:2} plots the IRFs for $a = -0.2$ and
 $u = 1$ with no interpolation, linear interpolation, and the
 definition of $\Psi_u(s)$. Just as before, the smooth version more
 accurately reflects the system's dynamics after a shock.
@@ -246,28 +245,28 @@ can be expressed as\footnote{%
 \[
 (a + bi)^s = R^s [\cos(\theta s) - i \sin(\theta s)].
 \]
-For the \AR\ example above, $a < 0$ and $b = 0$ so $\theta = \pi$.
+For the AR example above, $a < 0$ and $b = 0$ so $\theta = \pi$.
 Then $a^s = |a|^s \cos(\pi s)$ as we originally claimed.
 
 This example also suggests a more general method for interpolating
-between integer values of $s$ for any \VAR; solve recurrence relation
+between integer values of $s$ for any VAR; solve recurrence relation
 using standard tools (as described in \citealp{Ham:94}, for example)
-and use the solution as the \IRF\ for real-valued $s$. We pursue that
+and use the solution as the IRF for real-valued $s$. We pursue that
 approach in the next section.
 
 \subsection{General Approach for VAR(\textit{p})}
 \label{S2.2}
 
-The \AR(1) model in the previous section can be extended to general
-\VAR s using the ``canonical'' representation.\footnote{%
+The AR(1) model in the previous section can be extended to general
+VARs using the ``canonical'' representation.\footnote{%
   See \citet{Ham:94} or \citet{HaS:13} for a textbook treatment of
   much of this material.} %
-Define $y_t$ to be the \VAR($p$),
+Define $y_t$ to be the VAR($p$),
 \[
 y_t = \sum_{j=1}^p A_j y_{t-j} + \vep_t.
 \]
 (We assume that $y_t$ has mean zero to simplify notation without loss
-of generality.) To represent this relationship as a \VAR(1), form the
+of generality.) To represent this relationship as a VAR(1), form the
 vector $(y_t',\dots,y_{t-p+1}')'$ and observe that
 \begin{equation}
 \label{eq:7}
@@ -302,7 +301,7 @@ where $e_{jp}$ is the $k p \times k$ selection matrix
     0_{k \times (j-1)p} & I_k & 0_{k \times (k - j)p}
   \end{pmatrix*}.
 \end{equation*}
-Consequently, for integer values of $s$, the \IRF\ has the form
+Consequently, for integer values of $s$, the IRF has the form
 \begin{equation*}
   \Psi_u(s) = e_{1p} F^s e_{1p}' u.
 \end{equation*}
@@ -394,12 +393,12 @@ cancel, so we can use the real part of~\eqref{eq:9} alone, giving
 \end{equation}
 to produce $F^1, F^2, F^3,\dots$. Our proposal, in a nutshell, is to
 use the definition given by~\eqref{eq:10} for all of the reals rather
-than just the integers, exactly as we did in the motivating \AR(1)
+than just the integers, exactly as we did in the motivating AR(1)
 examples.
 
 Equation~\eqref{eq:9} has another practical implication. Although
 $F^s$ has real and imaginary components for real $s$, we are only
-interested in its real component that generates the \IRFs\ for integer
+interested in its real component that generates the IRFs for integer
 values of $s$. Rather than explicitly calculating the matrices
 $B_{jl}$ and $C_{jl}$ to use~\eqref{eq:10}, we can calculate the
 complex valued $F^s$ and simply drop its imaginary component. This
@@ -409,22 +408,22 @@ it is not.
 
 We conclude this section with a formal statement of the result.
 
-\begin{proposition}[Impulse Response Functions for \VAR s]
+\begin{proposition}[Impulse Response Functions for VARs]
   \label{P1}
-  Let $F$ be the coefficient matrix of the canonical \VAR(1)
-  representation of an arbitrary real-valued \VAR($p$). Define
+  Let $F$ be the coefficient matrix of the canonical VAR(1)
+  representation of an arbitrary real-valued VAR($p$). Define
   $\Psi_u(s) = e_{1p} \Re(F^s) e_{1p}' u$ for all $s \in [0,+\infty)$, where
   $u \in \RR^k$ is a shock of theoretical interest. Then
   $\Psi_u(s) = m_s(\mu + u, \dots, \mu) - m_s(\mu,\dots,\mu)$ for all
   integer values of $s$ and $\Psi_u(s)$ satisfies the recurrence
-  relation implied by the original \VAR for all $s > 0$,
+  relation implied by the original VAR for all $s > 0$,
   \begin{equation}
     \label{eq:11}
     \Psi_u(s) = \sum_{j=1}^q A_j \Psi_u(s-j).
   \end{equation}
 \end{proposition}
 \begin{proof}
-  The fact that $\Psi_u(s)$ meets the definition of the \IRF\ on
+  The fact that $\Psi_u(s)$ meets the definition of the IRF on
   integers is discussed in the text and follows from simple
   algebra. Observe that the series $a_s = \Re(F^s) e_{1p}'u$ satisfies
   $a_s = F a_{s-1}$ since $F$ is real and
@@ -441,13 +440,13 @@ We conclude this section with a formal statement of the result.
 
 This section considers three extensions to the previous section.
 First, we show how to calculate cumulative response functions for
-\VAR($p$)s. Second, we show how to calculate \IRFs\ for Vector Error
-Correction Models (\VECM). And, third, we show how to calculate \IRFs\
+VAR($p$)s. Second, we show how to calculate IRFs for Vector Error
+Correction Models (VECM). And, third, we show how to calculate IRFs
 for VARMA($p$, $q$) models. These results all rely on augmenting the
-series to create a new canonical \VAR(1) and can easily be combined
+series to create a new canonical VAR(1) and can easily be combined
 and extended further to other recursive linear models.
 
-First, suppose that $y_t$ has a \VAR($p$) representation as before.
+First, suppose that $y_t$ has a VAR($p$) representation as before.
 but we want to derive the effect of the shock $u$ on $S_t$, the
 cumulative sum of the $y_t$s,
 \[
@@ -498,11 +497,11 @@ and can be rewritten as
     \vep_t \\ \vep_t \\ 0 \\ \vdots \\ 0
   \end{pmatrix*}.
 \end{equation*}
-This representation is now a \VAR(1) that can be handled exactly as in
+This representation is now a VAR(1) that can be handled exactly as in
 Proposition~\ref{P1} and $\Psi_u(s)$ can be defined as
 $e_{1,p+1} \Re(F^s) (e_{1,p+1} + e_{2,p+1})' u$
 
-The \VECM\ model has similar behavior. Suppose now that we have the
+The VECM model has similar behavior. Suppose now that we have the
 stationary relationship
 \begin{equation*}
   \Delta y_t = B y_{t-1} + A_1 \Delta y_{t-1} + \cdots + A_p \Delta
@@ -581,7 +580,7 @@ shocks.
 \subsection{Numerical example}
 \label{S3.1}
 
-For a simple numerical example, consider the two-variable \VAR(2)
+For a simple numerical example, consider the two-variable VAR(2)
 \begin{equation}
   \label{eq:12}
   \begin{pmatrix*}[l]
@@ -609,7 +608,7 @@ For a simple numerical example, consider the two-variable \VAR(2)
 and assume that $(\vep_{1t},\vep_{2t}) \sim N(0,I)$ represents the
 shocks of interest.
 
-The \IRF\ for an $\vep_1$-shock is defined as described above,
+The IRF for an $\vep_1$-shock is defined as described above,
 \begin{equation*}
   \Psi_1(s) = e_{1,2} M J^s M^{-1} e_{1,2}'
   \begin{pmatrix*}[l]
@@ -625,7 +624,7 @@ F = \begin{pmatrix*}[r]
       0.00 & 1.00 & 0.00 & 0.00
   \end{pmatrix*}
 \end{equation*}
-Similarly, the \IRF\ for an $\vep_2$-shock is given by
+Similarly, the IRF for an $\vep_2$-shock is given by
 \begin{equation*}
   \Psi_2(s) = e_{1,2} \Re(F^s) e_{1,2}'
   \begin{pmatrix*}[l]
@@ -633,23 +632,23 @@ Similarly, the \IRF\ for an $\vep_2$-shock is given by
   \end{pmatrix*}.
 \end{equation*}
 
-We plot the \IRFs\ in the first two columns Figure~\ref{fig:3}. The
-first column plots the standard \IRFs\, using linear interpolation
+We plot the IRFs in the first two columns Figure~\ref{fig:3}. The
+first column plots the standard IRFs, using linear interpolation
 between integer-valued time periods, and the second plots our proposed
 smooth plots. Although the general impressions from both graphs are
 similar, there are important differences. First, peaks and troughs are
-often underestimated by the standard \IRFs\ and their timing is
+often underestimated by the standard IRFs and their timing is
 frequently misidentified. This is especially apparent in the first
 peak in the second row, which falls exactly on period $t+1$ using
 linear interpolation but approximately $t+0.5$ using ours.  Second,
-even the sign of the \IRF\ can be misidentified, as we see with the
+even the sign of the IRF can be misidentified, as we see with the
 immediate response of $y_{1}$ to a shock in $\vep_{2}$.
 
 However, it would be reasonable for researchers to want to emphasize
-the value of the \IRF\ at the integer time-periods, since those do not
+the value of the IRF at the integer time-periods, since those do not
 depend on any method of interpolation. The third column of
 Figure~\ref{fig:3} demonstrates one method of doing this: plot the
-individual points of the \IRF\ defined on the integers over a light
+individual points of the IRF defined on the integers over a light
 version of the curve.
 
 \begin{figure}[t]
@@ -657,19 +656,19 @@ version of the curve.
   \includegraphics{graphs/numeric.pdf}
   \caption{Impulse Response Functions from Section~\ref{S3.1} example;
     $y_t$ is generated by Equation~\eqref{eq:12}. The left column
-    plots standard \IRFs\, the middle column plots our new method, and
+    plots standard IRFs, the middle column plots our new method, and
     the right column plots our new approach, emphasizing the values at
     integer time periods.}
   \label{fig:3}
 \end{figure}
 
 The weaknesses of using linear interpolation become more apparent when
-we graph multiple perturbations of the \IRFs\ in the same panel, which
+we graph multiple perturbations of the IRFs in the same panel, which
 is a common way of representing uncertainty or set-identified
 responses. To demonstrate this phenomenon, we generated 150
-perterbuations of the \IRFs\ by adding independent $N(0, 0.15)$ noise
-terms to each element of the \VAR\ coefficients in~\eqref{eq:12}, then
-calculating and plotting the \IRFs\ as before. (The graphs use alpha
+perterbuations of the IRFs by adding independent $N(0, 0.15)$ noise
+terms to each element of the VAR coefficients in~\eqref{eq:12}, then
+calculating and plotting the IRFs as before. (The graphs use alpha
 blending, a form of partial transparancy, to make the individual
 curves more visible.)
 
@@ -679,8 +678,8 @@ curves more visible.)
   \caption{Impulse Response Functions from Section~\ref{S3.1} example;
     $y_t$ is generated by Equation~\eqref{eq:12} with independent
     $N(0,0.15)$ random variable added to each coefficient. These
-    graphs plot the \IRFs\ from 150 independent draws of the
-    coefficient matrices. The left column plots standard \IRFs\, the
+    graphs plot the IRFs from 150 independent draws of the
+    coefficient matrices. The left column plots standard IRFs, the
     middle column plots our new method, and the right column plots our
     new approach with an emphasis on the integer time periods..}
   \label{fig:4}
@@ -688,7 +687,7 @@ curves more visible.)
 
 These graphs are shown in Figure~\ref{fig:4}. The same issues apparent
 in Figure~\ref{fig:3} are present here as well. But there are other
-problems as well. In the first curve, for example, the discrete \IRF\
+problems as well. In the first curve, for example, the discrete IRF
 shows substantial negative correlation between the period 2 and period
 3 estimated response and the period 3 and 4 response to an
 $\vep_1$-shock. But the smoothed graph makes it clear that this is
@@ -698,7 +697,7 @@ but when the peak is closer to period 3, the curve is still rising for
 that interval. The actual dynamics implied by the different curves are
 very similar. Similar but less dramatic distortions appear in the
 other panels as well. In the third row, for example, the discrete
-\IRF\ shows that about half of the parameter values have an initial
+IRF shows that about half of the parameter values have an initial
 increase in response to a $y_{20}$ shock and half have an initial
 decrease, but the smooth curves show that virtually all of them have
 an immediate decrease, but that many start to increase very soon. The
@@ -706,7 +705,7 @@ exact location of the peak that falls between periods 1 and 2
 determines most of the initial dynamics, but this is impossible to see
 in the discrete curve.
 
-These graphs reveal that this method of constructing \IRFs\ is more
+These graphs reveal that this method of constructing IRFs is more
 resiliant to perturbation than linear interpolation: curves generated
 by close coefficient values have a more similar appearance. This
 property is particularly useful when graphing many similar curves to
@@ -720,19 +719,19 @@ interpolation.
 This section demonstrates our proposal in a widely-studied empirical
 setting. We conduct a brief analysis of the effect of monetary policy
 on the real economy, a question that has motivated much of the
-research on \VAR s in general. In particular, we will demonstrate the
+research on VARs in general. In particular, we will demonstrate the
 partial identification strategy proposed by \citet{Uhl:05}.
 
-Just a quick review: in Structural \VAR\ models, the shocks of
+Just a quick review: in Structural VAR models, the shocks of
 theoretical interest --- a monetary policy shock in this section ---
 can simultaneously affect all of the variables in the model. Without
 additional assumptions beyond those necessary to estimate the
-coefficients of the \VAR, we can not estimate all of the unknown
+coefficients of the VAR, we can not estimate all of the unknown
 parameters necessary to identify the shock.
 
 Uhlig's (2005) approach is to identify \emph{potential} monetary
 shocks by looking at their effect on major monetary policy
-variables. The shocks that give \IRF s that have the correct sign on
+variables. The shocks that give IRFs that have the correct sign on
 these variables are stored as candidate monetary policy shocks, and
 the effect on other variables is partially identified. More
 specifically, Uhlig imposes the following restrictions:
@@ -751,17 +750,17 @@ For this empirical analysis, we use monthly data on six variables:
 real GDP, the GDP deflator, the federal funds rate, borrowed reserves,
 nonborrowed reserves, and a commodity price index, and the goal is to
 find the effect of a negative monetary policy shock on these
-variables. Obviously, \GDP\ and the \GDP\ deflator are not available
+variables. Obviously, GDP and the GDP deflator are not available
 at monthly frequencies, so their values are interpolated as described
 by \citet{BGW:97} and \citet{BeM:98}. Formally, for given values of
 $\hat F$ and $\hat \Sigma$, we generate a candidate shock $u^* = \hat
 \Sigma^{1/2} u / \| u \|_2$ where $u \sim N(0,I)$ and calculate the
-candidate \IRF\ as
+candidate IRF as
 \[
 \Psi^*(t) = [I_6, 0,\dots,0] \hat F^t (u^*, 0,\dots,0)'.
 \]
 
-Now let $\Psi^*_1(t)$, $\Psi^*_2(t)$, and $\Psi^*_3(t)$ are the \IRFs\
+Now let $\Psi^*_1(t)$, $\Psi^*_2(t)$, and $\Psi^*_3(t)$ are the IRFs
 for the Federal Funds rate, the price level, and nonborrowed reserves
 $t$ periods after a shock. If $\Psi^*_1(t) > 0$, $\Psi^*_2(t) < 0$ or
 $\Psi^*_3(t) < 0$ for any $t \in [0,5]$ then this shock is definitely
@@ -787,12 +786,12 @@ Vector Autoregressive models do not just have implications for the
 period-to-period dynamics of a stochastic process, they also have
 implications about the very short-run dynamics within periods. In this
 paper, we propose that researchers graph those intra-period dynamics
-when plotting the \IRFs\ for linear models and we give a simple method
-to do so, based on the model's canonical \VAR(1) representation. Even
+when plotting the IRFs for linear models and we give a simple method
+to do so, based on the model's canonical VAR(1) representation. Even
 when researchers do not want to assign any economic importance to
-these ultra short-run dynamics, plotting them in the \IRFs\ minimizes
+these ultra short-run dynamics, plotting them in the IRFs minimizes
 visual distortions that can arise from discretizing the dynamics,
-especially when several \IRFs\ are plotted over each other to
+especially when several IRFs are plotted over each other to
 represent uncertainty or set identification.
 
 \clearpage
