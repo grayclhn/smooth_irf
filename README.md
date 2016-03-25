@@ -1,14 +1,14 @@
 smooth_irf overview
 ===================
 
-This repository contains the code and data for my (Gray Calhoun's)
-working paper *Smooth interpolation for Impulse Response Functions of
-SVARs*.  If you have trouble reproducing the paper's analysis, please
-contact me: <gcalhoun@iastate.edu>. A pdf of the latest version of the
-paper should be available at my homepage
-<http://www.econ.iastate.edu/~gcalhoun> and you can find the latest
-version of this directory at
-<https://git.ece.iastate.edu/gcalhoun/smooth_irf>.
+This repository contains the code and data for the working paper *A
+method for smoothing the Impulse Response Functions of discrete-time
+linear models* by Gray Calhoun.  If you have trouble reproducing the
+paper's analysis, please contact Gray Calhoun:
+<gcalhoun@iastate.edu>. A pdf of the latest version of the paper
+should be available at <http://gray.clhn.org> and you can find the
+latest version of this directory at
+<https://github.com/grayclhn/smooth_irf>.
 
 This directory is for the 2015-02-22 version of the paper, which will
 be submitted to summer conferences and probably to a journal soon.
