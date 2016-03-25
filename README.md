@@ -10,8 +10,7 @@ should be available at <http://gray.clhn.org> and you can find the
 latest version of this directory at
 <https://github.com/grayclhn/smooth_irf>.
 
-This directory is for the 2015-02-22 version of the paper, which will
-be submitted to summer conferences and probably to a journal soon.
+The project is at version 0.3.
 
 Main files
 ----------
