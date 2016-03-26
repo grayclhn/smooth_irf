@@ -105,33 +105,33 @@ irfs1 <- replicate(500, simplify = FALSE, {
 
 subplot1 <- function(irfs, type, series, N, ...) {
     y <- ts(100 * sapply(irfs, function(z) z[[type]][series,]), start = 0, freq = N)
-    plot(y, plot.type = "single", bty = "n", ylab = "", las = 1,
-    xlab = "Number of years after negative monetary policy shock",...)
+    plot(y, plot.type = "single", bty = "n", las = 1,
+    xlab = "Years after negative monetary policy shock",...)
     abline(0, 0, col = rgb(0,0,0,.2))
     for (i in 0:5) {
         lines(c(i,i), range(y), col = rgb(0,0,0,.2))
     }
 }
 
-makeplot <- function(irfs, series, type, N, linecolor,
-    ylab = "Percent change (%)",...) {
+makeplot <- function(irfs, series, type, N, linecolor,...) {
     col = "dark gray"
     pdf(file = paste("graphs/empirics_", series, ".pdf", sep = ""),
         width = 4.5, height = 3.5)
-    par(fg = "dark gray", col.axis = "black", col.main = "black")
+    par(fg = "dark gray", col.axis = "black", col.main = "black",
+        cex.main = .85, cex.lab = .85)
     subplot1(irfs, type, series, N*12, col = linecolor,...)
     dev.off()
 }
 
 makeplot(irfs1, "GDPM", "smooth", Nsmooth, rgb(0,0,0,0.1),
-    main = "GDP response")
+    main = "GDP response", ylab = "Percent change")
 makeplot(irfs1, "FYFF", "smooth", Nsmooth, rgb(0,0,0,0.1),
     main = "Federal funds rate response", ylab = "Basis points")
 makeplot(irfs1, "TRES", "smooth", Nsmooth, rgb(0,0,0,0.1),
-    main = "Total reserves response")
+    main = "Total reserves response", ylab = "Percent change")
 makeplot(irfs1, "PGDPM", "smooth", Nsmooth, rgb(0,0,0,0.1),
-    main = "GDP deflator response")
+    main = "GDP deflator response", ylab = "Percent change")
 makeplot(irfs1, "PSCCOM", "smooth", Nsmooth, rgb(0,0,0,0.1),
-    main = "Commodity price response")
+    main = "Commodity price response", ylab = "Percent change")
 makeplot(irfs1, "NBREC", "smooth", Nsmooth, rgb(0,0,0,0.1),
-    main = "Non-borrowed reserves response")
+    main = "Non-borrowed reserves response", ylab = "Percent change")
