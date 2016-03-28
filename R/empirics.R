@@ -103,35 +103,24 @@ irfs1 <- replicate(500, simplify = FALSE, {
     list(coarse = icoarse$y, smooth = ismooth$y)
 })
 
-subplot1 <- function(irfs, type, series, N, ...) {
+subplot1 <- function(irfs, type, series, N, linecolor,...) {
     y <- ts(100 * sapply(irfs, function(z) z[[type]][series,]), start = 0, freq = N)
-    plot(y, plot.type = "single", bty = "n", las = 1,
-    xlab = "Years after negative monetary policy shock",...)
+    plot(y, plot.type = "single", bty = "n", las = 1, col = linecolor, xlab="", ylab="",...)
     abline(0, 0, col = rgb(0,0,0,.2))
     for (i in 0:5) {
         lines(c(i,i), range(y), col = rgb(0,0,0,.2))
     }
 }
 
-makeplot <- function(irfs, series, type, N, linecolor,...) {
-    col = "dark gray"
-    pdf(file = paste("graphs/empirics_", series, ".pdf", sep = ""),
-        width = 4.5, height = 3.5)
-    par(fg = "dark gray", col.axis = "black", col.main = "black",
-        cex.main = .85, cex.lab = .85)
-    subplot1(irfs, type, series, N*12, col = linecolor,...)
-    dev.off()
-}
-
-makeplot(irfs1, "GDPM", "smooth", Nsmooth, rgb(0,0,0,0.1),
-    main = "GDP response", ylab = "Percent change")
-makeplot(irfs1, "FYFF", "smooth", Nsmooth, rgb(0,0,0,0.1),
-    main = "Federal funds rate response", ylab = "Basis points")
-makeplot(irfs1, "TRES", "smooth", Nsmooth, rgb(0,0,0,0.1),
-    main = "Total reserves response", ylab = "Percent change")
-makeplot(irfs1, "PGDPM", "smooth", Nsmooth, rgb(0,0,0,0.1),
-    main = "GDP deflator response", ylab = "Percent change")
-makeplot(irfs1, "PSCCOM", "smooth", Nsmooth, rgb(0,0,0,0.1),
-    main = "Commodity price response", ylab = "Percent change")
-makeplot(irfs1, "NBREC", "smooth", Nsmooth, rgb(0,0,0,0.1),
-    main = "Non-borrowed reserves response", ylab = "Percent change")
+linecolor = rgb(0,0,0,0.08)
+N <- 12 * Nsmooth
+pdf(file = "graphs/empirics.pdf", width=6.5, height=8)
+par(fg = "dark gray", col.axis = "black", col.main = "black", mfcol=c(3,2), col = "dark gray",
+    cex.main = 1, cex.axis = .9, cex.lab = .9, mar = c(2.5,3,3,1.5))
+subplot1(irfs1, "smooth", "GDPM", N, linecolor, main = 'Percent change in GDP')
+subplot1(irfs1, "smooth", "FYFF", N, linecolor, main = 'Change in Federal Funds rate (basis points)')
+subplot1(irfs1, "smooth", "TRES", N, linecolor, main = 'Percent change in total reserves')
+subplot1(irfs1, "smooth", "PGDPM", N, linecolor, main = 'Percent change in GDP deflator')
+subplot1(irfs1, "smooth", "PSCCOM", N, linecolor, main = 'Percent change in commodity price index')
+subplot1(irfs1, "smooth", "NBREC", N, linecolor, main = 'Percent change in non-borrowed reserves')
+dev.off()

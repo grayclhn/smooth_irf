@@ -32,20 +32,17 @@ zip: smoothirf.zip
 
 
 
-theoryplots = $(addprefix graphs/, \
-  numeric.pdf numeric2.pdf motivation.pdf motivation2.pdf)
-appliedplots = $(addprefix graphs/empirics_, \
-  GDPM.pdf FYFF.pdf TRES.pdf PGDPM.pdf PSCCOM.pdf NBREC.pdf)
+plots = $(addprefix graphs/, \
+  numeric.pdf numeric2.pdf motivation.pdf motivation2.pdf empirics.pdf)
 
 graphs/motivation.pdf graphs/motivation2.pdf: R/motivation.R
 graphs/numeric.pdf graphs/numeric2.pdf: R/numeric_example.R
-$(appliedplots): \
-  R/empirics.R data/Newdata1.csv data/Newgdp97.csv
-$(appliedplots) $(theoryplots):
+graphs/empirics.pdf: R/empirics.R data/Newdata1.csv data/Newgdp97.csv
+$(plots):
 	Rscript $< &> $<out
 
 smoothirf.pdf: smoothirf.tex CHANGELOG.tex tex/shorthand.tex tex/setup.tex \
-  latex_misc/abbrevs.tex latex_misc/references.bib $(theoryplots) $(appliedplots)
+  latex_misc/abbrevs.tex latex_misc/references.bib $(plots)
 	texi2dvi -p -q -c $<
 
 smoothirf.zip: $(zipped) smoothirf.pdf $(plots) \
