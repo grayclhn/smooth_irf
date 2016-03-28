@@ -23,7 +23,8 @@
   linear functions that introduce visual distortions, especially when
   many response functions are plotted in the same graph to represent
   uncertainty or partial identification. We also show how to plot the
-  cumulative response to a shock.
+  cumulative response to a shock and incorporate moving average
+  dynamics.
 \end{abstract}
 
 \tableofcontents
@@ -40,7 +41,7 @@ in response to an unanticipated shock to $y_t$, plotted as a function
 of $s$. The conditional expectation may be implied by a theoretical
 model or a statistical model, such as a VAR, in which case additional
 assumptions may be necessary to identify the shocks of economic
-interest. In either of these cases, IRFs provide a parsimonious and
+interest. In either of these cases, IRFs can provide a parsimonious and
 interpretable summary of the key features of the model.
 
 Producing an IRF requires calculating the conditional expectation
@@ -72,7 +73,7 @@ current methods.  Section~\ref{S2} presents these results,
 Section~\ref{S3} provides some numeric and empirical examples, and
 Section~\ref{S4} concludes.
 
-\section{Smooth IRFs for finite-order linear models}
+\section{Method for smoothing IRFs}
 \label{S2}
 
 This section presents the main results of the paper: smooth IRFs for
@@ -88,22 +89,18 @@ let $\Fs_t$ represent the information set available in period $t$,
 \begin{equation*}
   \Fs_t = \sigma(y_t, y_{t-1}, y_{t-2},\dots),
 \end{equation*}
-and let $\E_t$ denote the conditional expectation
-$\E(\cdot \mid \Fs_t)$. Assume that $\E_t y_{t+s}$ for
-nonnegative $s$ only depends on $y_t,\dots,y_{t-p}$ for a finite value
-of $p$ and let the function $m_s$ represent this conditional
-expectation of $y_{t+s}$, so
+and let the function $m_s$ represent the conditional expectation of
+$y_{t+s}$ given $y_t$, so
 \begin{equation*}
-  m_s(x_0,\dots,x_p)
-  = \E(y_{t+s} \mid y_t = x_0,\dots, y_{t-p} = x_p)
+  m_s(x) = \E(y_{t+s} \mid y_t = x)
 \end{equation*}
 for each $s \geq 0$. Define $m_s = 0$ for $s < 0$ and let
 $\E y_t = \mu$. For a shock of interest $u$, with $u \in \RR^k$, the
 IRF corresponding to $u$ is the function
-\[
-  \Psi_u(s) =
-  m_s(\mu + u, \mu, \dots, \mu) - m_s(\mu, \mu, \dots,\mu).
-\]
+\begin{equation}
+  \label{eq:16}
+  \Psi_{u}(s) = \E(m_s(y_t + u) - m_s(y_t)).
+\end{equation}
 The shock, $u$, in these equations should be viewed as the ``reduced
 form'' version of the shock --- an unanticipated change in the current
 value of $y_t$. In a Structural VAR application, $u$ will typically
@@ -230,7 +227,7 @@ implying that
 \end{equation*}
 as before. Figure~\ref{fig:2} plots the IRFs for $a = -0.2$ and
 $u = 1$ with no interpolation, linear interpolation, and the
-definition of $\Psi_u(s)$. Just as before, the smooth version more
+definition~\eqref{eq:6}. Just as before, the smooth version more
 accurately reflects the system's dynamics after a shock.
 
 This choice of $\Psi_u(s)$ was not made at random. Any complex
@@ -260,14 +257,16 @@ approach in the next section.
 The AR(1) model in the previous section can be extended to general
 VARs using the ``canonical'' representation.\footnote{%
   See \citet{Ham:94} or \citet{HaS:13} for a textbook treatment of
-  much of this material.} %
+  much of this material. Our presentation borrows heavily from
+  \citet{Ham:94}.} %
 Define $y_t$ to be the VAR($p$),
 \[
 y_t = \sum_{j=1}^p A_j y_{t-j} + \vep_t.
 \]
-(We assume that $y_t$ has mean zero to simplify notation without loss
-of generality.) To represent this relationship as a VAR(1), form the
-vector $(y_t',\dots,y_{t-p+1}')'$ and observe that
+(We assume that $y_t$ has mean zero to simplify the presentation
+without loss of generality.) To represent this relationship as a
+VAR(1), form the vector $(y_t',\dots,y_{t-p+1}')'$ and observe
+that
 \begin{equation}
 \label{eq:7}
 \underbrace{\begin{pmatrix*}[l]
@@ -305,10 +304,11 @@ Consequently, for integer values of $s$, the IRF has the form
 \begin{equation*}
   \Psi_u(s) = e_{1p} F^s e_{1p}' u.
 \end{equation*}
-This section will show that a variation of
+This section will argue that a variation of
 this definition remains meaningful for noninteger values of $s$.
 
-To see this, notice that $F$ can be decomposed as (citation?)
+To show this, notice that, since $F$ is square, it has the Jordan
+decomposition
 \begin{equation}
   \label{eq:8}
   F = M J M^{-1}
@@ -411,12 +411,12 @@ We conclude this section with a formal statement of the result.
 \begin{proposition}[Impulse Response Functions for VARs]
   \label{P1}
   Let $F$ be the coefficient matrix of the canonical VAR(1)
-  representation of an arbitrary real-valued VAR($p$). Define
-  $\Psi_u(s) = e_{1p} \Re(F^s) e_{1p}' u$ for all $s \in [0,+\infty)$, where
-  $u \in \RR^k$ is a shock of theoretical interest. Then
-  $\Psi_u(s) = m_s(\mu + u, \dots, \mu) - m_s(\mu,\dots,\mu)$ for all
-  integer values of $s$ and $\Psi_u(s)$ satisfies the recurrence
-  relation implied by the original VAR for all $s > 0$,
+  representation of an arbitrary real-valued VAR($p$) $y_t$. Define
+  $\Psi_{u}(s) = e_{1p} \Re(F^s) e_{1p}' u$ for all
+  $s \in [0,+\infty)$, where $u \in \RR^k$ is a shock of theoretical
+  interest. Then $\Psi_{u}(s)$ satisfies~\eqref{eq:16} for all
+  integer values of $s$ and satisfies the recurrence relation implied
+  by the original VAR for all positive, real values of $s$,
   \begin{equation}
     \label{eq:11}
     \Psi_u(s) = \sum_{j=1}^q A_j \Psi_u(s-j).
@@ -502,7 +502,7 @@ Proposition~\ref{P1} and $\Psi_u(s)$ can be defined as
 $e_{1,p+1} \Re(F^s) (e_{1,p+1} + e_{2,p+1})' u$
 
 The VECM model has similar behavior. Suppose now that we have the
-stationary relationship
+relationship
 \begin{equation*}
   \Delta y_t = B y_{t-1} + A_1 \Delta y_{t-1} + \cdots + A_p \Delta
   y_{t-p} + \vep_t.
@@ -705,7 +705,7 @@ exact location of the peak that falls between periods 1 and 2
 determines most of the initial dynamics, but this is impossible to see
 in the discrete curve.
 
-These graphs reveal that this method of constructing IRFs is more
+These graphs reveal that our method of constructing IRFs is more
 resilient to perturbation than linear interpolation: curves generated
 by close coefficient values have a more similar appearance. This
 property is particularly useful when graphing many similar curves to
