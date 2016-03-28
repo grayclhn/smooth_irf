@@ -38,9 +38,9 @@
 \noindent%
 Impulse Response Functions (IRFs) are widely used in macroeconomics
 to represent the dynamic effect over time of an unanticipated
-shock. If $y_t$ is a stationary sequence of random vectors, an IRF
-is a graph of the change in the conditional expectation of $y_{t+s}$
-in response to an unanticipated shock to $y_t$, plotted as a function
+shock. If $\yv_t$ is a stationary sequence of random vectors, an IRF
+is a graph of the change in the conditional expectation of $\yv_{t+s}$
+in response to an unanticipated shock to $\yv_t$, plotted as a function
 of $s$. The conditional expectation may be implied by a theoretical
 model or a statistical model, such as a VAR, in which case additional
 assumptions may be necessary to identify the shocks of economic
@@ -48,7 +48,7 @@ interest. In either of these cases, IRFs can provide a parsimonious and
 interpretable summary of the key features of the model.
 
 Producing an IRF requires calculating the conditional expectation
-$\E_t y_{t+s}$ under different counterfactual scenarios, with and
+$\E_t \yv_{t+s}$ under different counterfactual scenarios, with and
 without the shock of interest. Since most macroeconomic models are
 defined and estimated in discrete time (both $t$ and $s$ are integers)
 the conditional expectations used to produce IRFs are calculated in
@@ -62,7 +62,7 @@ representative examples), to represent statistical uncertainty
 (\citealp{Kil:98}, and \citealp{SiZ:99}) or to represent regions that
 are partially identified (\citealp{Uhl:05}, and
 \citealp{InK:13}). Currently, this is done by linear interpolation
-between the integer values of $\E_t y_{t+s}$ but this practice has
+between the integer values of $\E_t \yv_{t+s}$ but this practice has
 some drawbacks. Linear interpolation introduces misleading visual
 distortions and can remove potentially interesting dynamics from the
 model.
@@ -88,42 +88,41 @@ result further to VARMA and VECM models and to cumulative responses.
 The rest of this subsection introduces some notation and defines the
 IRFs formally.
 
-Let $\{y_t\}$ be a stationary sequence of random vectors in $\RR^k$,
+Let $\{\yv_t\}$ be a stationary sequence of random vectors in $\RR^k$,
 let $\Fs_t$ represent the information set available in period $t$,
 \begin{equation*}
-  \Fs_t = \sigma(y_t, y_{t-1}, y_{t-2},\dots),
+  \Fs_t = \sigma(\yv_t, \yv_{t-1}, \yv_{t-2},\dots),
 \end{equation*}
-and let the function $m_s$ represent the conditional expectation of
-$y_{t+s}$ given $y_t$, so
+and let the function $\mv_s$ represent the conditional expectation of
+$\yv_{t+s}$ given $\yv_t$, so
 \begin{equation*}
-  m_s(x) = \E(y_{t+s} \mid y_t = x)
+  \mv_s(\xv) = \E(\yv_{t+s} \mid \yv_t = \xv)
 \end{equation*}
-for each $s \geq 0$. Define $m_s = 0$ for $s < 0$ and let
-$\E y_t = \mu$. For a shock of interest $u$, with $u \in \RR^k$, the
-IRF corresponding to $u$ is the function
+for each $s \geq 0$. Define $\mv_s = 0$ for $s < 0$ and let
+$\E \yv_t = \muv$. For a shock of interest $\uv$, with $\uv \in \RR^k$, the
+IRF corresponding to $\uv$ is the function
 \begin{equation}
   \label{eq:16}
-  \Psi_{u}(s) = \E(m_s(y_t + u) - m_s(y_t)).
+  \Psiv_{\uv}(s) = \E(\mv_s(\yv_t + \uv) - \mv_s(\yv_t)).
 \end{equation}
-The shock, $u$, in these equations should be viewed as the ``reduced
+The shock, $\uv$, in these equations should be viewed as the ``reduced
 form'' version of the shock --- an unanticipated change in the current
-value of $y_t$. In a Structural VAR application, $u$ will typically
-be related to a more fundamental shock of economic interest $\delta$
-through the linear transformation $u = \Gamma \delta$, for some known
-or estimated matrix $\Gamma$.
+value of $\yv_t$. In a Structural VAR application, $\uv$ will typically
+be related to a more fundamental shock of economic interest $\deltav$
+through the linear transformation $\uv = \Gammam \deltav$, for some known
+or estimated matrix $\Gammam$.
 
-If $y_t$ is nonstationary $\E_t$ may depend on the value of $t$. In that
+If $\yv_t$ is nonstationary $\E_t$ may depend on the value of $t$. In that
 case, define
 \begin{equation*}
-  m_{ts}(x_0,\dots,x_p)
-  = \E(y_{t+s} \mid y_t = x_0,\dots, y_{t-p} = x_p)
+  \mv_{ts}(\xv)
+  = \E(\yv_{t+s} \mid \yv_t = \xv)
 \end{equation*}
 and let
 \begin{equation*}
-  \Psi_{tu}(s) =
-  m_{ts}(\E y_t + u, \E y_{t-1}, \dots, \E y_{t-p}) - m_{ts}(\E y_t, \E y_{t-1}, \dots,\E y_{t-p}).
+  \Psiv_{t,\uv}(s) = \E(\mv_{ts}(\yv_t + \uv) - \mv_{ts}(\yv_t)).
 \end{equation*}
-Note that $\Psi_{tu}$ can be independent of $t$ even if $m_{ts}$ is
+Note that $\Psiv_{t,\uv}$ can be independent of $t$ even if $\mv_{ts}$ is
 not.
 
 \subsection{AR(1) motivation}
@@ -265,73 +264,72 @@ VARs using the ``canonical'' representation.\footnote{%
   See \citet{Ham:94} or \citet{HaS:13} for a textbook treatment of
   much of this material. Our presentation borrows heavily from
   \citet{Ham:94}.} %
-Define $y_t$ to be the VAR($p$),
+Define $\yv_t$ to be the VAR($p$),
 \[
-y_t = \sum_{j=1}^p A_j y_{t-j} + \vep_t.
+\yv_t = \sum_{j=1}^p \Am_j \yv_{t-j} + \vepv_t.
 \]
-(We assume that $y_t$ has mean zero to simplify the presentation
+(We assume that $\yv_t$ has mean zero to simplify the presentation
 without loss of generality.) To represent this relationship as a
-VAR(1), form the vector $(y_t',\dots,y_{t-p+1}')'$ and observe
+VAR(1), form the vector $(\yv_t',\dots,\yv_{t-p+1}')'$ and observe
 that
 \begin{equation}
 \label{eq:7}
 \underbrace{\begin{pmatrix*}[l]
-  y_t \\ y_{t-1} \\ y_{t-2} \\ \vdots \\ y_{t-p+1}
-\end{pmatrix*}}_{Z_t}
+  \yv_t \\ \yv_{t-1} \\ \yv_{t-2} \\ \vdots \\ \yv_{t-p+1}
+\end{pmatrix*}}_{\Zv_t}
 =
 \underbrace{\begin{pmatrix*}[l]
-  A_1 & A_2 & \cdots & A_{p-1} & A_p \\
-  I_k & 0   & \cdots & 0 & 0 \\
-  0  & I_k  & \cdots & 0 & 0 \\
+  \Am_1 & \Am_2 & \cdots & \Am_{p-1} & \Am_p \\
+  \Imat_k & \Omat   & \cdots & \Omat & \Omat \\
+  \Omat  & \Imat_k  & \cdots & \Omat & \Omat \\
   \vdots & \vdots & \ddots & \vdots & \vdots \\
-  0 & 0 & \cdots & I_k & 0
-\end{pmatrix*}}_{F}
+  \Omat & \Omat & \cdots & \Imat_k & \Omat
+\end{pmatrix*}}_{\Fm}
 \underbrace{\begin{pmatrix*}[l]
-  y_{t-1} \\ y_{t-2} \\ \vdots \\ y_{t-p+1} \\ y_{t-p}
-\end{pmatrix*}}_{Z_{t-1}}
+  \yv_{t-1} \\ \yv_{t-2} \\ \vdots \\ \yv_{t-p+1} \\ \yv_{t-p}
+\end{pmatrix*}}_{\Zv_{t-1}}
 +
 \underbrace{\begin{pmatrix*}[l]
-  \vep_{t} \\ 0 \\ 0 \\ \vdots \\ 0
-\end{pmatrix*}}_{U_t}.
+  \vepv_{t} \\ \Ovec \\ \Ovec \\ \vdots \\ \Ovec
+\end{pmatrix*}}_{\Uv_t}.
 \end{equation}
-So this relationship is equivalent to $Z_t = F Z_{t-1} + U_t$. The
+So this relationship is equivalent to $\Zv_t = \Fm \Zv_{t-1} + \Uv_t$. The
 conditional expectation has a convenient form that is trivial to
 calculate for integer values of $s$,
 \begin{equation*}
-  m_s(x) = e_{1p} F^s x
+  \mv_s(\xv) = \emat_{1p} \Fm^s \xv
 \end{equation*}
-where $e_{jp}$ is the $k p \times k$ selection matrix
+where $\emat_{jp}$ is the $k \times kp$ selection matrix
 \begin{equation*}
-  e_{jp} = \begin{pmatrix*}[l]
-    0_{k \times (j-1)p} & I_k & 0_{k \times (k - j)p}
+  \emat_{jp} = \begin{pmatrix*}[l]
+    \Omat_{k \times (j-1)p} & \Imat_k & \Omat_{k \times (k - j)p}
   \end{pmatrix*}.
 \end{equation*}
 Consequently, for integer values of $s$, the IRF has the form
 \begin{equation*}
-  \Psi_u(s) = e_{1p} F^s e_{1p}' u.
+  \Psiv_{\uv}(s) = \emat_{1p} \Fm^s \emat_{1p}' \uv.
 \end{equation*}
 This section will argue that a variation of
 this definition remains meaningful for noninteger values of $s$.
 
-To show this, notice that, since $F$ is square, it has the Jordan
+To show this, notice that, since $\Fm$ is square, it has the Jordan
 decomposition
 \begin{equation}
   \label{eq:8}
-  F = M J M^{-1}
+  \Fm = \Mm \Jm \Mm^{-1}
 \end{equation}
-
-where $J$ is block diagonal of the form
+where $\Jm$ is block diagonal of the form
 \[
-J = \begin{pmatrix*}[l]
-  J_1 & \cdots & 0 \\
+\Jm = \begin{pmatrix*}[l]
+  \Jm_1 & \cdots & \Omat \\
   \vdots & \ddots & \vdots \\
-  0 & \cdots & J_q
+  \Omat & \cdots & \Jm_q
 \end{pmatrix*}
 \]
-and $q$ is the number of unique eigenvalues of $J_{\ell}$. Each
-$J_\ell$ is an $n_\ell \times n_\ell$ matrix of the form
+and $q$ is the number of unique eigenvalues of $\Jm_{\ell}$. Each
+$\Jm_\ell$ is an $n_\ell \times n_\ell$ matrix of the form
 \[
-J_\ell =
+\Jm_\ell =
 \begin{pmatrix*}[l]
   \lambda_\ell & 1 & 0 & \cdots & 0 & 0 \\
   0 & \lambda_\ell & 1 & \cdots & 0 & 0 \\
@@ -341,25 +339,25 @@ J_\ell =
   0 & 0 & 0 & \cdots & 0 & \lambda_\ell
 \end{pmatrix*}
 \]
-where $\lambda_1,\dots,\lambda_q$ are the distinct eigenvalues of $F$
+where $\lambda_1,\dots,\lambda_q$ are the distinct eigenvalues of $\Fm$
 and $n_\ell$ is the number of times the $\ell$th eigenvalue is
-repeated.  If all of the eigenvalues of $F$ are
-distinct,~\eqref{eq:8} is just the eigenvalue decomposition of $F$.
+repeated.  If all of the eigenvalues of $\Fm$ are
+distinct,~\eqref{eq:8} is just the eigenvalue decomposition of $\Fm$.
 
 This representation is convenient because, for positive integer values
 of $s$, we have
 \[
-F^s = M J^s M^{-1}
+\Fm^s = \Mm \Jm^s \Mm^{-1}
 \]
 and
 \begin{align*}
-J^s =
+\Jm^s =
 \begin{pmatrix*}[l]
-  J_1^s  & \cdots & 0      \\
+  \Jm_1^s  & \cdots & \Omat      \\
   \vdots & \ddots & \vdots \\
-  0      & \cdots & J_q^s
+  \Omat      & \cdots & \Jm_q^s
 \end{pmatrix*}, &&
-J_\ell^s &=
+\Jm_\ell^s &=
 \begin{pmatrix*}[l]
   h_\ell(s,0) & h_\ell(s,1) & h_\ell(s,2) & \cdots & h_\ell(s,n_\ell)   \\
   0           & h_\ell(s,0) & h_\ell(s,1) & \cdots & h_\ell(s,n_\ell-1) \\
@@ -384,61 +382,61 @@ $\sin(\theta_\ell) = \Im(\lambda_\ell)/|\lambda_\ell|$ as before.
 This representation allows us to write
 \begin{multline}
   \label{eq:9}
-  F^s =
+  \Fm^s =
   \sum_{j = 1}^q \sum_{l=0}^{\min(n_\ell, \lfloor s\rfloor)} \tfrac{s(s-1)\cdots(s-l+1)}{l (l - 1) \cdots 1} |\lambda_j|^{s-l} \\
-  \times\Big\{\big[B_{jl} \cos(\theta_j s) + C_{jl} \sin(\theta_j s)\big] + i\big[D_{jl} \cos(\theta_j s) + E_{jl} \sin(\theta_j s)\big]\Big\}
+  \times\Big\{\big[\Bm_{jl} \cos(\theta_j s) + \Cm_{jl} \sin(\theta_j s)\big] + i\big[\Dm_{jl} \cos(\theta_j s) + \Em_{jl} \sin(\theta_j s)\big]\Big\}
 \end{multline}
-where the coefficient matrices $B_{jl}$, $C_{jl}$, $D_{jl}$, and
-$E_{jl}$ are chosen to match $F^0, F^1, F^2,\dots$. For integer
-values of $s$, the imaginary components of $M J^s M^{-1}$ exactly
+where the coefficient matrices $\Bm_{jl}$, $\Cm_{jl}$, $\Dm_{jl}$, and
+$\Em_{jl}$ are chosen to match $\Fm^0, \Fm^1, \Fm^2,\dots$. For integer
+values of $s$, the imaginary components of $\Mm \Jm^s \Mm^{-1}$ exactly
 cancel, so we can use the real part of~\eqref{eq:9} alone, giving
 \begin{equation}
   \label{eq:10}
-  F^s =
-  \sum_{j = 1}^q \sum_{l=0}^{\min(n_\ell, \lfloor s \rfloor)} \tfrac{s(s-1)\cdots(s-l+1)}{l (l - 1) \cdots 1} |\lambda_j|^{s-l} \big[B_{jl} \cos(\theta_j s) + C_{jl} \sin(\theta_j s)\big]
+  \Fm^s =
+  \sum_{j = 1}^q \sum_{l=0}^{\min(n_\ell, \lfloor s \rfloor)} \tfrac{s(s-1)\cdots(s-l+1)}{l (l - 1) \cdots 1} |\lambda_j|^{s-l} \big[\Bm_{jl} \cos(\theta_j s) + \Cm_{jl} \sin(\theta_j s)\big]
 \end{equation}
-to produce $F^1, F^2, F^3,\dots$. Our proposal, in a nutshell, is to
+to produce $\Fm^1, \Fm^2, \Fm^3,\dots$. Our proposal, in a nutshell, is to
 use the definition given by~\eqref{eq:10} for all of the reals rather
 than just the integers, exactly as we did in the motivating AR(1)
 examples.
 
 Equation~\eqref{eq:9} has another practical implication. Although
-$F^s$ has real and imaginary components for real $s$, we are only
+$\Fm^s$ has real and imaginary components for real $s$, we are only
 interested in its real component that generates the IRFs for integer
 values of $s$. Rather than explicitly calculating the matrices
-$B_{jl}$ and $C_{jl}$ to use~\eqref{eq:10}, we can calculate the
-complex valued $F^s$ and simply drop its imaginary component. This
+$\Bm_{jl}$ and $\Cm_{jl}$ to use~\eqref{eq:10}, we can calculate the
+complex valued $\Fm^s$ and simply drop its imaginary component. This
 calculation is directly available in many programming languages and
-can be implemented as $M J^s M^{-1}$ using the Jordan decomposition if
+can be implemented as $\Mm \Jm^s \Mm^{-1}$ using the Jordan decomposition if
 it is not.
 
 We conclude this section with a formal statement of the result.
 
 \begin{proposition}[Impulse Response Functions for VARs]
   \label{P1}
-  Let $F$ be the coefficient matrix of the canonical VAR(1)
-  representation of an arbitrary real-valued VAR($p$) $y_t$. Define
-  $\Psi_{u}(s) = e_{1p} \Re(F^s) e_{1p}' u$ for all
-  $s \in [0,+\infty)$, where $u \in \RR^k$ is a shock of theoretical
-  interest. Then $\Psi_{u}(s)$ satisfies~\eqref{eq:16} for all
+  Let $\Fm$ be the coefficient matrix of the canonical VAR(1)
+  representation of an arbitrary real-valued VAR($p$) $\yv_t$. Define
+  $\Psiv_{\uv}(s) = \emat_{1p} \Re(\Fm^s) \emat_{1p}' \uv$ for all
+  $s \in [0,+\infty)$, where $\uv \in \RR^k$ is a shock of theoretical
+  interest. Then $\Psiv_{\uv}(s)$ satisfies~\eqref{eq:16} for all
   integer values of $s$ and satisfies the recurrence relation implied
   by the original VAR for all positive, real values of $s$,
   \begin{equation}
     \label{eq:11}
-    \Psi_u(s) = \sum_{j=1}^q A_j \Psi_u(s-j).
+    \Psiv_{\uv}(s) = \sum_{j=1}^q \Am_j \Psiv_{\uv}(s-j).
   \end{equation}
 \end{proposition}
 \begin{proof}
-  The fact that $\Psi_u(s)$ meets the definition of the IRF on
+  The fact that $\Psiv_{\uv}(s)$ meets the definition of the IRF on
   integers is discussed in the text and follows from simple
-  algebra. Observe that the series $a_s = \Re(F^s) e_{1p}'u$ satisfies
-  $a_s = F a_{s-1}$ since $F$ is real and
+  algebra. Observe that the series $\av_s = \Re(\Fm^s) \emat_{1p}'\uv$ satisfies
+  $\av_s = \Fm \av_{s-1}$ since $\Fm$ is real and
   \[
-    F a_{s-1} = F \Re(F^{s-1}) e_{1p}'u
-    = \Re(F^s) e_{1p}'u
-    = a_s.
+    \Fm \av_{s-1} = \Fm \Re(\Fm^{s-1}) \emat_{1p}'\uv
+    = \Re(\Fm^s) \emat_{1p}'\uv
+    = \av_s.
   \]
-  The conclusion of this proposition is a direct consequence.
+  The conclusion of this proposition is a direct consequence.\qed
 \end{proof}
 
 \subsection[Finite-order linear models]{Extensions to other linear models}
@@ -452,123 +450,123 @@ for VARMA($p$, $q$) models. These results all rely on augmenting the
 series to create a new canonical VAR(1) and can easily be combined
 and extended further to other recursive linear models.
 
-First, suppose that $y_t$ has a VAR($p$) representation as before.
-but we want to derive the effect of the shock $u$ on $S_t$, the
-cumulative sum of the $y_t$s,
+First, suppose that $\yv_t$ has a VAR($p$) representation as before.
+but we want to derive the effect of the shock $\uv$ on $\Sv_t$, the
+cumulative sum of the $\yv_t$s,
 \[
-  S_t = \sum_{s=0}^t y_s.
+  \Sv_t = \sum_{s=0}^t \yv_s.
 \]
-Since $S_t - y_t = S_{t-1}$, we can extend the canonical
-representation for $y_t$ by embedding this relationship as the first
-element of the vector $Z_t$ in~\eqref{eq:7}. Equation~\eqref{eq:7}
+Since $\Sv_t - \yv_t = \Sv_{t-1}$, we can extend the canonical
+representation for $\yv_t$ by embedding this relationship as the first
+element of the vector $\Zv_t$ in~\eqref{eq:7}. Equation~\eqref{eq:7}
 becomes
 \begin{equation*}
   \begin{pmatrix*}[l]
-    S_t - y_t \\ y_t \\ y_{t-1} \\ \vdots \\ y_{t-p+1}
+    \Sv_t - \yv_t \\ \yv_t \\ \yv_{t-1} \\ \vdots \\ \yv_{t-p+1}
   \end{pmatrix*}
   =
   \begin{pmatrix*}[l]
-    I      & 0      & \cdots & 0       & 0      \\
-    0      & A_1    & \cdots & A_{p-1} & A_p    \\
-    0      & I      & \cdots & 0       & 0      \\
+    \Imat      & \Omat      & \cdots & \Omat       & \Omat      \\
+    \Omat      & \Am_1    & \cdots & \Am_{p-1} & \Am_p    \\
+    \Omat      & \Imat      & \cdots & \Omat       & \Omat      \\
     \vdots & \vdots & \ddots & \vdots  & \vdots \\
-    0      & 0      & \cdots & I       & 0
+    \Omat      & \Omat      & \cdots & \Imat       & \Omat
   \end{pmatrix*}
   \begin{pmatrix*}[l]
-    S_{t-1}  \\ y_{t-1} \\ \vdots \\ y_{t-p+1} \\ y_{t-p}
+    \Sv_{t-1}  \\ \yv_{t-1} \\ \vdots \\ \yv_{t-p+1} \\ \yv_{t-p}
   \end{pmatrix*}
   +
   \begin{pmatrix*}[l]
-    0 \\ \vep_t \\ 0 \\ \vdots \\ 0
+    \Ovec \\ \vepv_t \\ \Ovec \\ \vdots \\ \Ovec
   \end{pmatrix*}
 \end{equation*}
 and can be rewritten as
 \begin{equation*}
   \begin{pmatrix*}[l]
-    S_t \\ y_t \\ y_{t-1} \\ \vdots \\ y_{t-p+1}
+    \Sv_t \\ \yv_t \\ \yv_{t-1} \\ \vdots \\ \yv_{t-p+1}
   \end{pmatrix*}
   =
   \underbrace{\begin{pmatrix*}[l]
-    I      & A_1    & \cdots & A_{p-1} & A_p    \\
-    0      & A_1    & \cdots & A_{p-1} & A_p    \\
-    0      & I      & \cdots & 0       & 0      \\
+    \Imat      & \Am_1    & \cdots & \Am_{p-1} & \Am_p    \\
+    \Omat      & \Am_1    & \cdots & \Am_{p-1} & \Am_p    \\
+    \Omat      & \Imat      & \cdots & \Omat       & \Omat      \\
     \vdots & \vdots & \ddots & \vdots  & \vdots \\
-    0      & 0      & \cdots & I       & 0
-  \end{pmatrix*}}_F
+    \Omat      & \Omat      & \cdots & \Imat       & \Omat
+  \end{pmatrix*}}_{\Fm}
   \begin{pmatrix*}[l]
-    S_{t-1}  \\ y_{t-1} \\ y_{t-2} \\ \vdots \\ y_{t-p}
+    \Sv_{t-1}  \\ \yv_{t-1} \\ \vdots \\ \yv_{t-p+1} \\ \yv_{t-p}
   \end{pmatrix*}
   +
   \begin{pmatrix*}[l]
-    \vep_t \\ \vep_t \\ 0 \\ \vdots \\ 0
+    \vepv_t \\ \vepv_t \\ \Ovec \\ \vdots \\ \Ovec
   \end{pmatrix*}.
 \end{equation*}
 This representation is now a VAR(1) that can be handled exactly as in
-Proposition~\ref{P1} and $\Psi_u(s)$ can be defined as
-$e_{1,p+1} \Re(F^s) (e_{1,p+1} + e_{2,p+1})' u$
+Proposition~\ref{P1} and $\Psiv_{\uv}(s)$ can be defined as
+$\emat_{1,p+1} \Re(\Fm^s) (\emat_{1,p+1} + \emat_{2,p+1})' \uv$
 
 The VECM model has similar behavior. Suppose now that we have the
 relationship
 \begin{equation*}
-  \Delta y_t = B y_{t-1} + A_1 \Delta y_{t-1} + \cdots + A_p \Delta
-  y_{t-p} + \vep_t.
+  \Delta \yv_t = \Bm \yv_{t-1} + \Am_1 \Delta \yv_{t-1} + \cdots + \Am_p \Delta
+  \yv_{t-p} + \vepv_t.
 \end{equation*}
 This can also be put in a canonical form using almost identical
 arguments as before,
 \begin{equation*}
   \begin{pmatrix*}[l]
-    y_t \\ \Delta y_t \\ \Delta y_{t-1} \\ \vdots \\ \Delta y_{t-p+1}
+    \yv_t \\ \Delta \yv_t \\ \Delta \yv_{t-1} \\ \vdots \\ \Delta \yv_{t-p+1}
   \end{pmatrix*}
   =
   \underbrace{\begin{pmatrix*}[l]
-    (I + B) & A_1    & \cdots & A_{p-1} & A_p    \\
-    B       & A_1    & \cdots & A_{p-1} & A_p    \\
-    0       & I      & \cdots & 0       & 0      \\
+    \Imat + \Bm & \Am_1    & \cdots & \Am_{p-1} & \Am_p    \\
+    \Bm       & \Am_1    & \cdots & \Am_{p-1} & \Am_p    \\
+    \Omat       & \Imat      & \cdots & \Omat       & \Omat      \\
     \vdots  & \vdots & \ddots & \vdots  & \vdots \\
-    0       & 0      & \cdots & I       & 0
-  \end{pmatrix*}}_F
+    \Omat       & \Omat      & \cdots & \Imat       & \Omat
+  \end{pmatrix*}}_{\Fm}
   \begin{pmatrix*}[l]
-    y_{t-1} \\ \Delta y_{t-1} \\ \vdots \\ \Delta y_{t-p+1} \\ \Delta y_{t-p}
+    \yv_{t-1} \\ \Delta \yv_{t-1} \\ \vdots \\ \Delta \yv_{t-p+1} \\ \Delta \yv_{t-p}
   \end{pmatrix*}
   +
   \begin{pmatrix*}[l]
-    \vep_t \\ \vep_t \\ 0 \\ \vdots \\ 0
+    \vepv_t \\ \vepv_t \\ \Ovec \\ \vdots \\ \Ovec
   \end{pmatrix*}
 \end{equation*}
-and $\Psi_u(s)$ can be defined as
-$e_{1,p+1} \Re(F^s) (e_{1,p+1} + e_{2,p+1})' u$ again.
+and $\Psiv_{\uv}(s)$ can be defined as
+$\emat_{1,p+1} \Re(\Fm^s) (\emat_{1,p+1} + \emat_{2,p+1})' \uv$ again.
 
-VARMA($p$, $q$)s can also be handled similarly. If $y_t$ satisfies
+VARMA($p$, $q$)s can also be handled similarly. If $\yv_t$ satisfies
 \begin{equation*}
-  y_t = \sum_{j=1}^p A_j y_{t-j} + \sum_{i=1}^q B_i \vep_{t-i} + \vep_t
+  \yv_t = \sum_{j=1}^p \Am_j \yv_{t-j} + \sum_{i=1}^q \Bm_i \vepv_{t-i} + \vepv_t
 \end{equation*}
 this can be written as a canonical VAR(1) using the equation
 \begin{equation*}
 \begin{pmatrix*}[l]
-  y_t \\ y_{t-1} \\ \vdots \\ y_{t-p+1} \\
-  x_t \\ x_{t-1} \\ \vdots \\ x_{t-q+1}
+  \yv_t \\ \yv_{t-1} \\ \vdots \\ \yv_{t-p+1} \\
+  \xv_t \\ \xv_{t-1} \\ \vdots \\ \xv_{t-q+1}
 \end{pmatrix*}
 =
 \underbrace{\begin{pmatrix*}[l]
-  A_1    & \cdots & A_{p-1} & A_p    & B_1    & \cdots & B_{q-1} & B_q    \\
-  I_k    & \cdots & 0       & 0      & 0      & \cdots & 0       & 0      \\
-  \vdots & \ddots & \vdots  & \vdots & \vdots &        & \vdots  & \vdots \\
-  0      & \cdots & I_k     & 0      & 0      & \cdots & 0       & 0      \\
-  0      & \cdots & 0       & 0      & 0      & \cdots & 0       & 0      \\
-  0      & \cdots & 0       & 0      & I_k    & \cdots & 0       & 0      \\
-  \vdots &        & \vdots  & \vdots & \vdots & \ddots & \vdots  & 0      \\
-  0      & \cdots & 0       & 0      & 0      & \cdots & I_k     & 0      \\
-\end{pmatrix*}}_{F}
+  \Am_1   & \cdots & \Am_{p-1} & \Am_p  & \Bm_1   & \cdots & \Bm_{q-1} & \Bm_q  \\
+  \Imat_k & \cdots & \Omat     & \Omat  & \Omat   & \cdots & \Omat     & \Omat  \\
+  \vdots  & \ddots & \vdots    & \vdots & \vdots  &        & \vdots    & \vdots \\
+  \Omat   & \cdots & \Imat_k   & \Omat  & \Omat   & \cdots & \Omat     & \Omat  \\
+  \Omat   & \cdots & \Omat     & \Omat  & \Omat   & \cdots & \Omat     & \Omat  \\
+  \Omat   & \cdots & \Omat     & \Omat  & \Imat_k & \cdots & \Omat     & \Omat  \\
+  \vdots  &        & \vdots    & \vdots & \vdots  & \ddots & \vdots    & \Omat  \\
+  \Omat   & \cdots & \Omat     & \Omat  & \Omat   & \cdots & \Imat_k   & \Omat  \\
+\end{pmatrix*}}_{\Fm}
 \begin{pmatrix*}[l]
-  y_{t-1} \\ \vdots \\ y_{t-p+1} \\ y_{t-p} \\
-  x_{t-1} \\ \vdots \\ x_{t-q+1} \\ x_{t-q}
+  \yv_{t-1} \\ \vdots \\ \yv_{t-p+1} \\ \yv_{t-p} \\
+  \xv_{t-1} \\ \vdots \\ \xv_{t-q+1} \\ \xv_{t-q}
 \end{pmatrix*}
 +
 \begin{pmatrix*}[l]
-  \vep_{t} \\ 0 \\ \vdots \\ 0 \\ \vep_t \\ 0 \\ \vdots \\ 0
+  \vepv_{t} \\ \Ovec \\ \vdots \\ \Ovec \\ \vepv_t \\ \Ovec \\ \vdots \\ \Ovec
 \end{pmatrix*}.
 \end{equation*}
-Now $\Psi_u(s) = e_{1,p+q} \Re(F^s) (e_{1,p+q} + e_{p+1,p+q})' u$.
+Now $\Psiv_{\uv}(s) = \emat_{1,p+q} \Re(\Fm^s) (\emat_{1,p+q} + \emat_{p+1,p+q})' \uv$.
 
 Other extensions are obviously also possible and these results can
 be applied to state space models as well. See~\citet{HaS:13} for
@@ -590,7 +588,7 @@ shocks.
 
 \noindent%
 For a simple numerical example, consider the two-variable VAR(2)
-\begin{equation}
+\begin{multline}
   \label{eq:12}
   \begin{pmatrix*}[l]
     y_{1t} \\ y_{2t}
@@ -602,7 +600,7 @@ For a simple numerical example, consider the two-variable VAR(2)
   \begin{pmatrix*}[l]
     y_{1,t-1} \\ y_{2,t-1}
   \end{pmatrix*}
-  +
+  + \\
   \begin{pmatrix*}[r]
     -0.20 & 0.10 \\ -0.10 & 0.00
   \end{pmatrix*}
@@ -613,20 +611,20 @@ For a simple numerical example, consider the two-variable VAR(2)
   \begin{pmatrix*}[l]
     \vep_{1t} \\ \vep_{2t}
   \end{pmatrix*}
-\end{equation}
-and assume that $(\vep_{1t},\vep_{2t}) \sim N(0,I)$ represents the
+\end{multline}
+and assume that $(\vep_{1t},\vep_{2t}) \sim N(\Ovec,\Imat)$ represents the
 shocks of interest.
 
 The IRF for an $\vep_1$-shock is defined as described above,
 \begin{equation*}
-  \Psi_1(s) = e_{1,2} \Re(F^s) e_{1,2}'
+  \Psiv_1(s) = \emat_{1,2} \Re(\Fm^s) \emat_{1,2}'
   \begin{pmatrix*}[l]
     1 \\ 0
   \end{pmatrix*}
 \end{equation*}
 with
 \begin{equation*}
-F = \begin{pmatrix*}[r]
+\Fm = \begin{pmatrix*}[r]
     - 0.50 & 0.01 & -0.20 & 0.10 \\
       0.30 & 0.10 & -0.10 & 0.00 \\
       1.00 & 0.00 & 0.00 & 0.00 \\
@@ -635,7 +633,7 @@ F = \begin{pmatrix*}[r]
 \end{equation*}
 Similarly, the IRF for an $\vep_2$-shock is given by
 \begin{equation*}
-  \Psi_2(s) = e_{1,2} \Re(F^s) e_{1,2}'
+  \Psiv_2(s) = \emat_{1,2} \Re(\Fm^s) \emat_{1,2}'
   \begin{pmatrix*}[l]
     0 \\ 1
   \end{pmatrix*}.
@@ -664,7 +662,7 @@ version of the curve.
   \centering
   \includegraphics[width=5.5in]{graphs/numeric.pdf}
   \caption{Impulse Response Functions from Section~\ref{S3.1} example;
-    $y_t$ is generated by Equation~\eqref{eq:12}. The left column
+    $\yv_t$ is generated by Equation~\eqref{eq:12}. The left column
     plots standard IRFs, the middle column plots our new method, and
     the right column plots our new approach, emphasizing the values at
     integer time periods.}
@@ -685,7 +683,7 @@ curves more visible.)
   \centering
   \includegraphics[width=5.5in]{graphs/numeric2.pdf}
   \caption{Impulse Response Functions from Section~\ref{S3.1} example;
-    $y_t$ is generated by Equation~\eqref{eq:12} with independent
+    $\yv_t$ is generated by Equation~\eqref{eq:12} with independent
     $N(0,0.15)$ random variable added to each coefficient. These
     graphs plot the IRFs from 150 independent draws of the
     coefficient matrices. The left column plots standard IRFs, the
@@ -739,46 +737,47 @@ additional assumptions beyond those necessary to estimate the
 coefficients of the VAR, we can not estimate all of the unknown
 parameters necessary to identify the shock.\footnote{%
   \citet{Kil:13} gives a recent review of the SVAR literature.} %
-I.e., if $y_t$ is a VAR($p$),
+I.e., if $\yv_t$ is a VAR($p$),
 \begin{equation}
   \label{eq:13}
-  y_t = \alpha + \sum_{i=1}^p A_i y_{t-p} + \vep_t,
+  \yv_t = \bm{\alpha} + \sum_{i=1}^p \Am_i \yv_{t-i} + \vepv_t,
 \end{equation}
-with $\vep_t \sim (0, \Sigma)$ a martingale difference sequence, then
-$\vep_t$ is related to the sequence of theoretical shocks $\delta_t$
+with $\vepv_t \sim (0, \Sigma)$ a martingale difference sequence, then
+$\vepv_t$ is related to the sequence of theoretical shocks $\deltav_t$
 through
 \begin{equation*}
-  \vep_t = \Gamma \delta_t
+  \vepv_t = \Gammam \deltav_t
 \end{equation*}
-and $\delta_t \sim (0, I)$ is also martingale difference sequence. The
-variance covariance matrix, $\Sigma$, can be consistently estimated,
-but $\Gamma$ will in general have more unique elements than $\Sigma$.
-The IRF corresponding to a vector of theoretical shocks $\delta$ is
+and $\deltav_t \sim (0, \Imat)$ is also martingale difference sequence. The
+variance covariance matrix, $\Sigmam$, can be consistently estimated,
+but $\Gammam$ will in general have more unique elements than $\Sigmam$.
+The IRF corresponding to a vector of theoretical shocks $\deltav$ is
 given by
 \begin{equation}
   \label{eq:14}
-  \Psi_\delta(s) = e_{1p} \Re(F^s) e_{1p}' \Gamma \delta
+  \Psiv_{\deltav}(s) = \emat_{1p} \Re(\Fm^s) \emat_{1p}' \Gammam \deltav
 \end{equation}
-so additional restrictions on $\Gamma$ are necessary to estimate
-$\Psi_\delta$.
+so additional restrictions on $\Gammam$ are necessary to estimate
+$\Psiv_{\deltav}$.
 
 \citet{Uhl:05} proposes using a minimal set of assumptions to identify
 \emph{potential} monetary policy shocks. Letting the first element of
 $\delta$ represent a positive monetary policy shock, Uhlig's approach
-is to generate candidate shocks randomly and calculate $\Psi_\delta$
+is to generate candidate shocks randomly and calculate $\Psiv_{\deltav}$
 corresponding to that specific shock. IRFs that match some a priori
 plausible criteria are kept as potential responses to monetary policy
 shocks and the resulting set of functions partially identifies the
-effect of a shock. Formally, for given estimates $\hat F$ and
-$\hat \Sigma$, this procedure amounts to generating many candidate
-shocks $u^* = u / \| u \|_2$ where $u \sim N(0,I)$ and calculating the
+effect of a shock. Formally, for given estimates $\bm{\hat \mathrm{F}}$ and
+$\bm{\hat \Sigma}$, this procedure amounts to generating many candidate
+shocks $\bm{u^*} = \uv / \| \uv \|_2$ where $\uv \sim N(\Ovec,\Imat)$ and calculating the
 candidate IRFs as
 \begin{equation}
   \label{eq:15}
-  \hat \Psi_{u^*}(s) =  e_{1p} \Re(\hat F^s) e_{1p}' \hat\Sigma^{1/2} u^*,
+  \bm{\hat \Psi}_{\bm{u^*}}(s) =
+  \emat_{1p} \Re(\bm{\hat{\mathrm{F}}}^s) \emat_{1p}' \bm{\hat\Sigma}^{1/2} \bm{u^*},
 \end{equation}
-then discarding $\hat\Psi_{u^*}(s)$ that do not meet a set of criteria of
-that define and constrain the monetary policy shock.
+then discarding $\hat\Psiv_{\bm{u^*}}(s)$ that do not meet the criteria of
+allowed responses to monetary policy shock.
 
 In this paper, we use our proposed method for graphing IRFs to plot
 the candidate responses to a monetary policy shock using Uhlig's sign
