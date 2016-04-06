@@ -13,6 +13,8 @@
 
 \input{tex/setup}
 \input{tex/shorthand}
+\renewcommand{\VERSION}{2016-04-06}
+\doublespacing
 
 \begin{document}
 \maketitle
@@ -27,7 +29,6 @@
   dynamics.
 \end{abstract}
 
-\tableofcontents
 \newpage
 
 \section{Introduction}
@@ -840,14 +841,8 @@ visual distortions that can arise from discretizing the dynamics,
 especially when several IRFs are plotted over each other to
 represent uncertainty or partial identification.
 
-\clearpage
 \addcontentsline{toc}{section}{References}
 \bibliography{latex_misc/references}
-
-\clearpage
-\appendix
-\section{Appendix: Changes to this paper from previous versions}
-\input{CHANGELOG}
 \end{document}
 
 %%% Local Variables:
