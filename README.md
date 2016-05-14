@@ -10,7 +10,12 @@ should be available at <http://gray.clhn.org> and you can find the
 latest version of this directory at
 <https://github.com/grayclhn/smooth_irf>.
 
-The project is at version 0.3.
+Some details:
+
+- JEL codes: C32, E52
+- Keywords: Vector Autoregression, multivariate time series, policy
+  shocks
+- The project is at version 0.3.
 
 Main files
 ----------
