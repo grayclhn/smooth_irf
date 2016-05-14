@@ -69,5 +69,5 @@ Errors and contact information
 
 Please let me know if you find errors. You can email
 <gcalhoun@iastate.edu> or file an issue at
-<https://git.ece.iastate.edu/gcalhoun/smooth_irf/issues>.
+<https://github.com/grayclhn/smooth_irf/issues>.
 Thanks!
