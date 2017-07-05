@@ -1,8 +1,4 @@
-\usepackage{amsmath,amsthm,mathtools}
-\usepackage[T1]{fontenc}
-\usepackage{lucidabr}
-\usepackage[margin=1in]{geometry}
-\usepackage[letterspace=35]{microtype}
+\usepackage{amsmath,amsfonts,amsthm,mathtools}
 
 % Check if shell commands can be executed
 \ifnum\pdfshellescape=1
@@ -18,31 +14,11 @@
     bashful,
     booktabs,
     enumitem,
-    fancyhdr,
     graphicx,
     ragged2e,
-    sectsty,
-    setspace,
     tabularx,
-    tocstyle,
-    url,
 }
-\allsectionsfont{\normalsize\RaggedRight}
 
-\urlstyle{same}
-\newcolumntype{C}{>{\centering\arraybackslash}X}
-
-\pagestyle{fancy}
-\renewcommand{\sectionmark}[1]{\markboth{}{\footnotesize{\thesection. #1}}}
-\renewcommand{\subsectionmark}[1]{\markboth{}{\footnotesize{\thesubsection. #1}}}
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}
-\fancyhead[LE,LO]{\textit{\footnotesize{\nouppercase{\rightmark}}}}
-\rhead{\footnotesize{\textit{\VERSION}}}
-
-\onehalfspacing
-
-\usepackage[small]{caption}
 \usepackage[sort,round,comma]{natbib}
 \bibliographystyle{abbrvnat}
 
